@@ -1,0 +1,838 @@
+C:\WIMWK
+├─bin
+│  │  Microsoft Update カタログ.url
+│  │  Mk1st.cmd (初期導入作業コマンド)
+│  │  MkWindows7_ISO_files_Custom.cmd (統合作業用コマンド)
+│  │  MkWindows7_USB_Custom.cmd (USBメモリー保存用コマンド)
+│  │  
+│  └─Oscdimg (ISOファイル作成ツール)
+│      └─AMD64
+│              efisys.bin
+│              efisys_noprompt.bin
+│              etfsboot.com
+│              oscdimg.exe
+│              
+├─cfg (unattend系ファイル)
+│      autounattend-windows7-x32.xml
+│      autounattend-windows7-x64.xml
+│      
+├─lst (ダウンロードリストファイル)
+│      Windows7adk_Rollup_202001.lst
+│      Windows7aik_Rollup_202001.lst
+│      Windows7drv_Rollup_202001.lst
+│      Windows7x32_Rollup_202001.lst
+│      Windows7x64_Rollup_202001.lst
+│      
+└─w7 (作業フォルダー：自動作成)
+    │  windows_7_with_sp1_x64_dvd_custom_6.1.7601.iso (統合ディスク)
+    │  
+    └─pkg (統合ファイル)
+        ├─adk
+        │      adksetup.exe (Windows10用ADK)
+        │      
+        ├─drv (ドライバー・ファイル)
+        │  ├─NVMe
+        │  │  │  ASUS_EZInstaller_V10306.zip
+        │  │  │  Client-x64.zip
+        │  │  │  Client-x86.zip
+        │  │  │  
+        │  │  ├─ASUS_EZInstaller_V10306
+        │  │  │  └─ASUS_EZInstaller_V10306
+        │  │  │      │  AsusSetup.exe
+        │  │  │      │  AsusSetup.exe.manifest
+        │  │  │      │  AsusSetup.ini
+        │  │  │      │  English.ini
+        │  │  │      │  French.ini
+        │  │  │      │  German.ini
+        │  │  │      │  Japanese.ini
+        │  │  │      │  Korean.ini
+        │  │  │      │  Russian.ini
+        │  │  │      │  SChinese.ini
+        │  │  │      │  Spanish.ini
+        │  │  │      │  TChinese.ini
+        │  │  │      │  
+        │  │  │      └─ASUS EZ Installer
+        │  │  │          │  ASUS EZ Installer.zip
+        │  │  │          │  Windows 7 and USB 3.0 driver installation for 100 Series.PDF
+        │  │  │          │  
+        │  │  │          └─ASUS EZ Installer
+        │  │  │              └─V1.03.06
+        │  │  │                  │  api-ms-win-downlevel-advapi32-l1-1-0.dll
+        │  │  │                  │  api-ms-win-downlevel-advapi32-l1-1-1.dll
+        │  │  │                  │  api-ms-win-downlevel-advapi32-l2-1-0.dll
+        │  │  │                  │  api-ms-win-downlevel-advapi32-l2-1-1.dll
+        │  │  │                  │  api-ms-win-downlevel-advapi32-l3-1-0.dll
+        │  │  │                  │  api-ms-win-downlevel-advapi32-l4-1-0.dll
+        │  │  │                  │  api-ms-win-downlevel-kernel32-l1-1-0.dll
+        │  │  │                  │  api-ms-win-downlevel-kernel32-l2-1-0.dll
+        │  │  │                  │  api-ms-win-downlevel-ole32-l1-1-0.dll
+        │  │  │                  │  api-ms-win-downlevel-ole32-l1-1-1.dll
+        │  │  │                  │  api-ms-win-downlevel-shlwapi-l1-1-0.dll
+        │  │  │                  │  api-ms-win-downlevel-shlwapi-l1-1-1.dll
+        │  │  │                  │  api-ms-win-downlevel-user32-l1-1-0.dll
+        │  │  │                  │  api-ms-win-downlevel-user32-l1-1-1.dll
+        │  │  │                  │  api-ms-win-downlevel-version-l1-1-0.dll
+        │  │  │                  │  AsMultiLang.dll
+        │  │  │                  │  compatprovider.dll
+        │  │  │                  │  config.xml
+        │  │  │                  │  dismapi.dll
+        │  │  │                  │  dismcore.dll
+        │  │  │                  │  dismcoreps.dll
+        │  │  │                  │  dismprov.dll
+        │  │  │                  │  EZ Installer.exe
+        │  │  │                  │  folderprovider.dll
+        │  │  │                  │  imagingprovider.dll
+        │  │  │                  │  logprovider.dll
+        │  │  │                  │  Microsoft.Dism.Powershell.dll
+        │  │  │                  │  ssshim.dll
+        │  │  │                  │  vhdprovider.dll
+        │  │  │                  │  wimgapi.dll
+        │  │  │                  │  wimprovider.dll
+        │  │  │                  │  
+        │  │  │                  ├─efi
+        │  │  │                  │  └─boot
+        │  │  │                  │          bootia32.efi
+        │  │  │                  │          bootx64.efi
+        │  │  │                  │          
+        │  │  │                  ├─Hotfix
+        │  │  │                  │  ├─NVMe
+        │  │  │                  │  │  ├─x64
+        │  │  │                  │  │  │      Windows6.1-KB2990941-v3-x64.msu
+        │  │  │                  │  │  │      Windows6.1-kb3087873-v2-x64.msu
+        │  │  │                  │  │  │      
+        │  │  │                  │  │  └─x86
+        │  │  │                  │  │          Windows6.1-KB2990941-v3-x86.msu
+        │  │  │                  │  │          Windows6.1-KB3087873-v2-x86.msu
+        │  │  │                  │  │          
+        │  │  │                  │  ├─x64
+        │  │  │                  │  └─x86
+        │  │  │                  ├─LangFiles
+        │  │  │                  │  │  AsMultiLang.ini
+        │  │  │                  │  │  
+        │  │  │                  │  ├─English
+        │  │  │                  │  │      English.ini
+        │  │  │                  │  │      
+        │  │  │                  │  ├─French
+        │  │  │                  │  │      French.ini
+        │  │  │                  │  │      
+        │  │  │                  │  ├─German
+        │  │  │                  │  │      German.ini
+        │  │  │                  │  │      
+        │  │  │                  │  ├─Japanese
+        │  │  │                  │  │      Japanese.ini
+        │  │  │                  │  │      
+        │  │  │                  │  ├─Korean
+        │  │  │                  │  │      Korean.ini
+        │  │  │                  │  │      
+        │  │  │                  │  ├─Russian
+        │  │  │                  │  │      Russian.ini
+        │  │  │                  │  │      
+        │  │  │                  │  ├─SChinese
+        │  │  │                  │  │      SChinese.ini
+        │  │  │                  │  │      
+        │  │  │                  │  ├─Spanish
+        │  │  │                  │  │      Spanish.ini
+        │  │  │                  │  │      
+        │  │  │                  │  └─TChinese
+        │  │  │                  │          TChinese.ini
+        │  │  │                  │          
+        │  │  │                  ├─OS
+        │  │  │                  │  │  AutoUnattend.xml
+        │  │  │                  │  │  
+        │  │  │                  │  └─AutoUnattend
+        │  │  │                  │      ├─x64
+        │  │  │                  │      │  ├─AMD
+        │  │  │                  │      │  │  │  amdhub30.cat
+        │  │  │                  │      │  │  │  amdhub30.inf
+        │  │  │                  │      │  │  │  amdhub30.PNF
+        │  │  │                  │      │  │  │  amdhub31.cat
+        │  │  │                  │      │  │  │  amdhub31.inf
+        │  │  │                  │      │  │  │  amdhub31.PNF
+        │  │  │                  │      │  │  │  amdxhc.cat
+        │  │  │                  │      │  │  │  amdxhc.inf
+        │  │  │                  │      │  │  │  amdxhc.PNF
+        │  │  │                  │      │  │  │  amdxhc31.cat
+        │  │  │                  │      │  │  │  amdxhc31.inf
+        │  │  │                  │      │  │  │  amdxhc31.PNF
+        │  │  │                  │      │  │  │  
+        │  │  │                  │      │  │  └─x64
+        │  │  │                  │      │  │          amdhub30.sys
+        │  │  │                  │      │  │          amdhub31.sys
+        │  │  │                  │      │  │          amdxhc.sys
+        │  │  │                  │      │  │          amdxhc31.sys
+        │  │  │                  │      │  │          
+        │  │  │                  │      │  ├─Asmedia
+        │  │  │                  │      │  │  │  asmthub3.cat
+        │  │  │                  │      │  │  │  asmthub3.inf
+        │  │  │                  │      │  │  │  asmtxhci.cat
+        │  │  │                  │      │  │  │  asmtxhci.inf
+        │  │  │                  │      │  │  │  
+        │  │  │                  │      │  │  ├─amd64
+        │  │  │                  │      │  │  │      asmthub3.sys
+        │  │  │                  │      │  │  │      asmtxhci.sys
+        │  │  │                  │      │  │  │      asmtxhcicoinstaller.dll
+        │  │  │                  │      │  │  │      
+        │  │  │                  │      │  │  ├─i386
+        │  │  │                  │      │  │  │      asmthub3.sys
+        │  │  │                  │      │  │  │      asmtxhci.sys
+        │  │  │                  │      │  │  │      asmtxhcicoinstaller.dll
+        │  │  │                  │      │  │  │      
+        │  │  │                  │      │  │  └─ia64
+        │  │  │                  │      │  │          asmthub3.sys
+        │  │  │                  │      │  │          asmtxhci.sys
+        │  │  │                  │      │  │          asmtxhcicoinstaller.dll
+        │  │  │                  │      │  │          
+        │  │  │                  │      │  ├─Intel
+        │  │  │                  │      │  │      iusb3hub.cat
+        │  │  │                  │      │  │      iusb3hub.inf
+        │  │  │                  │      │  │      IUsb3Hub.man
+        │  │  │                  │      │  │      iusb3hub.sys
+        │  │  │                  │      │  │      iusb3xhc.cat
+        │  │  │                  │      │  │      iusb3xhc.inf
+        │  │  │                  │      │  │      iusb3xhc.man
+        │  │  │                  │      │  │      iusb3xhc.sys
+        │  │  │                  │      │  │      tbt70x.cat
+        │  │  │                  │      │  │      tbt70x.inf
+        │  │  │                  │      │  │      tbt70x.sys
+        │  │  │                  │      │  │      tbtcoinx.dll
+        │  │  │                  │      │  │      tp2p70x.cat
+        │  │  │                  │      │  │      tp2p70x.inf
+        │  │  │                  │      │  │      tp2p70x.sys
+        │  │  │                  │      │  │      
+        │  │  │                  │      │  ├─Intel_NVMe
+        │  │  │                  │      │  │      IaNVMe.inf
+        │  │  │                  │      │  │      IaNVMe.sys
+        │  │  │                  │      │  │      IaNVMeF.sys
+        │  │  │                  │      │  │      nvme64.cat
+        │  │  │                  │      │  │      
+        │  │  │                  │      │  └─Samsung_NVMe
+        │  │  │                  │      │          nvme.cat
+        │  │  │                  │      │          nvme.inf
+        │  │  │                  │      │          nvme.sys
+        │  │  │                  │      │          nvmeF.sys
+        │  │  │                  │      │          
+        │  │  │                  │      └─x86
+        │  │  │                  │          ├─AMD
+        │  │  │                  │          │  │  amdhub30.cat
+        │  │  │                  │          │  │  amdhub30.inf
+        │  │  │                  │          │  │  amdhub30.PNF
+        │  │  │                  │          │  │  amdhub31.cat
+        │  │  │                  │          │  │  amdhub31.INF
+        │  │  │                  │          │  │  amdhub31.PNF
+        │  │  │                  │          │  │  amdxhc.cat
+        │  │  │                  │          │  │  amdxhc.inf
+        │  │  │                  │          │  │  amdxhc.PNF
+        │  │  │                  │          │  │  amdxhc31.cat
+        │  │  │                  │          │  │  amdxhc31.INF
+        │  │  │                  │          │  │  amdxhc31.PNF
+        │  │  │                  │          │  │  
+        │  │  │                  │          │  └─x86
+        │  │  │                  │          │          amdhub30.sys
+        │  │  │                  │          │          amdhub31.sys
+        │  │  │                  │          │          amdxhc.sys
+        │  │  │                  │          │          amdxhc31.sys
+        │  │  │                  │          │          
+        │  │  │                  │          ├─Asmedia
+        │  │  │                  │          │  │  asmthub3.cat
+        │  │  │                  │          │  │  asmthub3.inf
+        │  │  │                  │          │  │  asmtxhci.cat
+        │  │  │                  │          │  │  asmtxhci.inf
+        │  │  │                  │          │  │  
+        │  │  │                  │          │  ├─amd64
+        │  │  │                  │          │  │      asmthub3.sys
+        │  │  │                  │          │  │      asmtxhci.sys
+        │  │  │                  │          │  │      asmtxhcicoinstaller.dll
+        │  │  │                  │          │  │      
+        │  │  │                  │          │  ├─i386
+        │  │  │                  │          │  │      asmthub3.sys
+        │  │  │                  │          │  │      asmtxhci.sys
+        │  │  │                  │          │  │      asmtxhcicoinstaller.dll
+        │  │  │                  │          │  │      
+        │  │  │                  │          │  └─ia64
+        │  │  │                  │          │          asmthub3.sys
+        │  │  │                  │          │          asmtxhci.sys
+        │  │  │                  │          │          asmtxhcicoinstaller.dll
+        │  │  │                  │          │          
+        │  │  │                  │          ├─Intel
+        │  │  │                  │          │      iusb3hub.cat
+        │  │  │                  │          │      iusb3hub.inf
+        │  │  │                  │          │      IUsb3Hub.man
+        │  │  │                  │          │      iusb3hub.sys
+        │  │  │                  │          │      iusb3xhc.cat
+        │  │  │                  │          │      iusb3xhc.inf
+        │  │  │                  │          │      iusb3xhc.man
+        │  │  │                  │          │      iusb3xhc.sys
+        │  │  │                  │          │      tbt70i.cat
+        │  │  │                  │          │      tbt70i.inf
+        │  │  │                  │          │      tbt70i.sys
+        │  │  │                  │          │      tbtcoini.dll
+        │  │  │                  │          │      tp2p70i.cat
+        │  │  │                  │          │      tp2p70i.inf
+        │  │  │                  │          │      tp2p70i.sys
+        │  │  │                  │          │      
+        │  │  │                  │          ├─Intel_NVMe
+        │  │  │                  │          │      IaNVMe.inf
+        │  │  │                  │          │      IaNVMe.sys
+        │  │  │                  │          │      IaNVMeF.sys
+        │  │  │                  │          │      nvme86.cat
+        │  │  │                  │          │      
+        │  │  │                  │          └─Samsung_NVMe
+        │  │  │                  │                  nvme.cat
+        │  │  │                  │                  nvme.inf
+        │  │  │                  │                  nvme.sys
+        │  │  │                  │                  nvmeF.sys
+        │  │  │                  │                  
+        │  │  │                  ├─Oscdimg_amd64
+        │  │  │                  │  └─Oscdimg
+        │  │  │                  │          efisys.bin
+        │  │  │                  │          efisys_noprompt.bin
+        │  │  │                  │          etfsboot.com
+        │  │  │                  │          oscdimg.exe
+        │  │  │                  │          
+        │  │  │                  ├─Oscdimg_x86
+        │  │  │                  │  └─Oscdimg
+        │  │  │                  │          efisys.bin
+        │  │  │                  │          efisys_noprompt.bin
+        │  │  │                  │          etfsboot.com
+        │  │  │                  │          oscdimg.exe
+        │  │  │                  │          
+        │  │  │                  ├─Other
+        │  │  │                  │  ├─x64
+        │  │  │                  │  │  ├─E3_RAID
+        │  │  │                  │  │  │      iaahci.cat
+        │  │  │                  │  │  │      iaAHCI.inf
+        │  │  │                  │  │  │      iaahcib.cat
+        │  │  │                  │  │  │      iaAHCIB.inf
+        │  │  │                  │  │  │      iastora.cat
+        │  │  │                  │  │  │      iaStorA.inf
+        │  │  │                  │  │  │      iaStorA.sys
+        │  │  │                  │  │  │      iastorb.cat
+        │  │  │                  │  │  │      iaStorB.inf
+        │  │  │                  │  │  │      iaStorB.sys
+        │  │  │                  │  │  │      iaStorF.sys
+        │  │  │                  │  │  │      
+        │  │  │                  │  │  └─KabyLake_RAID
+        │  │  │                  │  │          iaAHCIC.cat
+        │  │  │                  │  │          iaAHCIC.inf
+        │  │  │                  │  │          iaStorA.sys
+        │  │  │                  │  │          iaStorAC.cat
+        │  │  │                  │  │          iaStorAC.inf
+        │  │  │                  │  │          iaStorF.sys
+        │  │  │                  │  │          
+        │  │  │                  │  └─x86
+        │  │  │                  │      ├─E3_RAID
+        │  │  │                  │      │      iaahci.cat
+        │  │  │                  │      │      iaAHCI.inf
+        │  │  │                  │      │      iaahcib.cat
+        │  │  │                  │      │      iaAHCIB.inf
+        │  │  │                  │      │      iastora.cat
+        │  │  │                  │      │      iaStorA.inf
+        │  │  │                  │      │      iaStorA.sys
+        │  │  │                  │      │      iastorb.cat
+        │  │  │                  │      │      iaStorB.inf
+        │  │  │                  │      │      iaStorB.sys
+        │  │  │                  │      │      iaStorF.sys
+        │  │  │                  │      │      
+        │  │  │                  │      └─KabyLake_RAID
+        │  │  │                  │              iaAHCIC.cat
+        │  │  │                  │              iaAHCIC.inf
+        │  │  │                  │              iaStorA.sys
+        │  │  │                  │              iaStorAC.cat
+        │  │  │                  │              iaStorAC.inf
+        │  │  │                  │              iaStorF.sys
+        │  │  │                  │              
+        │  │  │                  └─Resources
+        │  │  │                          End User License Agreement_English.txt
+        │  │  │                          End User License Agreement_SChinese.txt
+        │  │  │                          End User License Agreement_TChinese.txt
+        │  │  │                          logo.bmp
+        │  │  │                          Thumbs.db
+        │  │  │                          
+        │  │  ├─Client-x64
+        │  │  │      ianvme.cat
+        │  │  │      IaNVMe.inf
+        │  │  │      IaNVMe.sys
+        │  │  │      IaNVMeF.sys
+        │  │  │      Intel_SSD_PCIe_Client_Driver_4.4.0.1003_Release_Notes.pdf
+        │  │  │      
+        │  │  └─Client-x86
+        │  │          ianvme.cat
+        │  │          IaNVMe.inf
+        │  │          IaNVMe.sys
+        │  │          IaNVMeF.sys
+        │  │          Intel_SSD_PCIe_Client_Driver_4.4.0.1003_Release_Notes.pdf
+        │  │          
+        │  ├─RST
+        │  │  │  f6flpy-x64.zip
+        │  │  │  f6flpy-x86.zip
+        │  │  │  
+        │  │  ├─f6flpy-x64
+        │  │  │      iaAHCIC.cat
+        │  │  │      iaAHCIC.inf
+        │  │  │      iaStorAC.cat
+        │  │  │      iaStorAC.inf
+        │  │  │      iaStorAC.sys
+        │  │  │      iaStorAfs.sys
+        │  │  │      iaStorAfsNative.exe
+        │  │  │      iaStorAfsService.exe
+        │  │  │      iaStorF.sys
+        │  │  │      
+        │  │  └─f6flpy-x86
+        │  │          iaAHCIC.cat
+        │  │          iaAHCIC.inf
+        │  │          iaStorAC.cat
+        │  │          iaStorAC.inf
+        │  │          iaStorAC.sys
+        │  │          iaStorF.sys
+        │  │          
+        │  └─USB
+        │      │  Intel(R)_USB_3.0_eXtensible_Host_Controller_Driver_5.0.4.43_v2.zip
+        │      │  
+        │      └─Intel(R)_USB_3.0_eXtensible_Host_Controller_Driver_5.0.4.43_v2
+        │          └─Intel(R)_USB_3.0_eXtensible_Host_Controller_Driver_5.0.4.43_v2
+        │              │  difxapi.dll
+        │              │  mup.xml
+        │              │  Readme.txt
+        │              │  Setup.exe
+        │              │  Setup30.if2
+        │              │  Setup31.if2
+        │              │  USB3Ver.dll
+        │              │  
+        │              ├─apps
+        │              │  │  iusb3mon.dll
+        │              │  │  iusb3mon.exe
+        │              │  │  
+        │              │  ├─0401
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0404
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0405
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0406
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0407
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0408
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0409
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─040B
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─040C
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─040D
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─040E
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0410
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0411
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0412
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0413
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0414
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0415
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0416
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0419
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─041B
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─041D
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─041E
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─041F
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0424
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0804
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0816
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  ├─0C04
+        │              │  │      iusb3mon.exe.mui
+        │              │  │      
+        │              │  └─0C0A
+        │              │          iusb3mon.exe.mui
+        │              │          
+        │              ├─Drivers
+        │              │  ├─HCSwitch
+        │              │  │  ├─x64
+        │              │  │  │      iusb3hcs.cat
+        │              │  │  │      iusb3hcs.inf
+        │              │  │  │      iusb3hcs.sys
+        │              │  │  │      WdfCoInstaller01009.dll
+        │              │  │  │      
+        │              │  │  └─x86
+        │              │  │          iusb3hcs.cat
+        │              │  │          iusb3hcs.inf
+        │              │  │          iusb3hcs.sys
+        │              │  │          WdfCoInstaller01009.dll
+        │              │  │          
+        │              │  └─Win7
+        │              │      ├─x64
+        │              │      │      iusb3hub.cat
+        │              │      │      iusb3hub.inf
+        │              │      │      IUsb3Hub.man
+        │              │      │      iusb3hub.sys
+        │              │      │      iusb3xhc.cat
+        │              │      │      iusb3xhc.inf
+        │              │      │      iusb3xhc.man
+        │              │      │      iusb3xhc.sys
+        │              │      │      
+        │              │      └─x86
+        │              │              iusb3hub.cat
+        │              │              iusb3hub.inf
+        │              │              IUsb3Hub.man
+        │              │              iusb3hub.sys
+        │              │              iusb3xhc.cat
+        │              │              iusb3xhc.inf
+        │              │              iusb3xhc.man
+        │              │              iusb3xhc.sys
+        │              │              
+        │              ├─Lang
+        │              │  ├─ar-SA
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─cs-CZ
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─da-DK
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─de-DE
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─el-GR
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─en-US
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─es-ES
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─fi-FI
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─fr-FR
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─he-IL
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─hu-HU
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─it-IT
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─ja-JP
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─ko-KR
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─nb-NO
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─nl-NL
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─pl-PL
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─pt-BR
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─pt-PT
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─ru-RU
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─sk-SK
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─sl-SI
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─sv-SE
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─th-TH
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─tr-TR
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  ├─zh-CN
+        │              │  │      license.txt
+        │              │  │      Setup.exe.mui
+        │              │  │      
+        │              │  └─zh-TW
+        │              │          license.txt
+        │              │          Setup.exe.mui
+        │              │          
+        │              └─x64
+        │                      difxapi.dll
+        │                      Drv64.exe
+        │                      
+        ├─efi
+        │      bootx64.efi (efiブート必須ファイル)
+        │      
+        ├─x64 (Windows Update 64bit版)
+        │  │  ie11-windows6.1-kb3185319-x64.msu
+        │  │  ie11-windows6.1-kb4534251-x64.msu
+        │  │  IE11-Windows6.1-x64-ja-jp.exe
+        │  │  MicrosoftEdgeEnterprise-x64.msi
+        │  │  mpam-fe-x64.exe
+        │  │  mpas-fe-x64.exe
+        │  │  MSEInstall-x64.exe
+        │  │  ndp48-kb4503575-x64.exe
+        │  │  ndp48-kb4515847-x64.exe
+        │  │  ndp48-x86-x64-allos-jpn.exe
+        │  │  ndp48-x86-x64-enu.exe
+        │  │  silverlight.exe
+        │  │  Win7AndW2K8R2-KB3191566-x64.msu
+        │  │  Win7AndW2K8R2-KB3191566-x64.zip
+        │  │  windows-kb890830-x64-v5.79.exe
+        │  │  windows6.1-kb2454826-v2-x64.msu
+        │  │  windows6.1-kb2533552-x64.msu
+        │  │  Windows6.1-KB2534366-x64.msu
+        │  │  windows6.1-kb2545698-x64.msu
+        │  │  windows6.1-kb2547666-x64.msu
+        │  │  windows6.1-kb2574819-v2-x64.msu
+        │  │  windows6.1-kb2592687-x64.msu
+        │  │  windows6.1-kb2603229-x64.msu
+        │  │  windows6.1-kb2667402-v2-x64.msu
+        │  │  windows6.1-kb2670838-x64.msu
+        │  │  Windows6.1-KB2679255-v2-x64.msu
+        │  │  windows6.1-kb2685811-x64.msu
+        │  │  windows6.1-kb2685813-x64.msu
+        │  │  windows6.1-kb2698365-x64.msu
+        │  │  windows6.1-kb2729094-v2-x64.msu
+        │  │  windows6.1-kb2732059-v5-x64.msu
+        │  │  windows6.1-kb2750841-x64.msu
+        │  │  windows6.1-kb2761217-x64.msu
+        │  │  windows6.1-kb2773072-x64.msu
+        │  │  windows6.1-kb2818604-x64.msu
+        │  │  Windows6.1-KB2819745-x64-MultiPkg.msu
+        │  │  windows6.1-kb2830477-x64.msu
+        │  │  windows6.1-kb2834140-v2-x64.msu
+        │  │  windows6.1-kb2862330-v2-x64.msu
+        │  │  windows6.1-kb2894844-x64.msu
+        │  │  windows6.1-kb2898851-x64.msu
+        │  │  windows6.1-kb2900986-x64.msu
+        │  │  windows6.1-kb2919469-x64.msu
+        │  │  windows6.1-kb2923545-x64.msu
+        │  │  windows6.1-kb2970228-x64.msu
+        │  │  windows6.1-kb2984972-x64.msu
+        │  │  windows6.1-kb2984976-x64.msu
+        │  │  Windows6.1-KB2990941-v3-x64.msu
+        │  │  windows6.1-kb3004375-v3-x64.msu
+        │  │  windows6.1-kb3006137-x64.msu
+        │  │  windows6.1-kb3020369-x64.msu
+        │  │  windows6.1-kb3020387-x64.msu
+        │  │  windows6.1-kb3020388-x64.msu
+        │  │  windows6.1-kb3021917-x64.msu
+        │  │  windows6.1-kb3031432-x64.msu
+        │  │  windows6.1-kb3042058-x64.msu
+        │  │  windows6.1-kb3046269-x64.msu
+        │  │  windows6.1-kb3059317-x64.msu
+        │  │  windows6.1-kb3068708-x64.msu
+        │  │  windows6.1-kb3075226-x64.msu
+        │  │  windows6.1-kb3080149-x64.msu
+        │  │  windows6.1-kb3087873-v2-x64.msu
+        │  │  windows6.1-kb3102429-v2-x64.msu
+        │  │  windows6.1-kb3125574-v4-x64.msu
+        │  │  windows6.1-kb3138612-x64.msu
+        │  │  windows6.1-kb3150513-x64.msu
+        │  │  windows6.1-kb3155178-x64.msu
+        │  │  windows6.1-kb3156016-x64.msu
+        │  │  windows6.1-kb3159398-x64.msu
+        │  │  windows6.1-kb3161102-x64.msu
+        │  │  windows6.1-kb3161949-x64.msu
+        │  │  windows6.1-kb3170735-x64.msu
+        │  │  windows6.1-kb3172605-x64.msu
+        │  │  windows6.1-kb3179573-x64.msu
+        │  │  windows6.1-kb3184143-x64.msu
+        │  │  windows6.1-kb4019990-x64.msu
+        │  │  windows6.1-kb4040980-x64.msu
+        │  │  windows6.1-kb4474419-v3-x64.msu
+        │  │  windows6.1-kb4490628-x64.msu
+        │  │  windows6.1-kb4507004-x64.msu
+        │  │  windows6.1-kb4532945-x64.msu
+        │  │  windows6.1-kb4534310-x64.msu
+        │  │  windows6.1-kb4536952-x64.msu
+        │  │  windows6.1-kb947821-v34-x64.msu
+        │  │  
+        │  ├─ie11
+        │  │      HARDWAREBLOCKINGLIST.XML
+        │  │      IE-Hyphenation-en.MSU
+        │  │      IE-Spelling-en.MSU
+        │  │      IE-Win7.CAB
+        │  │      ielangpack-ja-JP.CAB
+        │  │      IE_SUPPORT_amd64_ja-JP.CAB
+        │  │      SETUPDOWNLOADLIST.TXT
+        │  │      SQMAPI.DLL
+        │  │      
+        │  └─Win7AndW2K8R2-KB3191566-x64
+        │          Install-WMF5.1.ps1
+        │          Win7AndW2K8R2-KB3191566-x64.msu
+        │          
+        └─x86 (Windows Update 32bit版)
+            │  ie11-windows6.1-kb3185319-x86.msu
+            │  ie11-windows6.1-kb4534251-x86.msu
+            │  IE11-Windows6.1-x86-ja-jp.exe
+            │  MicrosoftEdgeEnterprise-x86.msi
+            │  mpam-fe-x86.exe
+            │  mpas-fe-x86.exe
+            │  MSEInstall-x86.exe
+            │  ndp48-kb4503575-x86.exe
+            │  ndp48-kb4515847-x86.exe
+            │  ndp48-x86-x64-allos-jpn.exe
+            │  ndp48-x86-x64-enu.exe
+            │  silverlight.exe
+            │  Win7-KB3191566-x86.msu
+            │  Win7-KB3191566-x86.zip
+            │  windows-kb890830-x86-v5.79.exe
+            │  windows6.1-kb2454826-v2-x86.msu
+            │  windows6.1-kb2533552-x86.msu
+            │  Windows6.1-KB2534366-x86.msu
+            │  windows6.1-kb2545698-x86.msu
+            │  windows6.1-kb2547666-x86.msu
+            │  windows6.1-kb2574819-v2-x86.msu
+            │  windows6.1-kb2592687-x86.msu
+            │  windows6.1-kb2667402-v2-x86.msu
+            │  windows6.1-kb2670838-x86.msu
+            │  Windows6.1-KB2679255-v2-x86.msu
+            │  windows6.1-kb2685811-x86.msu
+            │  windows6.1-kb2685813-x86.msu
+            │  windows6.1-kb2698365-x86.msu
+            │  windows6.1-kb2729094-v2-x86.msu
+            │  windows6.1-kb2732059-v5-x86.msu
+            │  windows6.1-kb2750841-x86.msu
+            │  windows6.1-kb2761217-x86.msu
+            │  windows6.1-kb2773072-x86.msu
+            │  windows6.1-kb2818604-x86.msu
+            │  Windows6.1-KB2819745-x86-MultiPkg.msu
+            │  windows6.1-kb2830477-x86.msu
+            │  windows6.1-kb2834140-v2-x86.msu
+            │  windows6.1-kb2862330-v2-x86.msu
+            │  windows6.1-kb2894844-x86.msu
+            │  windows6.1-kb2898851-x86.msu
+            │  windows6.1-kb2900986-x86.msu
+            │  windows6.1-kb2919469-x86.msu
+            │  windows6.1-kb2923545-x86.msu
+            │  windows6.1-kb2970228-x86.msu
+            │  windows6.1-kb2984972-x86.msu
+            │  windows6.1-kb2984976-x86.msu
+            │  Windows6.1-KB2990941-v3-x86.msu
+            │  windows6.1-kb3004375-v3-x86.msu
+            │  windows6.1-kb3006137-x86.msu
+            │  windows6.1-kb3020369-x86.msu
+            │  windows6.1-kb3020387-x86.msu
+            │  windows6.1-kb3020388-x86.msu
+            │  windows6.1-kb3021917-x86.msu
+            │  windows6.1-kb3031432-x86.msu
+            │  windows6.1-kb3042058-x86.msu
+            │  windows6.1-kb3046269-x86.msu
+            │  windows6.1-kb3059317-x86.msu
+            │  windows6.1-kb3068708-x86.msu
+            │  windows6.1-kb3075226-x86.msu
+            │  windows6.1-kb3080149-x86.msu
+            │  windows6.1-kb3087873-v2-x86.msu
+            │  windows6.1-kb3102429-v2-x86.msu
+            │  windows6.1-kb3125574-v4-x86.msu
+            │  windows6.1-kb3138612-x86.msu
+            │  windows6.1-kb3150513-x86.msu
+            │  windows6.1-kb3155178-x86.msu
+            │  windows6.1-kb3156016-x86.msu
+            │  windows6.1-kb3159398-x86.msu
+            │  windows6.1-kb3161102-x86.msu
+            │  windows6.1-kb3161949-x86.msu
+            │  windows6.1-kb3170735-x86.msu
+            │  windows6.1-kb3172605-x86.msu
+            │  windows6.1-kb3179573-x86.msu
+            │  windows6.1-kb3184143-x86.msu
+            │  windows6.1-kb4019990-x86.msu
+            │  windows6.1-kb4040980-x86.msu
+            │  windows6.1-kb4474419-v3-x86.msu
+            │  windows6.1-kb4490628-x86.msu
+            │  windows6.1-kb4507004-x86.msu
+            │  windows6.1-kb4532945-x86.msu
+            │  windows6.1-kb4534310-x86.msu
+            │  windows6.1-kb4536952-x86.msu
+            │  windows6.1-kb947821-v34-x86.msu
+            │  
+            ├─ie11
+            │      HARDWAREBLOCKINGLIST.XML
+            │      IE-Hyphenation-en.MSU
+            │      IE-Spelling-en.MSU
+            │      IE-Win7.CAB
+            │      ielangpack-ja-JP.CAB
+            │      IE_SUPPORT_x86_ja-JP.CAB
+            │      SETUPDOWNLOADLIST.TXT
+            │      SQMAPI.DLL
+            │      
+            └─Win7-KB3191566-x86
+                    Install-WMF5.1.ps1
+                    Win7-KB3191566-x86.msu
+                    

@@ -1,0 +1,34 @@
+;SetupMgrTag
+[Data]
+    AutoPartition=1
+    MsDosInitiated="0"
+    UnattendedInstall="Yes"
+
+[Unattended]
+    UnattendMode=FullUnattended
+    OemSkipEula=Yes
+    OemPreinstall=No
+    TargetPath=\WINDOWS
+    Repartition=Yes
+    UnattendSwitch=Yes
+    FileSystem=ConvertNTFS
+
+[GuiUnattended]
+    AdminPassword=*
+    EncryptedAdminPassword=NO
+    OEMSkipRegional=1
+    TimeZone=235
+    OemSkipWelcome=1
+
+[UserData]
+    ProductKey=DR8GV-C8V6J-BYXHG-7PYJR-DB66Y
+    FullName="VMware User"
+    OrgName="VMware Group"
+    ComputerName=*
+
+[Identification]
+    JoinWorkgroup=VMware
+
+[Networking]
+    InstallDefaultComponents=Yes
+
