@@ -1,1 +1,12 @@
 * binary
+
+.editorconfig  diff=binaryfile
+.gitignore     diff=binaryfile
+.gitattributes diff=binaryfile
+
+*.md  diff=binaryfile
+*.txt diff=binaryfile
+*.xml diff=binaryfile
+*.cmd diff=binaryfile
+*.bat diff=binaryfile
+*.lst diff=binaryfile
