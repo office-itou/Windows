@@ -184,10 +184,10 @@ Rem *** ファイル・ダウンロード ************************************************
                         )
                     )
                     If /I "!DIR_TYP!" NEQ "drv" (
-                        If /I "!DIR_TYP!" NEQ "x%CPU_BIT%" (
-                            Set DNAME=%WIM_PKG%\!DIR_TYP!
+                        If /I "!DIR_TYP!" EQU "x32" (
+                            Set DNAME=%WIM_PKG%\x86
                         ) Else (
-                            Set DNAME=%WIM_PKG%\%CPU_TYP%
+                            Set DNAME=%WIM_PKG%\!DIR_TYP!
                         )
                     ) Else (
                         If /I "!FNAME!" EQU "chipset-10.1.18228.8176-public-mup.zip"     (Set DIR_DRV=!DIR_TYP!\CHP

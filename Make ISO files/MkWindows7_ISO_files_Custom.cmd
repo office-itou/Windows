@@ -165,10 +165,10 @@ Rem *** ファイル・ダウンロード ************************************************
                         )
                     )
                     If /I "!DIR_TYP!" NEQ "drv" (
-                        If /I "!DIR_TYP!" NEQ "x%CPU_BIT%" (
-                            Set DNAME=%WIM_PKG%\!DIR_TYP!
+                        If /I "!DIR_TYP!" EQU "x32" (
+                            Set DNAME=%WIM_PKG%\x86
                         ) Else (
-                            Set DNAME=%WIM_PKG%\%CPU_TYP%
+                            Set DNAME=%WIM_PKG%\!DIR_TYP!
                         )
                     ) Else (
                         If /I "!FNAME!" EQU "ASUS_EZInstaller_V10306.zip" (Set DIR_DRV=!DIR_TYP!\NVMe
