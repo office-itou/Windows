@@ -1,0 +1,3 @@
+![準備画面](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files%20for%20Window%2010/picture/common-01.jpg)  
+![x64 開始](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files%20for%20Window%2010/picture/win10x64-01.jpg)  
+![x64 終了](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files%20for%20Window%2010/picture/win10x64-02.jpg)  
