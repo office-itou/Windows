@@ -50,7 +50,13 @@ Rem --- 環境変数設定 ----------------------------------------------------------
 
 Rem *** 作業フォルダーの作成 **************************************************
     Echo *** 作業フォルダーの作成 ******************************************************
-    If Exist "%WIM_DIR%" (Move "%WIM_DIR%" "%WIM_DIR%.%NOW_DAY%%NOW_TIM%" || GoTo Done)
+    If Exist "%WIM_TOP%" (
+        Echo 既存ディレクトリを以下の名前に移動します。
+        Echo "%WIM_TOP%"
+        Echo      ↓↓
+        Echo "%WIM_TOP%.%NOW_DAY%%NOW_TIM%"
+        Move "%WIM_TOP%" "%WIM_TOP%.%NOW_DAY%%NOW_TIM%" || GoTo Done
+    )
     If Not Exist "%WIM_BIN%" (MkDir "%WIM_BIN%")
     If Not Exist "%WIM_CFG%" (MkDir "%WIM_CFG%")
     If Not Exist "%WIM_LST%" (MkDir "%WIM_LST%")
@@ -68,6 +74,7 @@ Rem *** ファイル・コピー ******************************************************
     Echo *** ファイル・コピー **********************************************************
 Rem --- GitHub ----------------------------------------------------------------
     Echo --- GitHub --------------------------------------------------------------------
+    Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files/MicrosoftUpdateCatalog.url"
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files/MkWindows7_ISO_files_Custom.cmd"
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files/MkWindows7_USB_Custom.cmd"
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files/Windows7adk_Rollup_202001.lst"
@@ -78,18 +85,18 @@ Rem --- GitHub ----------------------------------------------------------------
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files/autounattend-windows7-x64.xml"
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files/autounattend-windows7-x86.xml"
 Rem --- LF -> CRLF 変換 -------------------------------------------------------
-    more < "autounattend-windows7-x64.xml"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "autounattend-windows7-x64.xml"
-    more < "MkWindows7_ISO_files_Custom.cmd" > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "MkWindows7_ISO_files_Custom.cmd"
-    more < "MkWindows7_USB_Custom.cmd"       > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "MkWindows7_USB_Custom.cmd"
-    more < "Windows7adk_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7adk_Rollup_202001.lst"
-    more < "Windows7aik_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7aik_Rollup_202001.lst"
-    more < "Windows7drv_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7drv_Rollup_202001.lst"
-    more < "Windows7x32_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7x32_Rollup_202001.lst"
-    more < "Windows7x64_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7x64_Rollup_202001.lst"
+Rem more < "autounattend-windows7-x64.xml"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "autounattend-windows7-x64.xml"
+Rem more < "MkWindows7_ISO_files_Custom.cmd" > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "MkWindows7_ISO_files_Custom.cmd"
+Rem more < "MkWindows7_USB_Custom.cmd"       > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "MkWindows7_USB_Custom.cmd"
+Rem more < "Windows7adk_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7adk_Rollup_202001.lst"
+Rem more < "Windows7aik_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7aik_Rollup_202001.lst"
+Rem more < "Windows7drv_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7drv_Rollup_202001.lst"
+Rem more < "Windows7x32_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7x32_Rollup_202001.lst"
+Rem more < "Windows7x64_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows7x64_Rollup_202001.lst"
 
     Pushd "%DIR_WRK%"
         Copy /Y "*.xml" "%WIM_CFG%"
-Rem     Copy /Y "*.url" "%WIM_BIN%
+        Copy /Y "*.url" "%WIM_BIN%
         Copy /Y "*.cmd" "%WIM_BIN%
         Copy /Y "*.lst" "%WIM_LST%"
     Popd

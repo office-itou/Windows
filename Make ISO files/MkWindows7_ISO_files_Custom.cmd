@@ -69,12 +69,12 @@ Rem Set WIM_DIR=C:\WimWK
     Set WIM_WUD=%WIM_PKG%\%CPU_TYP%
     Set WIM_X64=%WIM_PKG%\x64
     Set WIM_X86=%WIM_PKG%\x86
-    Set WIM_TMP=%WIM_DIR%.$$$\%WIM_TYP%
-    Set WIM_IMG=%WIM_TMP%\%CPU_TYP%\img
-    Set WIM_MNT=%WIM_TMP%\%CPU_TYP%\mnt
-    Set WIM_WRE=%WIM_TMP%\%CPU_TYP%\wre
-    Set WIM_EMP=%WIM_TMP%\%CPU_TYP%\emp
-    Set DIR_LST=adk drv x%CPU_BIT%
+    Set WIM_TMP=%WIM_DIR%.$$$\%WIM_TYP%\%CPU_TYP%
+    Set WIM_IMG=%WIM_TMP%\img
+    Set WIM_MNT=%WIM_TMP%\mnt
+    Set WIM_WRE=%WIM_TMP%\wre
+    Set WIM_EMP=%WIM_TMP%\emp
+    Set DIR_LST=adk drv zip x%CPU_BIT%
 
 Rem --- Oscdimgのパスを設定する -----------------------------------------------
     If Not Exist "%WIM_BIN%\Oscdimg\%PROCESSOR_ARCHITECTURE%" (
@@ -534,7 +534,12 @@ Rem *** DVDイメージを作成する *************************************************
 
 Rem --- 作業フォルダーの削除 --------------------------------------------------
 Rem Echo --- 作業フォルダーの削除 ------------------------------------------------------
-    If Exist "%WIM_TMP%" (RmDir /S /Q "%WIM_TMP%" || GoTo :DONE)
+    If Exist "%WIM_TMP%" (
+        Set /P INP_ANS=作業フォルダーを削除しますか？ [Y/N] ^(Yes/No^)
+        If /I "!INP_ANS!" EQU "Y" (
+            RmDir /S /Q "%WIM_TMP%" || GoTo :DONE)
+        )
+    )
 
 Rem *** 作業終了 **************************************************************
 :DONE

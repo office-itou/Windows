@@ -45,7 +45,13 @@ Rem --- 環境変数設定 ----------------------------------------------------------
 
 Rem *** 作業フォルダーの作成 **************************************************
     Echo *** 作業フォルダーの作成 ******************************************************
-    If Exist "%WIM_DIR%" (Move "%WIM_DIR%" "%WIM_DIR%.%NOW_DAY%%NOW_TIM%" || GoTo Done)
+    If Exist "%WIM_TOP%" (
+        Echo 既存ディレクトリを以下の名前に移動します。
+        Echo "%WIM_TOP%"
+        Echo      ↓↓
+        Echo "%WIM_TOP%.%NOW_DAY%%NOW_TIM%"
+        Move "%WIM_TOP%" "%WIM_TOP%.%NOW_DAY%%NOW_TIM%" || GoTo Done
+    )
     If Not Exist "%WIM_BIN%" (MkDir "%WIM_BIN%")
     If Not Exist "%WIM_CFG%" (MkDir "%WIM_CFG%")
     If Not Exist "%WIM_LST%" (MkDir "%WIM_LST%")
@@ -60,6 +66,7 @@ Rem *** ファイル・コピー ******************************************************
     Echo *** ファイル・コピー **********************************************************
 Rem --- GitHub ----------------------------------------------------------------
     Echo --- GitHub --------------------------------------------------------------------
+    Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%2010/MicrosoftUpdateCatalog.url"
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%2010/MkWindows10_ISO_files_Custom.cmd"
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%2010/MkWindows10_USB_Custom.cmd"
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%2010/Windows10adk_Rollup_202001.lst"
@@ -70,18 +77,18 @@ Rem --- GitHub ----------------------------------------------------------------
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%2010/autounattend-windows10-x64.xml"
     Curl -L -# -R -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%2010/autounattend-windows10-x86.xml"
 Rem --- LF -> CRLF 変換 -------------------------------------------------------
-    more < "MkWindows10_ISO_files_Custom.cmd" > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "MkWindows10_ISO_files_Custom.cmd"
-    more < "MkWindows10_USB_Custom.cmd"       > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "MkWindows10_USB_Custom.cmd"
-    more < "Windows10adk_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows10adk_Rollup_202001.lst"
-    more < "Windows10drv_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows10drv_Rollup_202001.lst"
-    more < "Windows10x32_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows10x32_Rollup_202001.lst"
-    more < "Windows10x64_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows10x64_Rollup_202001.lst"
-    more < "autounattend-windows10-x64.xml"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "autounattend-windows10-x64.xml"
-    more < "autounattend-windows10-x86.xml"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "autounattend-windows10-x86.xml"
+Rem more < "MkWindows10_ISO_files_Custom.cmd" > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "MkWindows10_ISO_files_Custom.cmd"
+Rem more < "MkWindows10_USB_Custom.cmd"       > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "MkWindows10_USB_Custom.cmd"
+Rem more < "Windows10adk_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows10adk_Rollup_202001.lst"
+Rem more < "Windows10drv_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows10drv_Rollup_202001.lst"
+Rem more < "Windows10x32_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows10x32_Rollup_202001.lst"
+Rem more < "Windows10x64_Rollup_202001.lst"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "Windows10x64_Rollup_202001.lst"
+Rem more < "autounattend-windows10-x64.xml"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "autounattend-windows10-x64.xml"
+Rem more < "autounattend-windows10-x86.xml"   > "Mk1st.tmp" && Move /Y "Mk1st.tmp" "autounattend-windows10-x86.xml"
 
     Pushd "%DIR_WRK%"
         Copy /Y "*.xml" "%WIM_CFG%"
-Rem     Copy /Y "*.url" "%WIM_BIN%
+        Copy /Y "*.url" "%WIM_BIN%
         Copy /Y "*.cmd" "%WIM_BIN%
         Copy /Y "*.lst" "%WIM_LST%"
     Popd
