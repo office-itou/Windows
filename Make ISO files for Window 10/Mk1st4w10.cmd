@@ -88,8 +88,8 @@ Rem more < "autounattend-windows10-x86.xml"   > "Mk1st.tmp" && Move /Y "Mk1st.tm
 
     Pushd "%DIR_WRK%"
         Copy /Y "*.xml" "%WIM_CFG%"
-        Copy /Y "*.url" "%WIM_BIN%
-        Copy /Y "*.cmd" "%WIM_BIN%
+        Copy /Y "*.url" "%WIM_BIN%"
+        Copy /Y "*.cmd" "%WIM_BIN%"
         Copy /Y "*.lst" "%WIM_LST%"
     Popd
 
