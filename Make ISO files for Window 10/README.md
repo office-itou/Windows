@@ -5,7 +5,7 @@
 １．以下の物を予め用意して下さい。  
 　・[Windows 10](https://www.microsoft.com/ja-jp/software-download/windows10)  
 　・[Windows ADK for Windows 10](https://docs.microsoft.com/ja-jp/windows-hardware/get-started/adk-install)  
-　・[Mk1st4w10.cmd](https://raw.githubusercontent.com/office-itou/Windows/master/Make%20ISO%20files%20files%20for%20Window%2010/source/Mk1st4w10.cmd)  
+　・[Mk1st4w10.cmd](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files%20for%20Window%2010/source/Mk1st4w10.cmd)  
 　・2019/10/09  04:34     3,874,082,816 Win10_1909_Japanese_x32.iso  
 　・2019/10/09  06:13     5,376,456,704 Win10_1909_Japanese_x64.iso  
   

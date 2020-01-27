@@ -5,7 +5,7 @@
 １．以下の物を予め用意して下さい。  
 　・[Windows 10](https://www.microsoft.com/ja-jp/software-download/windows10)  
 　・[Windows ADK for Windows 10](https://docs.microsoft.com/ja-jp/windows-hardware/get-started/adk-install)  
-　・[Mk1st4w7.cmd](https://raw.githubusercontent.com/office-itou/Windows/master/Make%20ISO%20files/source/Mk1st4w7.cmd)  
+　・[Mk1st4w7.cmd](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/source/Mk1st4w7.cmd)  
 　・2011/05/12  00:00     3,322,757,120 ja_windows_7_ultimate_with_sp1_x64_dvd_u_677372.iso  
 　・2011/05/12  00:00     2,554,019,840 ja_windows_7_ultimate_with_sp1_x86_dvd_u_677445.iso  
   
