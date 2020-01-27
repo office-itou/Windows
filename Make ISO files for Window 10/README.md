@@ -9,8 +9,8 @@ wimファイルは未変更なので全エディション共通の動作とな�
 [Windows 10 のダウンロード](https://www.microsoft.com/ja-jp/software-download/windows10)から入手。  
 （Windowsのブラウザーだとツールのリンクしか出ないのでLinuxで入手するのがいいかも）  
   
-【簡易手順説明】
-・[Mk1st4w10.cmd](https://raw.githubusercontent.com/office-itou/Windows/master/Make%20ISO%20files%20for%20Window%2010/Mk1st4w10.cmd) を”名前を付けて保存”し実行して下さい。  
+【簡易手順説明】  
+・[Mk1st4w10.cmd](https://raw.githubusercontent.com/office-itou/Windows/master/Make%20ISO%20files%20for%20Window%2010/Mk1st4w10.cmd) を”名前を付けて保存”し実行して下さい。(ブラウザーの文字化けは無視で)  
 ・必要なファイルをMk1st4w10.cmdと同じフォルダーにダウンロードしC:\WimWKに展開します。  
 ・ISOファイルをエクスプローラーでマウントします。  
 ・C:\WimWK\bin\MkWindows10_ISO_files_Custom.cmdを実行し画面に従って処理していきます。  
