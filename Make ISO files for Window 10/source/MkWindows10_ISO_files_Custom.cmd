@@ -267,7 +267,7 @@ Rem --- options.cmd �̍쐬 ----------------------------------------------------
     Echo>>"%OPT_CMD%" Rem ---------------------------------------------------------------------------
     Echo>>"%OPT_CMD%"     Echo ^%%DATE^%% ^%%TIME^%% Start
     Echo>>"%OPT_CMD%" Rem ---------------------------------------------------------------------------
-    Echo>>"%OPT_CMD%"     Cmd /C sc stop wuauserv
+    Echo>>"%OPT_CMD%" Rem Cmd /C sc stop wuauserv
     Echo>>"%OPT_CMD%" Rem ---------------------------------------------------------------------------
     Echo>>"%OPT_CMD%"     Cmd /C "%%configsetroot%%\autounattend\options\wupd\windows-kb890830-%CPU_TYP%-v5.79.exe" /Q
     Echo>>"%OPT_CMD%"     Cmd /C "%%configsetroot%%\autounattend\options\wupd\mpam-fe-%CPU_TYP%.exe" -q
