@@ -7,13 +7,14 @@ NAME=Jun Itou
 COMMENT=ìùçáDVDçÏê¨óp 2020/01
 
 [LIST]
-COUNT=6
+COUNT=7
 1=KB890830
-2=KB4052623-2
-3=KB4532938
-4=KB4528760
-5=EDGE_X64
-6=MSE_DUP
+2=MSE_DUP
+3=KB4052623
+4=KB4528759
+5=KB4532938
+6=KB4528760
+7=EDGE_X64
 
 [KB890830]
 TITLE=Windows Malicious Software Removal Tool x64 - January 2020 (KB890830)
@@ -27,7 +28,7 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2020/01/03
-RUN_ORDER=999
+RUN_ORDER=
 CMD=
 DECODE=0
 DECODE_TYPE=
@@ -38,7 +39,30 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=
 
-[KB4052623-2]
+[MSE_DUP]
+TITLE=Windows Defender Antivirus for Windows 10 and Windows 8.1
+INFO=https://www.microsoft.com/en-us/wdsi/defenderupdates
+FILE=https://go.microsoft.com/fwlink/?LinkID=121721&arch=x64
+RENAME=mpam-fe-x64.exe
+SIZE=1
+TYPE=HOTFIX(HOTFIX4.CMD)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2019/04/10
+RUN_ORDER=
+CMD=-q
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[KB4052623]
 TITLE=Update for Windows Defender Antivirus antimalware platform - KB4052623 (Version 4.18.1911.3)
 INFO=https://support.microsoft.com/en-us/help/4052623/update-for-windows-defender-antimalware-platform
 FILE=http://download.windowsupdate.com/c/msdownload/update/software/defu/2019/11/updateplatform_b849c0cc5fee72c5bd951d22e1cf7181814d51e0.exe
@@ -50,7 +74,30 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2019/11/22
-RUN_ORDER=999
+RUN_ORDER=
+CMD=
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[KB4528759]
+TITLE=2020-01 Servicing Stack Update for Windows 10 Version 1909 for x64-based Systems (KB4528759)
+INFO=https://support.microsoft.com/help/4528759
+FILE=http://download.windowsupdate.com/d/msdownload/update/software/secu/2020/01/windows10.0-kb4528759-x64_c2d6639977986b927d0b9f1acf0fb203c38fc8c8.msu
+RENAME=windows10.0-kb4528759-x64.msu
+SIZE=15067132
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2020/01/06
+RUN_ORDER=
 CMD=
 DECODE=0
 DECODE_TYPE=
@@ -73,7 +120,7 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2020/01/03
-RUN_ORDER=999
+RUN_ORDER=
 CMD=
 DECODE=0
 DECODE_TYPE=
@@ -96,7 +143,7 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2020/01/06
-RUN_ORDER=999
+RUN_ORDER=
 CMD=
 DECODE=0
 DECODE_TYPE=
@@ -121,29 +168,6 @@ SYNCHRO_KEY=
 RELEASE=
 RUN_ORDER=
 CMD=/quiet /norestart
-DECODE=0
-DECODE_TYPE=
-DECODE_GET=
-IEXPRESS=0
-IEXPRESS_LIST=
-IEXPRESS_CMD=
-PREVIOUS_SP=
-COMMENT=
-
-[MSE_DUP]
-TITLE=Windows Defender Antivirus for Windows 10 and Windows 8.1
-INFO=https://www.microsoft.com/en-us/wdsi/defenderupdates
-FILE=https://go.microsoft.com/fwlink/?LinkID=121721&arch=x64
-RENAME=mpam-fe-x64.exe
-SIZE=1
-TYPE=HOTFIX(HOTFIX4.CMD)
-CATEGORY=
-TIE_UP=MSE
-XOR_KEY=
-SYNCHRO_KEY=
-RELEASE=2019/04/10
-RUN_ORDER=999
-CMD=-q
 DECODE=0
 DECODE_TYPE=
 DECODE_GET=

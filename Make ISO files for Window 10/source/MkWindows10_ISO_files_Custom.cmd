@@ -274,8 +274,9 @@ Rem --- options.cmd �̍쐬 ----------------------------------------------------
     Echo>>"%OPT_CMD%" Rem ---------------------------------------------------------------------------
     Echo>>"%OPT_CMD%"     Cmd /C "%%configsetroot%%\autounattend\options\wupd\updateplatform-%CPU_TYP%.exe"
     Echo>>"%OPT_CMD%" Rem ---------------------------------------------------------------------------
-    Echo>>"%OPT_CMD%"     Cmd /C Wusa "%%configsetroot%%\autounattend\options\wupd\windows10.0-kb4528760-%CPU_TYP%.msu" /quiet /norestart
+    Echo>>"%OPT_CMD%"     Cmd /C Wusa "%%configsetroot%%\autounattend\options\wupd\windows10.0-kb4528759-%CPU_TYP%.msu" /quiet /norestart
     Echo>>"%OPT_CMD%"     Cmd /C Wusa "%%configsetroot%%\autounattend\options\wupd\windows10.0-kb4532938-%CPU_TYP%-ndp48.msu" /quiet /norestart
+    Echo>>"%OPT_CMD%"     Cmd /C Wusa "%%configsetroot%%\autounattend\options\wupd\windows10.0-kb4528760-%CPU_TYP%.msu" /quiet /norestart
     Echo>>"%OPT_CMD%" Rem ---------------------------------------------------------------------------
     Echo>>"%OPT_CMD%"     Cmd /C msiexec /i "%%configsetroot%%\autounattend\options\wupd\MicrosoftEdgeEnterprise-%CPU_TYP%.msi" /norestart /passive
     Echo>>"%OPT_CMD%" Rem ---------------------------------------------------------------------------
