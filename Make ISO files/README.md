@@ -29,3 +29,11 @@
 ![統合作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/03.%E7%B5%B1%E5%90%88%E4%BD%9C%E6%A5%AD-03.jpg)  
 ![統合作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/03.%E7%B5%B1%E5%90%88%E4%BD%9C%E6%A5%AD-04.jpg)  
 ![統合作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/03.%E7%B5%B1%E5%90%88%E4%BD%9C%E6%A5%AD-05.jpg)  
+【インストール作業と確認】  
+![導入作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/04.%E5%B0%8E%E5%85%A5%E4%BD%9C%E6%A5%AD-01.png)  
+![導入作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/04.%E5%B0%8E%E5%85%A5%E4%BD%9C%E6%A5%AD-02.png)  
+![導入作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/04.%E5%B0%8E%E5%85%A5%E4%BD%9C%E6%A5%AD-03.png)  
+![導入作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/04.%E5%B0%8E%E5%85%A5%E4%BD%9C%E6%A5%AD-04.png)  
+![導入作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/04.%E5%B0%8E%E5%85%A5%E4%BD%9C%E6%A5%AD-05.png)  
+![導入作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/04.%E5%B0%8E%E5%85%A5%E4%BD%9C%E6%A5%AD-06.png)  
+![導入作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/04.%E5%B0%8E%E5%85%A5%E4%BD%9C%E6%A5%AD-07.png)  
