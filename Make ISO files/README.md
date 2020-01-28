@@ -9,7 +9,7 @@
 　・2011/05/12  00:00     3,322,757,120 ja_windows_7_ultimate_with_sp1_x64_dvd_u_677372.iso  
 　・2011/05/12  00:00     2,554,019,840 ja_windows_7_ultimate_with_sp1_x86_dvd_u_677445.iso  
   
-２．”C:\WimWK\w7\bin\Mk1st4w7.cmd”を実行し必要なファイルを取得して下さい。  
+２．ダウンロードした”Mk1st4w7.cmd”を実行し必要なファイルを取得して下さい。  
 　参照：★Mk1st4w7.cmd実行  
   
 ３．”C:\WimWK\w7\bin\MkWindows7_ISO_files_Custom.cmd”を管理者権限で実行しISOファイルを作成して下さい。  
