@@ -60,8 +60,8 @@ Rem --- 環境変数設定 ----------------------------------------------------------
         Set NOW_TIM=%time:~0,2%%time:~3,2%%time:~6,2%
     )
 
-    Set WIM_VER=10
-    Set WIM_TYP=w%WIM_VER%
+    Set WIN_VER=10
+    Set WIM_TYP=w%WIN_VER%
     Set WIM_TOP=C:\WimWK
     Set WIM_CST=%WIM_TOP%\%WIM_TYP%.custom
     Set WIM_WRK=%WIM_TOP%\%WIM_TYP%
@@ -169,7 +169,7 @@ Rem --- DVDのドライブ名設定 ---------------------------------------------------
 
 Rem --- 環境変数設定 ----------------------------------------------------------
     Set DVD_SRC=%DRV_DVD%\\
-    Set DVD_DST=%WIM_TOP%\windows_%WIM_VER%_%CPU_TYP%_dvd_custom_VER_.iso
+    Set DVD_DST=%WIM_TOP%\windows_%WIN_VER%_%CPU_TYP%_dvd_custom_VER_.iso
 
 Rem --- Windowsのエディション設定 ---------------------------------------------
 
@@ -179,7 +179,7 @@ Rem --- モジュール・ファイル・ダウンロード ------------------------------------
     Echo --- モジュール・ファイル・ダウンロード ----------------------------------------
     For %%I In (%PKG_LST%) Do (
         Set PKG_TYP=%%I
-        For %%J In (%WIM_LST%\Windows%WIM_VER%!PKG_TYP!_Rollup_*.lst) Do (
+        For %%J In (%WIM_LST%\Windows%WIN_VER%!PKG_TYP!_Rollup_*.lst) Do (
             Set LIST=%%J
             Set FILE=
             Set RENAME=
@@ -250,10 +250,12 @@ Rem === ドライバー ============================================================
 
 :UNATTEND
 Rem === Unattend ==============================================================
-    If Exist "%WIM_CFG%\autounattend-windows%WIM_VER%-%CPU_TYP%.xml" (
+echo on
+    If Exist "%WIM_CFG%\autounattend-windows%WIN_VER%-%CPU_TYP%.xml" (
         Echo *** autounattend.xml のコピー *************************************************
-        Copy /Y "%WIM_CFG%\autounattend-windows%WIM_VER%-%CPU_TYP%.xml" "%WIM_IMG%\autounattend.xml"
+        Copy /Y "%WIM_CFG%\autounattend-windows%WIN_VER%-%CPU_TYP%.xml" "%WIM_IMG%\autounattend.xml"
     )
+echo off
 Rem ---------------------------------------------------------------------------
     Echo *** options.cmd の作成 *********************************************************
     Set OPT_DIR=autounattend\options

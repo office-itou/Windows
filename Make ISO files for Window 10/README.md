@@ -9,10 +9,10 @@
 　・2019/10/09  04:34     3,874,082,816 Win10_1909_Japanese_x32.iso  
 　・2019/10/09  06:13     5,376,456,704 Win10_1909_Japanese_x64.iso  
   
-２．”Mk1st4w10.cmd”を実行し必要なファイルを取得して下さい。  
+２．”C:\WimWK\w10\bin\Mk1st4w10.cmd”を実行し必要なファイルを取得して下さい。  
 　参照：★Mk1st4w10.cmd実行  
   
-３．”MkWindows10_ISO_files_Custom.cmd”を管理者権限で実行しISOファイルを作成して下さい。  
+３．”C:\WimWK\w10\bin\MkWindows10_ISO_files_Custom.cmd”を管理者権限で実行しISOファイルを作成して下さい。  
 　参照：★MkWindows10_ISO_files_Custom.cmd実行  
   
 <注意点>  

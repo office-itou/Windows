@@ -20,8 +20,8 @@ Rem --- 環境変数設定 ----------------------------------------------------------
         Set NOW_TIM=%time:~0,2%%time:~3,2%%time:~6,2%
     )
 
-    Set WIM_VER=10
-    Set WIM_TYP=w%WIM_VER%
+    Set WIN_VER=10
+    Set WIM_TYP=w%WIN_VER%
     Set WIM_TOP=C:\WimWK
     Set WIM_CST=%WIM_TOP%\%WIM_TYP%.custom
     Set WIM_WRK=%WIM_TOP%\%WIM_TYP%
@@ -33,16 +33,17 @@ Rem --- 環境変数設定 ----------------------------------------------------------
     Set WIM_DIR=bin cfg lst pkg tmp
     Set PKG_DIR=adk drv zip x64 x86
     Set PKG_LST=adk drv zip x32 x64
-    Set URL_LST=https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/MicrosoftUpdateCatalog.url              ^
-                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/MkWindows%WIM_VER%_ISO_files_Custom.cmd ^
-                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/MkWindows%WIM_VER%_USB_Custom.cmd       ^
-                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/Windows%WIM_VER%adk_Rollup_202001.lst   ^
-                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/Windows%WIM_VER%drv_Rollup_202001.lst   ^
-                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/Windows%WIM_VER%x32_Rollup_202001.lst   ^
-                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/Windows%WIM_VER%x64_Rollup_202001.lst   ^
-                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/Windows%WIM_VER%zip_Rollup_202001.lst   ^
-                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/autounattend-windows%WIM_VER%-x64.xml   ^
-                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIM_VER%/source/autounattend-windows%WIM_VER%-x86.xml
+    Set URL_LST=https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/MicrosoftUpdateCatalog.url              ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/Mk1st4w%WIN_VER%.cmd                    ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/MkWindows%WIN_VER%_ISO_files_Custom.cmd ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/MkWindows%WIN_VER%_USB_Custom.cmd       ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/Windows%WIN_VER%adk_Rollup_202001.lst   ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/Windows%WIN_VER%drv_Rollup_202001.lst   ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/Windows%WIN_VER%x32_Rollup_202001.lst   ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/Windows%WIN_VER%x64_Rollup_202001.lst   ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/Windows%WIN_VER%zip_Rollup_202001.lst   ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/autounattend-windows%WIN_VER%-x64.xml   ^
+                https://raw.githubusercontent.com/office-itou/Windows/master/Make%%20ISO%%20files%%20for%%20Window%%20%WIN_VER%/source/autounattend-windows%WIN_VER%-x86.xml
 
 Rem *** 作業フォルダーの作成 **************************************************
     If /I "%DIR_WRK%" EQU "%WIM_BIN%\" (
@@ -96,7 +97,7 @@ Rem --- モジュール・ファイル・ダウンロード ------------------------------------
     Echo --- モジュール・ファイル・ダウンロード ----------------------------------------
     For %%I In (%PKG_LST%) Do (
         Set PKG_TYP=%%I
-        For %%J In (%WIM_LST%\Windows%WIM_VER%!PKG_TYP!_Rollup_*.lst) Do (
+        For %%J In (%WIM_LST%\Windows%WIN_VER%!PKG_TYP!_Rollup_*.lst) Do (
             Set LIST=%%J
             Set FILE=
             Set RENAME=
