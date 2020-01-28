@@ -250,12 +250,11 @@ Rem === ドライバー ============================================================
 
 :UNATTEND
 Rem === Unattend ==============================================================
-echo on
     If Exist "%WIM_CFG%\autounattend-windows%WIN_VER%-%CPU_TYP%.xml" (
         Echo *** autounattend.xml のコピー *************************************************
         Copy /Y "%WIM_CFG%\autounattend-windows%WIN_VER%-%CPU_TYP%.xml" "%WIM_IMG%\autounattend.xml"
     )
-echo off
+
 Rem ---------------------------------------------------------------------------
     Echo *** options.cmd の作成 *********************************************************
     Set OPT_DIR=autounattend\options
