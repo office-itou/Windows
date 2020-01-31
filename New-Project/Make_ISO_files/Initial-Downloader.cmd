@@ -50,16 +50,30 @@ Rem --- 環境変数設定 ----------------------------------------------------------
 Rem Set WIM_TOP=C:\WimWK
     Set WIM_BIN=%WIM_TOP%\bin
     Set WIM_CFG=%WIM_TOP%\cfg
+    Set WIM_ISO=%WIM_TOP%\iso
     Set WIM_LST=%WIM_TOP%\lst
     Set WIM_PKG=%WIM_TOP%\pkg
     Set WIM_USR=%WIM_TOP%\usr
     Set WIM_WRK=%WIM_TOP%\wrk
 
+    Set BAK_WIM=%WIM_WRK%\%NOW_DAY%%NOW_TIM%
+    Set BAK_BIN=%BAK_TOP%\bin
+    Set BAK_CFG=%BAK_TOP%\cfg
+    Set BAK_ISO=%BAK_TOP%\iso
+    Set BAK_LST=%BAK_TOP%\lst
+    Set BAK_PKG=%BAK_TOP%\pkg
+    Set BAK_USR=%BAK_TOP%\usr
+    Set BAK_WRK=%BAK_TOP%\wrk
+
+    Set MOV_WIM=%WIM_TOP%.%NOW_DAY%%NOW_TIM%
+    Set MOV_ISO=%MOV_WIM%\iso
+
     Set CMD_FIL=%WIM_WRK%\!WRK_NAM!_work.cmd
     Set CMD_DAT=%WIM_WRK%\!WRK_NAM!_work.dat
     Set CMD_WRK=%WIM_WRK%\!WRK_NAM!_work.wrk
 
-    Set GIT_URL=https://raw.githubusercontent.com/office-itou/Windows/master/New-Project/Make_ISO_files/Initial-Downloader.lst
+    Set GIT_TOP=https://raw.githubusercontent.com/office-itou/Windows/master/New-Project/Make_ISO_files
+    Set GIT_URL=%GIT_TOP%/Initial-Downloader.lst
     Set GIT_FIL=!WRK_DIR!\!WRK_NAM!.lst
     Set GIT_WIM=!WIM_LST!\!WRK_NAM!.lst
 
@@ -69,11 +83,11 @@ Rem --- 既存フォルダーの移動 --------------------------------------------------
         Set /P INP_ANS=既存フォルダーがありますが上書きしますか？ [Y/N] ^(Yes/No^)
         If /I "!INP_ANS!" EQU "Y" (
             Echo *** 既存フォルダーのバックアップ **********************************************
-            Robocopy /J /MIR /A-:RHS /NDL "%WIM_BIN%" "%WIM_WRK%\%NOW_DAY%%NOW_TIM%\bin" > Nul
-            Robocopy /J /MIR /A-:RHS /NDL "%WIM_CFG%" "%WIM_WRK%\%NOW_DAY%%NOW_TIM%\cfg" > Nul
-            Robocopy /J /MIR /A-:RHS /NDL "%WIM_LST%" "%WIM_WRK%\%NOW_DAY%%NOW_TIM%\lst" > Nul
-Rem         Robocopy /J /MIR /A-:RHS /NDL "%WIM_PKG%" "%WIM_WRK%\%NOW_DAY%%NOW_TIM%\pkg" > Nul
-            Echo %WIM_WRK%\%NOW_DAY%%NOW_TIM% にバックアップしました。
+            Robocopy /J /MIR /A-:RHS /NDL "%WIM_BIN%" "%BAK_BIN%" > Nul
+            Robocopy /J /MIR /A-:RHS /NDL "%WIM_CFG%" "%BAK_CFG%" > Nul
+            Robocopy /J /MIR /A-:RHS /NDL "%WIM_LST%" "%BAK_LST%" > Nul
+Rem         Robocopy /J /MIR /A-:RHS /NDL "%WIM_PKG%" "%BAK_PKG%" > Nul
+            Echo %BAK_WIM% にバックアップしました。
         ) Else (
             If /I "!WRK_DIR!" EQU "%WIM_BIN%" (
                 Echo 以下のフォルダーで作業中のため実行を中止します。
@@ -84,24 +98,26 @@ Rem         Robocopy /J /MIR /A-:RHS /NDL "%WIM_PKG%" "%WIM_WRK%\%NOW_DAY%%NOW_T
             Echo 既存フォルダーを以下の名前に移動します。
             Echo "%WIM_TOP%"
             Echo      ↓↓
-            Echo "%WIM_TOP%.%NOW_DAY%%NOW_TIM%"
-            Move "%WIM_TOP%" "%WIM_TOP%.%NOW_DAY%%NOW_TIM%" || GoTo DONE
+            Echo "%MOV_WIM%"
+            Move "%WIM_TOP%" "%MOV_WIM%" || GoTo DONE
+            If Not Exist "%WIM_TOP%" (MkDir "%WIM_TOP%" || GoTo DONE)
+            If Exist "%MOV_ISO%" (Move "%MOV_ISO%" "%WIM_ISO%" || GoTo DONE)
         )
     )
 
 Rem --- 作業フォルダーの作成 --------------------------------------------------
     Echo *** 作業フォルダーの作成 ******************************************************
-    If Not Exist "%WIM_BIN%" (MkDIr "%WIM_BIN%")
-    If Not Exist "%WIM_CFG%" (MkDIr "%WIM_CFG%")
-    If Not Exist "%WIM_LST%" (MkDIr "%WIM_LST%")
-    If Not Exist "%WIM_PKG%" (MkDIr "%WIM_PKG%")
-    If Not Exist "%WIM_USR%" (MkDIr "%WIM_USR%")
-    If Not Exist "%WIM_WRK%" (MkDIr "%WIM_WRK%")
+    If Not Exist "%WIM_BIN%" (MkDIr "%WIM_BIN%" || GoTo DONE)
+    If Not Exist "%WIM_CFG%" (MkDIr "%WIM_CFG%" || GoTo DONE)
+    If Not Exist "%WIM_LST%" (MkDIr "%WIM_LST%" || GoTo DONE)
+    If Not Exist "%WIM_PKG%" (MkDIr "%WIM_PKG%" || GoTo DONE)
+    If Not Exist "%WIM_USR%" (MkDIr "%WIM_USR%" || GoTo DONE)
+    If Not Exist "%WIM_WRK%" (MkDIr "%WIM_WRK%" || GoTo DONE)
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
-    If Exist "%CMD_FIL%" (Del /F "%CMD_FIL%")
-    If Exist "%CMD_DAT%" (Del /F "%CMD_DAT%")
-    If Exist "%CMD_WRK%" (Del /F "%CMD_WRK%")
+    If Exist "%CMD_FIL%" (Del /F "%CMD_FIL%" || GoTo DONE)
+    If Exist "%CMD_DAT%" (Del /F "%CMD_DAT%" || GoTo DONE)
+    If Exist "%CMD_WRK%" (Del /F "%CMD_WRK%" || GoTo DONE)
 
 Rem *** ファイルダウンロード **************************************************
 Rem --- GitHub ----------------------------------------------------------------
@@ -122,7 +138,7 @@ Rem --- GitHub ダウンロードファイル -------------------------------------------
         Echo "%GIT_WIM%"
         GoTo DONE
     )
-    For /F %%I In (%GIT_FIL%) Do (
+    For /F %%I In (%GIT_WIM%) Do (
         Set URL_LST=%%~I
         Set URL_FIL=%%~nxI
         Set URL_EXT=%%~xI
