@@ -1,0 +1,1784 @@
+C:\WIMWK
++---bin
+|   |   Initial-Downloader.cmd
+|   |   MicrosoftUpdateCatalog.url
+|   |   
+|   \---Oscdimg
+|       +---amd64
+|       |       efisys.bin
+|       |       efisys_noprompt.bin
+|       |       etfsboot.com
+|       |       oscdimg.exe
+|       |       
+|       +---arm
+|       |       efisys.bin
+|       |       efisys_noprompt.bin
+|       |       oscdimg.exe
+|       |       
+|       +---arm64
+|       |       efisys.bin
+|       |       efisys_noprompt.bin
+|       |       oscdimg.exe
+|       |       
+|       \---x86
+|               efisys.bin
+|               efisys_noprompt.bin
+|               etfsboot.com
+|               oscdimg.exe
+|               
++---cfg
+|       autounattend-windows10-x64.xml
+|       autounattend-windows10-x86.xml
+|       autounattend-windows7-x64.xml
+|       autounattend-windows7-x86.xml
+|       
++---iso
+|       ja_windows_7_ultimate_with_sp1_x64_dvd_u_677372.iso
+|       ja_windows_7_ultimate_with_sp1_x86_dvd_u_677445.iso
+|       Win10_1909_Japanese_x32.iso
+|       Win10_1909_Japanese_x64.iso
+|       
++---lst
+|       Initial-Downloader.lst
+|       Windows10adk_Rollup_202001.lst
+|       Windows10drv_Rollup_202001.lst
+|       Windows10x32_Rollup_202001.lst
+|       Windows10x64_Rollup_202001.lst
+|       Windows10zip_Rollup_202001.lst
+|       Windows7adk_Rollup_202001.lst
+|       Windows7drv_Rollup_202001.lst
+|       Windows7x32_Rollup_202001.lst
+|       Windows7x64_Rollup_202001.lst
+|       Windows7zip_Rollup_202001.lst
+|       
++---pkg
+|   +---w10
+|   |   +---adk
+|   |   |       adksetup.exe
+|   |   |       
+|   |   +---drv
+|   |   |   +---CHP
+|   |   |   |   |   chipset-10.1.18228.8176-public-mup.zip
+|   |   |   |   |   
+|   |   |   |   \---chipset-10.1.18228.8176-public-mup
+|   |   |   |       |   mup.xml
+|   |   |   |       |   SetupChipset.exe
+|   |   |   |       |   WixLicenseNote.txt
+|   |   |   |       |   
+|   |   |   |       \---DriverFiles
+|   |   |   |           \---production
+|   |   |   |               +---W2K12R2-x64
+|   |   |   |               |       cannonlake-h.cat
+|   |   |   |               |       CannonLake-HSDHost.inf
+|   |   |   |               |       CannonLake-HSystem.inf
+|   |   |   |               |       CannonLake-HSystemLPSS.inf
+|   |   |   |               |       CannonLake-HSystemNorthpeak.inf
+|   |   |   |               |       CannonLake-HSystemThermal.inf
+|   |   |   |               |       cannonlake-lp.cat
+|   |   |   |               |       CannonLake-LPSDHost.inf
+|   |   |   |               |       CannonLake-LPSystem.inf
+|   |   |   |               |       CannonLake-LPSystemLPSS.inf
+|   |   |   |               |       CannonLake-LPSystemNorthpeak.inf
+|   |   |   |               |       CannonLake-LPSystemThermal.inf
+|   |   |   |               |       coffeelake.cat
+|   |   |   |               |       CoffeelakeSystem.inf
+|   |   |   |               |       denverton.cat
+|   |   |   |               |       DenvertonPorts.inf
+|   |   |   |               |       DenvertonSystem.inf
+|   |   |   |               |       geminilake.cat
+|   |   |   |               |       GeminilakeSystem.inf
+|   |   |   |               |       GeminilakeSystemGMM.inf
+|   |   |   |               |       GeminilakeSystemLPSS.inf
+|   |   |   |               |       GeminilakeSystemNorthpeak.inf
+|   |   |   |               |       kabylake.cat
+|   |   |   |               |       kabylakepch-h.cat
+|   |   |   |               |       KabyLakePCH-HSystem.inf
+|   |   |   |               |       KabyLakePCH-HSystemLPSS.inf
+|   |   |   |               |       KabyLakePCH-HSystemNorthpeak.inf
+|   |   |   |               |       KabyLakePCH-HSystemThermal.inf
+|   |   |   |               |       KabylakeSystem.inf
+|   |   |   |               |       KabylakeSystemGMM.inf
+|   |   |   |               |       lewisburg.cat
+|   |   |   |               |       LewisburgSystem.inf
+|   |   |   |               |       null_heci.cat
+|   |   |   |               |       NULL_HECISystem.inf
+|   |   |   |               |       skylake-e.cat
+|   |   |   |               |       Skylake-ESystem.inf
+|   |   |   |               |       skylake.cat
+|   |   |   |               |       SkylakeSystem.inf
+|   |   |   |               |       SkylakeSystemGMM.inf
+|   |   |   |               |       SkylakeSystemThermal.inf
+|   |   |   |               |       sunrisepoint-h.cat
+|   |   |   |               |       SunrisePoint-HSystem.inf
+|   |   |   |               |       SunrisePoint-HSystemLPSS.inf
+|   |   |   |               |       SunrisePoint-HSystemThermal.inf
+|   |   |   |               |       sunrisepoint-lp.cat
+|   |   |   |               |       SunrisePoint-LPSDHost.inf
+|   |   |   |               |       SunrisePoint-LPSystem.inf
+|   |   |   |               |       SunrisePoint-LPSystemLPSS.inf
+|   |   |   |               |       SunrisePoint-LPSystemNorthpeak.inf
+|   |   |   |               |       SunrisePoint-LPSystemThermal.inf
+|   |   |   |               |       
+|   |   |   |               +---W2K16-x64
+|   |   |   |               |       cannonlake-h.cat
+|   |   |   |               |       CannonLake-HSDHost.inf
+|   |   |   |               |       CannonLake-HSystem.inf
+|   |   |   |               |       CannonLake-HSystemLPSS.inf
+|   |   |   |               |       CannonLake-HSystemNorthpeak.inf
+|   |   |   |               |       CannonLake-HSystemThermal.inf
+|   |   |   |               |       cannonlake-lp.cat
+|   |   |   |               |       CannonLake-LPSDHost.inf
+|   |   |   |               |       CannonLake-LPSystem.inf
+|   |   |   |               |       CannonLake-LPSystemLPSS.inf
+|   |   |   |               |       CannonLake-LPSystemNorthpeak.inf
+|   |   |   |               |       CannonLake-LPSystemThermal.inf
+|   |   |   |               |       coffeelake.cat
+|   |   |   |               |       CoffeelakeSystem.inf
+|   |   |   |               |       denverton.cat
+|   |   |   |               |       DenvertonPorts.inf
+|   |   |   |               |       DenvertonSystem.inf
+|   |   |   |               |       geminilake.cat
+|   |   |   |               |       GeminilakeSystem.inf
+|   |   |   |               |       GeminilakeSystemGMM.inf
+|   |   |   |               |       GeminilakeSystemLPSS.inf
+|   |   |   |               |       GeminilakeSystemNorthpeak.inf
+|   |   |   |               |       kabylake.cat
+|   |   |   |               |       kabylakepch-h.cat
+|   |   |   |               |       KabyLakePCH-HSystem.inf
+|   |   |   |               |       KabyLakePCH-HSystemLPSS.inf
+|   |   |   |               |       KabyLakePCH-HSystemNorthpeak.inf
+|   |   |   |               |       KabyLakePCH-HSystemThermal.inf
+|   |   |   |               |       KabylakeSystem.inf
+|   |   |   |               |       KabylakeSystemGMM.inf
+|   |   |   |               |       lewisburg.cat
+|   |   |   |               |       LewisburgSystem.inf
+|   |   |   |               |       null_heci.cat
+|   |   |   |               |       NULL_HECISystem.inf
+|   |   |   |               |       skylake-e.cat
+|   |   |   |               |       Skylake-ESystem.inf
+|   |   |   |               |       skylake.cat
+|   |   |   |               |       SkylakeSystem.inf
+|   |   |   |               |       SkylakeSystemGMM.inf
+|   |   |   |               |       SkylakeSystemThermal.inf
+|   |   |   |               |       sunrisepoint-h.cat
+|   |   |   |               |       SunrisePoint-HSystem.inf
+|   |   |   |               |       SunrisePoint-HSystemLPSS.inf
+|   |   |   |               |       SunrisePoint-HSystemThermal.inf
+|   |   |   |               |       sunrisepoint-lp.cat
+|   |   |   |               |       SunrisePoint-LPSDHost.inf
+|   |   |   |               |       SunrisePoint-LPSystem.inf
+|   |   |   |               |       SunrisePoint-LPSystemLPSS.inf
+|   |   |   |               |       SunrisePoint-LPSystemNorthpeak.inf
+|   |   |   |               |       SunrisePoint-LPSystemThermal.inf
+|   |   |   |               |       
+|   |   |   |               +---Windows10-x64
+|   |   |   |               |       cannonlake-h.cat
+|   |   |   |               |       CannonLake-HSDHost.inf
+|   |   |   |               |       CannonLake-HSystem.inf
+|   |   |   |               |       CannonLake-HSystemLPSS.inf
+|   |   |   |               |       CannonLake-HSystemNorthpeak.inf
+|   |   |   |               |       CannonLake-HSystemThermal.inf
+|   |   |   |               |       cannonlake-lp.cat
+|   |   |   |               |       CannonLake-LPSDHost.inf
+|   |   |   |               |       CannonLake-LPSystem.inf
+|   |   |   |               |       CannonLake-LPSystemLPSS.inf
+|   |   |   |               |       CannonLake-LPSystemNorthpeak.inf
+|   |   |   |               |       CannonLake-LPSystemThermal.inf
+|   |   |   |               |       coffeelake.cat
+|   |   |   |               |       CoffeelakeSystem.inf
+|   |   |   |               |       denverton.cat
+|   |   |   |               |       DenvertonPorts.inf
+|   |   |   |               |       DenvertonSystem.inf
+|   |   |   |               |       geminilake.cat
+|   |   |   |               |       GeminilakeSystem.inf
+|   |   |   |               |       GeminilakeSystemGMM.inf
+|   |   |   |               |       GeminilakeSystemLPSS.inf
+|   |   |   |               |       GeminilakeSystemNorthpeak.inf
+|   |   |   |               |       kabylake.cat
+|   |   |   |               |       kabylakepch-h.cat
+|   |   |   |               |       KabyLakePCH-HSystem.inf
+|   |   |   |               |       KabyLakePCH-HSystemLPSS.inf
+|   |   |   |               |       KabyLakePCH-HSystemNorthpeak.inf
+|   |   |   |               |       KabyLakePCH-HSystemThermal.inf
+|   |   |   |               |       KabylakeSystem.inf
+|   |   |   |               |       KabylakeSystemGMM.inf
+|   |   |   |               |       lewisburg.cat
+|   |   |   |               |       LewisburgSystem.inf
+|   |   |   |               |       null_heci.cat
+|   |   |   |               |       NULL_HECISystem.inf
+|   |   |   |               |       skylake-e.cat
+|   |   |   |               |       Skylake-ESystem.inf
+|   |   |   |               |       skylake.cat
+|   |   |   |               |       SkylakeSystem.inf
+|   |   |   |               |       SkylakeSystemGMM.inf
+|   |   |   |               |       SkylakeSystemThermal.inf
+|   |   |   |               |       sunrisepoint-h.cat
+|   |   |   |               |       SunrisePoint-HSystem.inf
+|   |   |   |               |       SunrisePoint-HSystemLPSS.inf
+|   |   |   |               |       SunrisePoint-HSystemThermal.inf
+|   |   |   |               |       sunrisepoint-lp.cat
+|   |   |   |               |       SunrisePoint-LPSDHost.inf
+|   |   |   |               |       SunrisePoint-LPSystem.inf
+|   |   |   |               |       SunrisePoint-LPSystemLPSS.inf
+|   |   |   |               |       SunrisePoint-LPSystemNorthpeak.inf
+|   |   |   |               |       SunrisePoint-LPSystemThermal.inf
+|   |   |   |               |       
+|   |   |   |               \---Windows10-x86
+|   |   |   |                       cannonlake-h.cat
+|   |   |   |                       CannonLake-HSDHost.inf
+|   |   |   |                       CannonLake-HSystem.inf
+|   |   |   |                       CannonLake-HSystemLPSS.inf
+|   |   |   |                       CannonLake-HSystemNorthpeak.inf
+|   |   |   |                       CannonLake-HSystemThermal.inf
+|   |   |   |                       cannonlake-lp.cat
+|   |   |   |                       CannonLake-LPSDHost.inf
+|   |   |   |                       CannonLake-LPSystem.inf
+|   |   |   |                       CannonLake-LPSystemLPSS.inf
+|   |   |   |                       CannonLake-LPSystemNorthpeak.inf
+|   |   |   |                       CannonLake-LPSystemThermal.inf
+|   |   |   |                       coffeelake.cat
+|   |   |   |                       CoffeelakeSystem.inf
+|   |   |   |                       denverton.cat
+|   |   |   |                       DenvertonPorts.inf
+|   |   |   |                       DenvertonSystem.inf
+|   |   |   |                       geminilake.cat
+|   |   |   |                       GeminilakeSystem.inf
+|   |   |   |                       GeminilakeSystemGMM.inf
+|   |   |   |                       GeminilakeSystemLPSS.inf
+|   |   |   |                       GeminilakeSystemNorthpeak.inf
+|   |   |   |                       kabylake.cat
+|   |   |   |                       kabylakepch-h.cat
+|   |   |   |                       KabyLakePCH-HSystem.inf
+|   |   |   |                       KabyLakePCH-HSystemLPSS.inf
+|   |   |   |                       KabyLakePCH-HSystemNorthpeak.inf
+|   |   |   |                       KabyLakePCH-HSystemThermal.inf
+|   |   |   |                       KabylakeSystem.inf
+|   |   |   |                       KabylakeSystemGMM.inf
+|   |   |   |                       lewisburg.cat
+|   |   |   |                       LewisburgSystem.inf
+|   |   |   |                       null_heci.cat
+|   |   |   |                       NULL_HECISystem.inf
+|   |   |   |                       skylake-e.cat
+|   |   |   |                       Skylake-ESystem.inf
+|   |   |   |                       skylake.cat
+|   |   |   |                       SkylakeSystem.inf
+|   |   |   |                       SkylakeSystemGMM.inf
+|   |   |   |                       SkylakeSystemThermal.inf
+|   |   |   |                       sunrisepoint-h.cat
+|   |   |   |                       SunrisePoint-HSystem.inf
+|   |   |   |                       SunrisePoint-HSystemLPSS.inf
+|   |   |   |                       SunrisePoint-HSystemThermal.inf
+|   |   |   |                       sunrisepoint-lp.cat
+|   |   |   |                       SunrisePoint-LPSDHost.inf
+|   |   |   |                       SunrisePoint-LPSystem.inf
+|   |   |   |                       SunrisePoint-LPSystemLPSS.inf
+|   |   |   |                       SunrisePoint-LPSystemNorthpeak.inf
+|   |   |   |                       SunrisePoint-LPSystemThermal.inf
+|   |   |   |                       
+|   |   |   +---IME
+|   |   |   |   |   ME_SW_1909.12.0.1236.zip
+|   |   |   |   |   
+|   |   |   |   \---ME_SW_1909.12.0.1236
+|   |   |   |       \---ME_SW_1909.12.0.1236
+|   |   |   |           |   Intel Software License Agreement.pdf
+|   |   |   |           |   Intel(R)_ME_SW_IG_Rev1p0.pdf
+|   |   |   |           |   
+|   |   |   |           +---Cons
+|   |   |   |           |   +---MEI-Only Installer MSI
+|   |   |   |           |   |       MEISetup.exe
+|   |   |   |           |   |       
+|   |   |   |           |   +---ME_SW_MSI
+|   |   |   |           |   |       SetupME.exe
+|   |   |   |           |   |       
+|   |   |   |           |   \---WindowsDriverPackages
+|   |   |   |           |       +---ICLS
+|   |   |   |           |       |   |   iclsClient.cat
+|   |   |   |           |       |   |   iclsClient.inf
+|   |   |   |           |       |   |   
+|   |   |   |           |       |   +---conf
+|   |   |   |           |       |   |       cacert.pem
+|   |   |   |           |       |   |       epid2_paramcert.dat
+|   |   |   |           |       |   |       EPIDGroupCertLegacy.cer
+|   |   |   |           |       |   |       EPIDGroupCertX509.cer
+|   |   |   |           |       |   |       epid_paramcert.dat
+|   |   |   |           |       |   |       iclsProxy.conf
+|   |   |   |           |       |   |       
+|   |   |   |           |       |   +---Documents
+|   |   |   |           |       |   |       development_tools.txt
+|   |   |   |           |       |   |       License.txt
+|   |   |   |           |       |   |       Readme.txt
+|   |   |   |           |       |   |       redist.txt
+|   |   |   |           |       |   |       Third Party Licenses.txt
+|   |   |   |           |       |   |       
+|   |   |   |           |       |   +---lib
+|   |   |   |           |       |   |       iclsClient.dll
+|   |   |   |           |       |   |       iclsClientInternal.dll
+|   |   |   |           |       |   |       iclsProxy.dll
+|   |   |   |           |       |   |       iclsProxyInternal.dll
+|   |   |   |           |       |   |       IntelPTTEKRecertification.exe
+|   |   |   |           |       |   |       libcrypto-1_1-x64.dll
+|   |   |   |           |       |   |       libssl-1_1-x64.dll
+|   |   |   |           |       |   |       msvcp140.dll
+|   |   |   |           |       |   |       SocketHeciServer.exe
+|   |   |   |           |       |   |       TPMProvisioningService.exe
+|   |   |   |           |       |   |       vcruntime140.dll
+|   |   |   |           |       |   |       
+|   |   |   |           |       |   \---lib32
+|   |   |   |           |       |           iclsClient.dll
+|   |   |   |           |       |           iclsClientInternal.dll
+|   |   |   |           |       |           iclsProxy.dll
+|   |   |   |           |       |           iclsProxyInternal.dll
+|   |   |   |           |       |           IntelPTTEKRecertification.exe
+|   |   |   |           |       |           libcrypto-1_1.dll
+|   |   |   |           |       |           libssl-1_1.dll
+|   |   |   |           |       |           msvcp140.dll
+|   |   |   |           |       |           SocketHeciServer.exe
+|   |   |   |           |       |           TPMProvisioningService.exe
+|   |   |   |           |       |           vcruntime140.dll
+|   |   |   |           |       |           
+|   |   |   |           |       +---JHI
+|   |   |   |           |       |   \---win10
+|   |   |   |           |       |           dal.cat
+|   |   |   |           |       |           DAL.inf
+|   |   |   |           |       |           JHI.dll
+|   |   |   |           |       |           JHI64.dll
+|   |   |   |           |       |           jhi_service.exe
+|   |   |   |           |       |           SpoolerApplet.dalp
+|   |   |   |           |       |           TEEManagement.dll
+|   |   |   |           |       |           TEEManagement64.dll
+|   |   |   |           |       |           
+|   |   |   |           |       +---MEI
+|   |   |   |           |       |   \---win10
+|   |   |   |           |       |       |   heci.cat
+|   |   |   |           |       |       |   heci.inf
+|   |   |   |           |       |       |   
+|   |   |   |           |       |       +---x64
+|   |   |   |           |       |       |       TeeDriverW8x64.sys
+|   |   |   |           |       |       |       
+|   |   |   |           |       |       \---x86
+|   |   |   |           |       |               TeeDriverW8.sys
+|   |   |   |           |       |               
+|   |   |   |           |       \---OemExtension
+|   |   |   |           |               OemExtension.cat
+|   |   |   |           |               OemExtension.inf
+|   |   |   |           |               
+|   |   |   |           \---Corp
+|   |   |   |               +---MEI-Only Installer MSI
+|   |   |   |               |       MEISetup.exe
+|   |   |   |               |       
+|   |   |   |               +---ME_SW_MSI
+|   |   |   |               |       SetupME.exe
+|   |   |   |               |       
+|   |   |   |               \---WindowsDriverPackages
+|   |   |   |                   +---ICLS
+|   |   |   |                   |   |   iclsClient.cat
+|   |   |   |                   |   |   iclsClient.inf
+|   |   |   |                   |   |   
+|   |   |   |                   |   +---conf
+|   |   |   |                   |   |       cacert.pem
+|   |   |   |                   |   |       epid2_paramcert.dat
+|   |   |   |                   |   |       EPIDGroupCertLegacy.cer
+|   |   |   |                   |   |       EPIDGroupCertX509.cer
+|   |   |   |                   |   |       epid_paramcert.dat
+|   |   |   |                   |   |       iclsProxy.conf
+|   |   |   |                   |   |       
+|   |   |   |                   |   +---Documents
+|   |   |   |                   |   |       development_tools.txt
+|   |   |   |                   |   |       License.txt
+|   |   |   |                   |   |       Readme.txt
+|   |   |   |                   |   |       redist.txt
+|   |   |   |                   |   |       Third Party Licenses.txt
+|   |   |   |                   |   |       
+|   |   |   |                   |   +---lib
+|   |   |   |                   |   |       iclsClient.dll
+|   |   |   |                   |   |       iclsClientInternal.dll
+|   |   |   |                   |   |       iclsProxy.dll
+|   |   |   |                   |   |       iclsProxyInternal.dll
+|   |   |   |                   |   |       IntelPTTEKRecertification.exe
+|   |   |   |                   |   |       libcrypto-1_1-x64.dll
+|   |   |   |                   |   |       libssl-1_1-x64.dll
+|   |   |   |                   |   |       msvcp140.dll
+|   |   |   |                   |   |       SocketHeciServer.exe
+|   |   |   |                   |   |       TPMProvisioningService.exe
+|   |   |   |                   |   |       vcruntime140.dll
+|   |   |   |                   |   |       
+|   |   |   |                   |   \---lib32
+|   |   |   |                   |           iclsClient.dll
+|   |   |   |                   |           iclsClientInternal.dll
+|   |   |   |                   |           iclsProxy.dll
+|   |   |   |                   |           iclsProxyInternal.dll
+|   |   |   |                   |           IntelPTTEKRecertification.exe
+|   |   |   |                   |           libcrypto-1_1.dll
+|   |   |   |                   |           libssl-1_1.dll
+|   |   |   |                   |           msvcp140.dll
+|   |   |   |                   |           SocketHeciServer.exe
+|   |   |   |                   |           TPMProvisioningService.exe
+|   |   |   |                   |           vcruntime140.dll
+|   |   |   |                   |           
+|   |   |   |                   +---IMSS
+|   |   |   |                   |       AUMIDs.txt
+|   |   |   |                   |       ba30502d97a042db81820989c2ba7f41.appxbundle
+|   |   |   |                   |       ba30502d97a042db81820989c2ba7f41_License1.xml
+|   |   |   |                   |       Microsoft.VCLibs.140.00.UWPDesktop_14.0.26905.0_arm64__8wekyb3d8bbwe.appx
+|   |   |   |                   |       Microsoft.VCLibs.140.00.UWPDesktop_14.0.26905.0_arm__8wekyb3d8bbwe.appx
+|   |   |   |                   |       Microsoft.VCLibs.140.00.UWPDesktop_14.0.26905.0_x64__8wekyb3d8bbwe.appx
+|   |   |   |                   |       Microsoft.VCLibs.140.00.UWPDesktop_14.0.26905.0_x86__8wekyb3d8bbwe.appx
+|   |   |   |                   |       MPAP_ba30502d97a042db81820989c2ba7f41_001.provxml
+|   |   |   |                   |       
+|   |   |   |                   +---JHI
+|   |   |   |                   |   \---win10
+|   |   |   |                   |           dal.cat
+|   |   |   |                   |           DAL.inf
+|   |   |   |                   |           JHI.dll
+|   |   |   |                   |           JHI64.dll
+|   |   |   |                   |           jhi_service.exe
+|   |   |   |                   |           SpoolerApplet.dalp
+|   |   |   |                   |           TEEManagement.dll
+|   |   |   |                   |           TEEManagement64.dll
+|   |   |   |                   |           
+|   |   |   |                   +---LMS
+|   |   |   |                   |       1000_PD_PFU.BIN
+|   |   |   |                   |       1000_PP_PFU.BIN
+|   |   |   |                   |       1100_PD_PFU.BIN
+|   |   |   |                   |       1100_PP_PFU.BIN
+|   |   |   |                   |       1105_PD_PFU.BIN
+|   |   |   |                   |       1105_PP_PFU.BIN
+|   |   |   |                   |       1106_PD_PFU.BIN
+|   |   |   |                   |       1106_PP_PFU.BIN
+|   |   |   |                   |       1108_PD_PFU.BIN
+|   |   |   |                   |       1108_PP_PFU.BIN
+|   |   |   |                   |       1200_PD_PFU.BIN
+|   |   |   |                   |       1200_PP_PFU.BIN
+|   |   |   |                   |       ACE.dll
+|   |   |   |                   |       ComEventHandler.dll
+|   |   |   |                   |       Common.dll
+|   |   |   |                   |       Configurator.dll
+|   |   |   |                   |       EventManager.dll
+|   |   |   |                   |       FWUpdateLib_10.dll
+|   |   |   |                   |       FWUpdateLib_11.dll
+|   |   |   |                   |       FWUpdateLib_12.dll
+|   |   |   |                   |       GmsCommon.dll
+|   |   |   |                   |       HistoryEventHandler.dll
+|   |   |   |                   |       HostChangesNotificationService.dll
+|   |   |   |                   |       IPRefreshService.dll
+|   |   |   |                   |       LMS.cat
+|   |   |   |                   |       LMS.exe
+|   |   |   |                   |       LMS.inf
+|   |   |   |                   |       PartialFWUpdateService.dll
+|   |   |   |                   |       PortForwardingService.dll
+|   |   |   |                   |       PowerOperationsService.dll
+|   |   |   |                   |       SharedStaticIPService.dll
+|   |   |   |                   |       SoapServerService.dll
+|   |   |   |                   |       StatusEventHandler.dll
+|   |   |   |                   |       TimeSyncService.dll
+|   |   |   |                   |       WiFiProfileSyncService.dll
+|   |   |   |                   |       WinLogEventHandler.dll
+|   |   |   |                   |       WMIEventHandler.dll
+|   |   |   |                   |       WsmanClient.dll
+|   |   |   |                   |       
+|   |   |   |                   +---MEI
+|   |   |   |                   |   \---win10
+|   |   |   |                   |       |   heci.cat
+|   |   |   |                   |       |   heci.inf
+|   |   |   |                   |       |   
+|   |   |   |                   |       +---x64
+|   |   |   |                   |       |       TeeDriverW8x64.sys
+|   |   |   |                   |       |       
+|   |   |   |                   |       \---x86
+|   |   |   |                   |               TeeDriverW8.sys
+|   |   |   |                   |               
+|   |   |   |                   +---OemExtension
+|   |   |   |                   |       OemExtension.cat
+|   |   |   |                   |       OemExtension.inf
+|   |   |   |                   |       
+|   |   |   |                   +---SOL
+|   |   |   |                   |       mesrl.cat
+|   |   |   |                   |       mesrl.inf
+|   |   |   |                   |       
+|   |   |   |                   +---WiMan
+|   |   |   |                   |       WiMan.cat
+|   |   |   |                   |       WiMan.inf
+|   |   |   |                   |       WiMan.sys
+|   |   |   |                   |       
+|   |   |   |                   \---wiman_wlan_extension
+|   |   |   |                           wiman_wlan_extension.cat
+|   |   |   |                           wiman_wlan_extension.inf
+|   |   |   |                           
+|   |   |   +---NIC
+|   |   |   |   |   PROWin32.exe
+|   |   |   |   |   PROWinx64.exe
+|   |   |   |   |   WiFi_21.60.2_Driver32_Win10.zip
+|   |   |   |   |   WiFi_21.60.2_Driver64_Win10.zip
+|   |   |   |   |   
+|   |   |   |   +---WiFi_21.60.2_Driver32_Win10
+|   |   |   |   |       IntelIhvRouter04.dll
+|   |   |   |   |       Netwfw04.dat
+|   |   |   |   |       netwtn04.cat
+|   |   |   |   |       Netwtn04.INF
+|   |   |   |   |       NETwtn04.sys
+|   |   |   |   |       
+|   |   |   |   \---WiFi_21.60.2_Driver64_Win10
+|   |   |   |           IntelIhvRouter04.dll
+|   |   |   |           IntelIhvRouter06.dll
+|   |   |   |           IntelIhvRouter08.dll
+|   |   |   |           Netwfw04.dat
+|   |   |   |           Netwfw06.dat
+|   |   |   |           Netwfw08.dat
+|   |   |   |           netwtw04.cat
+|   |   |   |           Netwtw04.INF
+|   |   |   |           NETwtw04.sys
+|   |   |   |           netwtw06.cat
+|   |   |   |           Netwtw06.INF
+|   |   |   |           NETwtw06.sys
+|   |   |   |           netwtw08.cat
+|   |   |   |           Netwtw08.INF
+|   |   |   |           NETwtw08.sys
+|   |   |   |           
+|   |   |   +---RST
+|   |   |   |   |   f6flpy-x64.zip
+|   |   |   |   |   SetupOptaneMemory.exe
+|   |   |   |   |   SetupRST.exe
+|   |   |   |   |   
+|   |   |   |   \---f6flpy-x64
+|   |   |   |       \---f6flpy-x64
+|   |   |   |               HfcDisableService.exe
+|   |   |   |               iaAHCIC.cat
+|   |   |   |               iaAHCIC.inf
+|   |   |   |               iaStorAC.cat
+|   |   |   |               iaStorAC.inf
+|   |   |   |               iaStorAC.sys
+|   |   |   |               iaStorAfs.sys
+|   |   |   |               iaStorAfsNative.exe
+|   |   |   |               iaStorAfsService.exe
+|   |   |   |               Optane.dll
+|   |   |   |               OptaneEventLogMsg.dll
+|   |   |   |               RSTMwEventLogMsg.dll
+|   |   |   |               RstMwService.exe
+|   |   |   |               ShellPackage.msi
+|   |   |   |               
+|   |   |   \---VGA
+|   |   |       |   igfx_win10_100.7755.zip
+|   |   |       |   
+|   |   |       \---igfx_win10_100.7755
+|   |   |           |   autorun.inf
+|   |   |           |   igxpin.exe
+|   |   |           |   Installation_Readme.txt
+|   |   |           |   ReadMe.txt
+|   |   |           |   Setup.if2
+|   |   |           |   
+|   |   |           +---Graphics
+|   |   |           |   |   ColorImageEnhancement.wmv
+|   |   |           |   |   cpa_32.vp
+|   |   |           |   |   cpa_64.vp
+|   |   |           |   |   cp_resources.bin
+|   |   |           |   |   cui_dch.inf
+|   |   |           |   |   c_32.cpa
+|   |   |           |   |   c_64.cpa
+|   |   |           |   |   dev_32.vp
+|   |   |           |   |   dev_64.vp
+|   |   |           |   |   FilmModeDetection.wmv
+|   |   |           |   |   GfxDownloadWrapper.exe
+|   |   |           |   |   h265e_32.vp
+|   |   |           |   |   h265e_64.vp
+|   |   |           |   |   HdBusExt.cat
+|   |   |           |   |   HdBusExt.inf
+|   |   |           |   |   he_32.vp
+|   |   |           |   |   he_64.vp
+|   |   |           |   |   ig11icd32.dll
+|   |   |           |   |   ig11icd64.dll
+|   |   |           |   |   ig9icd32.dll
+|   |   |           |   |   ig9icd64.dll
+|   |   |           |   |   iga32.dll
+|   |   |           |   |   iga64.dll
+|   |   |           |   |   igc32.dll
+|   |   |           |   |   igc64.dll
+|   |   |           |   |   igcc_dch.inf
+|   |   |           |   |   igd10iumd32.dll
+|   |   |           |   |   igd10iumd64.dll
+|   |   |           |   |   igd11dxva32.dll
+|   |   |           |   |   igd11dxva64.dll
+|   |   |           |   |   igd12dxva32.dll
+|   |   |           |   |   igd12dxva64.dll
+|   |   |           |   |   igd12umd32.dll
+|   |   |           |   |   igd12umd64.dll
+|   |   |           |   |   igd9dxva32.dll
+|   |   |           |   |   igd9dxva64.dll
+|   |   |           |   |   igdail32.dll
+|   |   |           |   |   igdail64.dll
+|   |   |           |   |   igdde32.dll
+|   |   |           |   |   igdde64.dll
+|   |   |           |   |   igdext32.dll
+|   |   |           |   |   igdext64.dll
+|   |   |           |   |   igdfcl32.dll
+|   |   |           |   |   igdfcl64.dll
+|   |   |           |   |   igdgmm32.dll
+|   |   |           |   |   igdgmm64.dll
+|   |   |           |   |   igdinfo32.dll
+|   |   |           |   |   igdinfo64.dll
+|   |   |           |   |   igdkmd64.sys
+|   |   |           |   |   igdkmdn64.sys
+|   |   |           |   |   igdlh.cat
+|   |   |           |   |   igdmd32.dll
+|   |   |           |   |   igdmd64.dll
+|   |   |           |   |   igdml32.dll
+|   |   |           |   |   igdml64.dll
+|   |   |           |   |   igdrcl32.dll
+|   |   |           |   |   igdrcl64.dll
+|   |   |           |   |   igdumdim32.dll
+|   |   |           |   |   igdumdim64.dll
+|   |   |           |   |   igfx11cmrt32.dll
+|   |   |           |   |   igfx11cmrt64.dll
+|   |   |           |   |   igfxcmrt32.dll
+|   |   |           |   |   igfxcmrt64.dll
+|   |   |           |   |   igfxCUIService.exe
+|   |   |           |   |   igfxCUIServiceN.exe
+|   |   |           |   |   igfxCUIServicePS.dll
+|   |   |           |   |   igfxCUIServicePSN.dll
+|   |   |           |   |   igfxDH.dll
+|   |   |           |   |   igfxDHN.dll
+|   |   |           |   |   igfxDI.dll
+|   |   |           |   |   igfxDIN.dll
+|   |   |           |   |   igfxEM.exe
+|   |   |           |   |   igfxEMN.exe
+|   |   |           |   |   igfxexps.dll
+|   |   |           |   |   igfxexps32.dll
+|   |   |           |   |   igfxext.exe
+|   |   |           |   |   igfxextN.exe
+|   |   |           |   |   igfxLHM.dll
+|   |   |           |   |   igfxSDK.exe
+|   |   |           |   |   igfxSDKLib.dll
+|   |   |           |   |   iglhxa64.cpa
+|   |   |           |   |   iglhxa64.vp
+|   |   |           |   |   iglhxc64.vp
+|   |   |           |   |   iglhxc64_dev.vp
+|   |   |           |   |   iglhxg64.vp
+|   |   |           |   |   iglhxg64_dev.vp
+|   |   |           |   |   iglhxo64.vp
+|   |   |           |   |   iglhxo64_dev.vp
+|   |   |           |   |   iglhxs64.vp
+|   |   |           |   |   iglhxsn64.vp
+|   |   |           |   |   igvk32.dll
+|   |   |           |   |   igvk32.json
+|   |   |           |   |   igvk64.dll
+|   |   |           |   |   igvk64.json
+|   |   |           |   |   iigd_dch.inf
+|   |   |           |   |   ImageStabilization.wmv
+|   |   |           |   |   IntelCpHDCPSvc.exe
+|   |   |           |   |   IntelCpHeciSvc.exe
+|   |   |           |   |   IntelGpuCompiler32.dll
+|   |   |           |   |   IntelGpuCompiler64.dll
+|   |   |           |   |   IntelOpenCL32.dll
+|   |   |           |   |   IntelOpenCL64.dll
+|   |   |           |   |   intel_gfx_api-x64.dll
+|   |   |           |   |   intel_gfx_api-x86.dll
+|   |   |           |   |   Intel_OpenCL_ICD32.dll
+|   |   |           |   |   Intel_OpenCL_ICD64.dll
+|   |   |           |   |   libEGL.dll
+|   |   |           |   |   libGLESv1_CM.dll
+|   |   |           |   |   libGLESv2.dll
+|   |   |           |   |   libmfxhw32.dll
+|   |   |           |   |   libmfxhw64.dll
+|   |   |           |   |   mfxplugin32_hw.dll
+|   |   |           |   |   mfxplugin64_hw.dll
+|   |   |           |   |   mfx_mft_encrypt_32.dll
+|   |   |           |   |   mfx_mft_encrypt_64.dll
+|   |   |           |   |   mfx_mft_h264ve_32.dll
+|   |   |           |   |   mfx_mft_h264ve_64.dll
+|   |   |           |   |   mfx_mft_h265ve_32.dll
+|   |   |           |   |   mfx_mft_h265ve_64.dll
+|   |   |           |   |   mfx_mft_mjpgvd_32.dll
+|   |   |           |   |   mfx_mft_mjpgvd_64.dll
+|   |   |           |   |   mfx_mft_vp9ve_32.dll
+|   |   |           |   |   mfx_mft_vp9ve_64.dll
+|   |   |           |   |   mj_32.vp
+|   |   |           |   |   mj_64.vp
+|   |   |           |   |   Newtonsoft.Json.dll
+|   |   |           |   |   NLog.config
+|   |   |           |   |   NLog.dll
+|   |   |           |   |   OneApp.IGCC.COMLibrary.dll
+|   |   |           |   |   OneApp.IGCC.CommunicationService.dll
+|   |   |           |   |   OneApp.IGCC.CoreLibrary.dll
+|   |   |           |   |   OneApp.IGCC.SDKCommandLine.exe
+|   |   |           |   |   OneApp.IGCC.SDKCommandLine.exe.config
+|   |   |           |   |   OneApp.IGCC.WinService.exe
+|   |   |           |   |   OneApp.IGCC.WinService.exe.config
+|   |   |           |   |   opencl-clang32.dll
+|   |   |           |   |   opencl-clang64.dll
+|   |   |           |   |   OSSCOPYRIGHT
+|   |   |           |   |   Serilog.dll
+|   |   |           |   |   Serilog.Sinks.File.dll
+|   |   |           |   |   System.Data.Common.dll
+|   |   |           |   |   System.Diagnostics.StackTrace.dll
+|   |   |           |   |   System.Diagnostics.Tracing.dll
+|   |   |           |   |   System.Globalization.Extensions.dll
+|   |   |           |   |   System.IO.Compression.dll
+|   |   |           |   |   System.Net.Http.dll
+|   |   |           |   |   System.Net.Sockets.dll
+|   |   |           |   |   System.Runtime.Serialization.Primitives.dll
+|   |   |           |   |   System.Security.Cryptography.Algorithms.dll
+|   |   |           |   |   System.Security.SecureString.dll
+|   |   |           |   |   System.Threading.Overlapped.dll
+|   |   |           |   |   System.Xml.XPath.XDocument.dll
+|   |   |           |   |   UniversalAdapter32.dll
+|   |   |           |   |   UniversalAdapter64.dll
+|   |   |           |   |   vp9e_32.vp
+|   |   |           |   |   vp9e_64.vp
+|   |   |           |   |   vulkan-1-32.dll
+|   |   |           |   |   vulkan-1-64.dll
+|   |   |           |   |   vulkaninfo-32.exe
+|   |   |           |   |   vulkaninfo-64.exe
+|   |   |           |   |   VulkanRT-EULA.txt
+|   |   |           |   |   
+|   |   |           |   +---DisplayAudio
+|   |   |           |   |   +---10.26
+|   |   |           |   |   |       IntcDAud.cat
+|   |   |           |   |   |       IntcDAud.inf
+|   |   |           |   |   |       IntcDAud.sys
+|   |   |           |   |   |       
+|   |   |           |   |   +---10.27
+|   |   |           |   |   |       IntcDAud.cat
+|   |   |           |   |   |       IntcDAud.inf
+|   |   |           |   |   |       IntcDAud.sys
+|   |   |           |   |   |       
+|   |   |           |   |   \---11.1
+|   |   |           |   |           IntcDAud.cat
+|   |   |           |   |           IntcDAud.inf
+|   |   |           |   |           IntcDAud.sys
+|   |   |           |   |           
+|   |   |           |   \---ocl
+|   |   |           |       |   llvm_release_license.txt
+|   |   |           |       |   readme.txt
+|   |   |           |       |   version.ini
+|   |   |           |       |   
+|   |   |           |       \---bin
+|   |   |           |           |   clbltfnshared.rtl
+|   |   |           |           |   
+|   |   |           |           +---x64
+|   |   |           |           |   |   clang_compiler64.dll
+|   |   |           |           |   |   clbltfne9.rtl
+|   |   |           |           |   |   clbltfne9_img_cbk.o
+|   |   |           |           |   |   clbltfne9_img_cbk.rtl
+|   |   |           |           |   |   clbltfnh8.rtl
+|   |   |           |           |   |   clbltfnh8_img_cbk.o
+|   |   |           |           |   |   clbltfnh8_img_cbk.rtl
+|   |   |           |           |   |   clbltfnl9.rtl
+|   |   |           |           |   |   clbltfnl9_img_cbk.o
+|   |   |           |           |   |   clbltfnl9_img_cbk.rtl
+|   |   |           |           |   |   clbltfnz0.rtl
+|   |   |           |           |   |   clbltfnz0_img_cbk.o
+|   |   |           |           |   |   clbltfnz0_img_cbk.rtl
+|   |   |           |           |   |   cpu_device64.dll
+|   |   |           |           |   |   intelocl64.dll
+|   |   |           |           |   |   IntelOpenCL64.dll
+|   |   |           |           |   |   OclCpuBackend64.dll
+|   |   |           |           |   |   task_executor64.dll
+|   |   |           |           |   |   __ocl_svml_e9.dll
+|   |   |           |           |   |   __ocl_svml_h8.dll
+|   |   |           |           |   |   __ocl_svml_l9.dll
+|   |   |           |           |   |   __ocl_svml_z0.dll
+|   |   |           |           |   |   
+|   |   |           |           |   \---tbb
+|   |   |           |           |           ocltbb64.dll
+|   |   |           |           |           ocltbbmalloc64.dll
+|   |   |           |           |           
+|   |   |           |           \---x86
+|   |   |           |               |   clang_compiler32.dll
+|   |   |           |               |   clbltfng9.rtl
+|   |   |           |               |   clbltfng9_img_cbk.o
+|   |   |           |               |   clbltfng9_img_cbk.rtl
+|   |   |           |               |   clbltfnn8.rtl
+|   |   |           |               |   clbltfnn8_img_cbk.o
+|   |   |           |               |   clbltfnn8_img_cbk.rtl
+|   |   |           |               |   clbltfns9.rtl
+|   |   |           |               |   clbltfns9_img_cbk.o
+|   |   |           |               |   clbltfns9_img_cbk.rtl
+|   |   |           |               |   clbltfnx0.rtl
+|   |   |           |               |   clbltfnx0_img_cbk.o
+|   |   |           |               |   clbltfnx0_img_cbk.rtl
+|   |   |           |               |   cpu_device32.dll
+|   |   |           |               |   intelocl32.dll
+|   |   |           |               |   IntelOpenCL32.dll
+|   |   |           |               |   OclCpuBackend32.dll
+|   |   |           |               |   task_executor32.dll
+|   |   |           |               |   __ocl_svml_g9.dll
+|   |   |           |               |   __ocl_svml_n8.dll
+|   |   |           |               |   __ocl_svml_s9.dll
+|   |   |           |               |   __ocl_svml_x0.dll
+|   |   |           |               |   
+|   |   |           |               \---tbb
+|   |   |           |                       ocltbb32.dll
+|   |   |           |                       ocltbbmalloc32.dll
+|   |   |           |                       
+|   |   |           +---Lang
+|   |   |           |   +---ar-SA
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---cs-CZ
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---da-DK
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---de-DE
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---el-GR
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---en-US
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---es-ES
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---fi-FI
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---fr-FR
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---he-IL
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---hr-HR
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---hu-HU
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---it-IT
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---ja-JP
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---ko-KR
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---nb-NO
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---nl-NL
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---pl-PL
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---pt-BR
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---pt-PT
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---ro-RO
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---ru-RU
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---sk-SK
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---sl-SI
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---sv-SE
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---th-TH
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---tr-TR
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   +---zh-CN
+|   |   |           |   |       igxpin.exe.mui
+|   |   |           |   |       license.txt
+|   |   |           |   |       
+|   |   |           |   \---zh-TW
+|   |   |           |           igxpin.exe.mui
+|   |   |           |           license.txt
+|   |   |           |           
+|   |   |           \---x64
+|   |   |                   DIFxAPI.dll
+|   |   |                   Drv64.exe
+|   |   |                   
+|   |   +---x64
+|   |   |       MicrosoftEdgeEnterprise-x64.msi
+|   |   |       mpam-fe-x64.exe
+|   |   |       updateplatform-x64.exe
+|   |   |       windows-kb890830-x64-v5.79.exe
+|   |   |       windows10.0-kb4528759-x64.msu
+|   |   |       windows10.0-kb4532695-x64.msu
+|   |   |       windows10.0-kb4534132-x64-ndp48.msu
+|   |   |       
+|   |   +---x86
+|   |   |       MicrosoftEdgeEnterprise-x86.msi
+|   |   |       mpam-fe-x86.exe
+|   |   |       updateplatform-x86.exe
+|   |   |       windows-kb890830-x86-v5.79.exe
+|   |   |       windows10.0-kb4528759-x86.msu
+|   |   |       windows10.0-kb4532695-x86.msu
+|   |   |       windows10.0-kb4534132-x86-ndp48.msu
+|   |   |       
+|   |   \---zip
+|   |           7z1900-x64.msi
+|   |           7z1900-x86.msi
+|   |           
+|   \---w7
+|       +---adk
+|       |       adksetup.exe
+|       |       
+|       +---drv
+|       |   +---NVMe
+|       |   |   |   ASUS_EZInstaller_V10306.zip
+|       |   |   |   Client-x64.zip
+|       |   |   |   Client-x86.zip
+|       |   |   |   
+|       |   |   +---ASUS_EZInstaller_V10306
+|       |   |   |   \---ASUS_EZInstaller_V10306
+|       |   |   |       |   AsusSetup.exe
+|       |   |   |       |   AsusSetup.exe.manifest
+|       |   |   |       |   AsusSetup.ini
+|       |   |   |       |   English.ini
+|       |   |   |       |   French.ini
+|       |   |   |       |   German.ini
+|       |   |   |       |   Japanese.ini
+|       |   |   |       |   Korean.ini
+|       |   |   |       |   Russian.ini
+|       |   |   |       |   SChinese.ini
+|       |   |   |       |   Spanish.ini
+|       |   |   |       |   TChinese.ini
+|       |   |   |       |   
+|       |   |   |       \---ASUS EZ Installer
+|       |   |   |           |   ASUS EZ Installer.zip
+|       |   |   |           |   Windows 7 and USB 3.0 driver installation for 100 Series.PDF
+|       |   |   |           |   
+|       |   |   |           \---ASUS EZ Installer
+|       |   |   |               \---V1.03.06
+|       |   |   |                   |   api-ms-win-downlevel-advapi32-l1-1-0.dll
+|       |   |   |                   |   api-ms-win-downlevel-advapi32-l1-1-1.dll
+|       |   |   |                   |   api-ms-win-downlevel-advapi32-l2-1-0.dll
+|       |   |   |                   |   api-ms-win-downlevel-advapi32-l2-1-1.dll
+|       |   |   |                   |   api-ms-win-downlevel-advapi32-l3-1-0.dll
+|       |   |   |                   |   api-ms-win-downlevel-advapi32-l4-1-0.dll
+|       |   |   |                   |   api-ms-win-downlevel-kernel32-l1-1-0.dll
+|       |   |   |                   |   api-ms-win-downlevel-kernel32-l2-1-0.dll
+|       |   |   |                   |   api-ms-win-downlevel-ole32-l1-1-0.dll
+|       |   |   |                   |   api-ms-win-downlevel-ole32-l1-1-1.dll
+|       |   |   |                   |   api-ms-win-downlevel-shlwapi-l1-1-0.dll
+|       |   |   |                   |   api-ms-win-downlevel-shlwapi-l1-1-1.dll
+|       |   |   |                   |   api-ms-win-downlevel-user32-l1-1-0.dll
+|       |   |   |                   |   api-ms-win-downlevel-user32-l1-1-1.dll
+|       |   |   |                   |   api-ms-win-downlevel-version-l1-1-0.dll
+|       |   |   |                   |   AsMultiLang.dll
+|       |   |   |                   |   compatprovider.dll
+|       |   |   |                   |   config.xml
+|       |   |   |                   |   dismapi.dll
+|       |   |   |                   |   dismcore.dll
+|       |   |   |                   |   dismcoreps.dll
+|       |   |   |                   |   dismprov.dll
+|       |   |   |                   |   EZ Installer.exe
+|       |   |   |                   |   folderprovider.dll
+|       |   |   |                   |   imagingprovider.dll
+|       |   |   |                   |   logprovider.dll
+|       |   |   |                   |   Microsoft.Dism.Powershell.dll
+|       |   |   |                   |   ssshim.dll
+|       |   |   |                   |   vhdprovider.dll
+|       |   |   |                   |   wimgapi.dll
+|       |   |   |                   |   wimprovider.dll
+|       |   |   |                   |   
+|       |   |   |                   +---efi
+|       |   |   |                   |   \---boot
+|       |   |   |                   |           bootia32.efi
+|       |   |   |                   |           bootx64.efi
+|       |   |   |                   |           
+|       |   |   |                   +---Hotfix
+|       |   |   |                   |   +---NVMe
+|       |   |   |                   |   |   +---x64
+|       |   |   |                   |   |   |       Windows6.1-KB2990941-v3-x64.msu
+|       |   |   |                   |   |   |       Windows6.1-kb3087873-v2-x64.msu
+|       |   |   |                   |   |   |       
+|       |   |   |                   |   |   \---x86
+|       |   |   |                   |   |           Windows6.1-KB2990941-v3-x86.msu
+|       |   |   |                   |   |           Windows6.1-KB3087873-v2-x86.msu
+|       |   |   |                   |   |           
+|       |   |   |                   |   +---x64
+|       |   |   |                   |   \---x86
+|       |   |   |                   +---LangFiles
+|       |   |   |                   |   |   AsMultiLang.ini
+|       |   |   |                   |   |   
+|       |   |   |                   |   +---English
+|       |   |   |                   |   |       English.ini
+|       |   |   |                   |   |       
+|       |   |   |                   |   +---French
+|       |   |   |                   |   |       French.ini
+|       |   |   |                   |   |       
+|       |   |   |                   |   +---German
+|       |   |   |                   |   |       German.ini
+|       |   |   |                   |   |       
+|       |   |   |                   |   +---Japanese
+|       |   |   |                   |   |       Japanese.ini
+|       |   |   |                   |   |       
+|       |   |   |                   |   +---Korean
+|       |   |   |                   |   |       Korean.ini
+|       |   |   |                   |   |       
+|       |   |   |                   |   +---Russian
+|       |   |   |                   |   |       Russian.ini
+|       |   |   |                   |   |       
+|       |   |   |                   |   +---SChinese
+|       |   |   |                   |   |       SChinese.ini
+|       |   |   |                   |   |       
+|       |   |   |                   |   +---Spanish
+|       |   |   |                   |   |       Spanish.ini
+|       |   |   |                   |   |       
+|       |   |   |                   |   \---TChinese
+|       |   |   |                   |           TChinese.ini
+|       |   |   |                   |           
+|       |   |   |                   +---OS
+|       |   |   |                   |   |   AutoUnattend.xml
+|       |   |   |                   |   |   
+|       |   |   |                   |   \---AutoUnattend
+|       |   |   |                   |       +---x64
+|       |   |   |                   |       |   +---AMD
+|       |   |   |                   |       |   |   |   amdhub30.cat
+|       |   |   |                   |       |   |   |   amdhub30.inf
+|       |   |   |                   |       |   |   |   amdhub30.PNF
+|       |   |   |                   |       |   |   |   amdhub31.cat
+|       |   |   |                   |       |   |   |   amdhub31.inf
+|       |   |   |                   |       |   |   |   amdhub31.PNF
+|       |   |   |                   |       |   |   |   amdxhc.cat
+|       |   |   |                   |       |   |   |   amdxhc.inf
+|       |   |   |                   |       |   |   |   amdxhc.PNF
+|       |   |   |                   |       |   |   |   amdxhc31.cat
+|       |   |   |                   |       |   |   |   amdxhc31.inf
+|       |   |   |                   |       |   |   |   amdxhc31.PNF
+|       |   |   |                   |       |   |   |   
+|       |   |   |                   |       |   |   \---x64
+|       |   |   |                   |       |   |           amdhub30.sys
+|       |   |   |                   |       |   |           amdhub31.sys
+|       |   |   |                   |       |   |           amdxhc.sys
+|       |   |   |                   |       |   |           amdxhc31.sys
+|       |   |   |                   |       |   |           
+|       |   |   |                   |       |   +---Asmedia
+|       |   |   |                   |       |   |   |   asmthub3.cat
+|       |   |   |                   |       |   |   |   asmthub3.inf
+|       |   |   |                   |       |   |   |   asmtxhci.cat
+|       |   |   |                   |       |   |   |   asmtxhci.inf
+|       |   |   |                   |       |   |   |   
+|       |   |   |                   |       |   |   +---amd64
+|       |   |   |                   |       |   |   |       asmthub3.sys
+|       |   |   |                   |       |   |   |       asmtxhci.sys
+|       |   |   |                   |       |   |   |       asmtxhcicoinstaller.dll
+|       |   |   |                   |       |   |   |       
+|       |   |   |                   |       |   |   +---i386
+|       |   |   |                   |       |   |   |       asmthub3.sys
+|       |   |   |                   |       |   |   |       asmtxhci.sys
+|       |   |   |                   |       |   |   |       asmtxhcicoinstaller.dll
+|       |   |   |                   |       |   |   |       
+|       |   |   |                   |       |   |   \---ia64
+|       |   |   |                   |       |   |           asmthub3.sys
+|       |   |   |                   |       |   |           asmtxhci.sys
+|       |   |   |                   |       |   |           asmtxhcicoinstaller.dll
+|       |   |   |                   |       |   |           
+|       |   |   |                   |       |   +---Intel
+|       |   |   |                   |       |   |       iusb3hub.cat
+|       |   |   |                   |       |   |       iusb3hub.inf
+|       |   |   |                   |       |   |       IUsb3Hub.man
+|       |   |   |                   |       |   |       iusb3hub.sys
+|       |   |   |                   |       |   |       iusb3xhc.cat
+|       |   |   |                   |       |   |       iusb3xhc.inf
+|       |   |   |                   |       |   |       iusb3xhc.man
+|       |   |   |                   |       |   |       iusb3xhc.sys
+|       |   |   |                   |       |   |       tbt70x.cat
+|       |   |   |                   |       |   |       tbt70x.inf
+|       |   |   |                   |       |   |       tbt70x.sys
+|       |   |   |                   |       |   |       tbtcoinx.dll
+|       |   |   |                   |       |   |       tp2p70x.cat
+|       |   |   |                   |       |   |       tp2p70x.inf
+|       |   |   |                   |       |   |       tp2p70x.sys
+|       |   |   |                   |       |   |       
+|       |   |   |                   |       |   +---Intel_NVMe
+|       |   |   |                   |       |   |       IaNVMe.inf
+|       |   |   |                   |       |   |       IaNVMe.sys
+|       |   |   |                   |       |   |       IaNVMeF.sys
+|       |   |   |                   |       |   |       nvme64.cat
+|       |   |   |                   |       |   |       
+|       |   |   |                   |       |   \---Samsung_NVMe
+|       |   |   |                   |       |           nvme.cat
+|       |   |   |                   |       |           nvme.inf
+|       |   |   |                   |       |           nvme.sys
+|       |   |   |                   |       |           nvmeF.sys
+|       |   |   |                   |       |           
+|       |   |   |                   |       \---x86
+|       |   |   |                   |           +---AMD
+|       |   |   |                   |           |   |   amdhub30.cat
+|       |   |   |                   |           |   |   amdhub30.inf
+|       |   |   |                   |           |   |   amdhub30.PNF
+|       |   |   |                   |           |   |   amdhub31.cat
+|       |   |   |                   |           |   |   amdhub31.INF
+|       |   |   |                   |           |   |   amdhub31.PNF
+|       |   |   |                   |           |   |   amdxhc.cat
+|       |   |   |                   |           |   |   amdxhc.inf
+|       |   |   |                   |           |   |   amdxhc.PNF
+|       |   |   |                   |           |   |   amdxhc31.cat
+|       |   |   |                   |           |   |   amdxhc31.INF
+|       |   |   |                   |           |   |   amdxhc31.PNF
+|       |   |   |                   |           |   |   
+|       |   |   |                   |           |   \---x86
+|       |   |   |                   |           |           amdhub30.sys
+|       |   |   |                   |           |           amdhub31.sys
+|       |   |   |                   |           |           amdxhc.sys
+|       |   |   |                   |           |           amdxhc31.sys
+|       |   |   |                   |           |           
+|       |   |   |                   |           +---Asmedia
+|       |   |   |                   |           |   |   asmthub3.cat
+|       |   |   |                   |           |   |   asmthub3.inf
+|       |   |   |                   |           |   |   asmtxhci.cat
+|       |   |   |                   |           |   |   asmtxhci.inf
+|       |   |   |                   |           |   |   
+|       |   |   |                   |           |   +---amd64
+|       |   |   |                   |           |   |       asmthub3.sys
+|       |   |   |                   |           |   |       asmtxhci.sys
+|       |   |   |                   |           |   |       asmtxhcicoinstaller.dll
+|       |   |   |                   |           |   |       
+|       |   |   |                   |           |   +---i386
+|       |   |   |                   |           |   |       asmthub3.sys
+|       |   |   |                   |           |   |       asmtxhci.sys
+|       |   |   |                   |           |   |       asmtxhcicoinstaller.dll
+|       |   |   |                   |           |   |       
+|       |   |   |                   |           |   \---ia64
+|       |   |   |                   |           |           asmthub3.sys
+|       |   |   |                   |           |           asmtxhci.sys
+|       |   |   |                   |           |           asmtxhcicoinstaller.dll
+|       |   |   |                   |           |           
+|       |   |   |                   |           +---Intel
+|       |   |   |                   |           |       iusb3hub.cat
+|       |   |   |                   |           |       iusb3hub.inf
+|       |   |   |                   |           |       IUsb3Hub.man
+|       |   |   |                   |           |       iusb3hub.sys
+|       |   |   |                   |           |       iusb3xhc.cat
+|       |   |   |                   |           |       iusb3xhc.inf
+|       |   |   |                   |           |       iusb3xhc.man
+|       |   |   |                   |           |       iusb3xhc.sys
+|       |   |   |                   |           |       tbt70i.cat
+|       |   |   |                   |           |       tbt70i.inf
+|       |   |   |                   |           |       tbt70i.sys
+|       |   |   |                   |           |       tbtcoini.dll
+|       |   |   |                   |           |       tp2p70i.cat
+|       |   |   |                   |           |       tp2p70i.inf
+|       |   |   |                   |           |       tp2p70i.sys
+|       |   |   |                   |           |       
+|       |   |   |                   |           +---Intel_NVMe
+|       |   |   |                   |           |       IaNVMe.inf
+|       |   |   |                   |           |       IaNVMe.sys
+|       |   |   |                   |           |       IaNVMeF.sys
+|       |   |   |                   |           |       nvme86.cat
+|       |   |   |                   |           |       
+|       |   |   |                   |           \---Samsung_NVMe
+|       |   |   |                   |                   nvme.cat
+|       |   |   |                   |                   nvme.inf
+|       |   |   |                   |                   nvme.sys
+|       |   |   |                   |                   nvmeF.sys
+|       |   |   |                   |                   
+|       |   |   |                   +---Oscdimg_amd64
+|       |   |   |                   |   \---Oscdimg
+|       |   |   |                   |           efisys.bin
+|       |   |   |                   |           efisys_noprompt.bin
+|       |   |   |                   |           etfsboot.com
+|       |   |   |                   |           oscdimg.exe
+|       |   |   |                   |           
+|       |   |   |                   +---Oscdimg_x86
+|       |   |   |                   |   \---Oscdimg
+|       |   |   |                   |           efisys.bin
+|       |   |   |                   |           efisys_noprompt.bin
+|       |   |   |                   |           etfsboot.com
+|       |   |   |                   |           oscdimg.exe
+|       |   |   |                   |           
+|       |   |   |                   +---Other
+|       |   |   |                   |   +---x64
+|       |   |   |                   |   |   +---E3_RAID
+|       |   |   |                   |   |   |       iaahci.cat
+|       |   |   |                   |   |   |       iaAHCI.inf
+|       |   |   |                   |   |   |       iaahcib.cat
+|       |   |   |                   |   |   |       iaAHCIB.inf
+|       |   |   |                   |   |   |       iastora.cat
+|       |   |   |                   |   |   |       iaStorA.inf
+|       |   |   |                   |   |   |       iaStorA.sys
+|       |   |   |                   |   |   |       iastorb.cat
+|       |   |   |                   |   |   |       iaStorB.inf
+|       |   |   |                   |   |   |       iaStorB.sys
+|       |   |   |                   |   |   |       iaStorF.sys
+|       |   |   |                   |   |   |       
+|       |   |   |                   |   |   \---KabyLake_RAID
+|       |   |   |                   |   |           iaAHCIC.cat
+|       |   |   |                   |   |           iaAHCIC.inf
+|       |   |   |                   |   |           iaStorA.sys
+|       |   |   |                   |   |           iaStorAC.cat
+|       |   |   |                   |   |           iaStorAC.inf
+|       |   |   |                   |   |           iaStorF.sys
+|       |   |   |                   |   |           
+|       |   |   |                   |   \---x86
+|       |   |   |                   |       +---E3_RAID
+|       |   |   |                   |       |       iaahci.cat
+|       |   |   |                   |       |       iaAHCI.inf
+|       |   |   |                   |       |       iaahcib.cat
+|       |   |   |                   |       |       iaAHCIB.inf
+|       |   |   |                   |       |       iastora.cat
+|       |   |   |                   |       |       iaStorA.inf
+|       |   |   |                   |       |       iaStorA.sys
+|       |   |   |                   |       |       iastorb.cat
+|       |   |   |                   |       |       iaStorB.inf
+|       |   |   |                   |       |       iaStorB.sys
+|       |   |   |                   |       |       iaStorF.sys
+|       |   |   |                   |       |       
+|       |   |   |                   |       \---KabyLake_RAID
+|       |   |   |                   |               iaAHCIC.cat
+|       |   |   |                   |               iaAHCIC.inf
+|       |   |   |                   |               iaStorA.sys
+|       |   |   |                   |               iaStorAC.cat
+|       |   |   |                   |               iaStorAC.inf
+|       |   |   |                   |               iaStorF.sys
+|       |   |   |                   |               
+|       |   |   |                   \---Resources
+|       |   |   |                           End User License Agreement_English.txt
+|       |   |   |                           End User License Agreement_SChinese.txt
+|       |   |   |                           End User License Agreement_TChinese.txt
+|       |   |   |                           logo.bmp
+|       |   |   |                           Thumbs.db
+|       |   |   |                           
+|       |   |   +---Client-x64
+|       |   |   |       ianvme.cat
+|       |   |   |       IaNVMe.inf
+|       |   |   |       IaNVMe.sys
+|       |   |   |       IaNVMeF.sys
+|       |   |   |       Intel_SSD_PCIe_Client_Driver_4.4.0.1003_Release_Notes.pdf
+|       |   |   |       
+|       |   |   \---Client-x86
+|       |   |           ianvme.cat
+|       |   |           IaNVMe.inf
+|       |   |           IaNVMe.sys
+|       |   |           IaNVMeF.sys
+|       |   |           Intel_SSD_PCIe_Client_Driver_4.4.0.1003_Release_Notes.pdf
+|       |   |           
+|       |   +---RST
+|       |   |   |   f6flpy-x64.zip
+|       |   |   |   f6flpy-x86.zip
+|       |   |   |   
+|       |   |   +---f6flpy-x64
+|       |   |   |       iaAHCIC.cat
+|       |   |   |       iaAHCIC.inf
+|       |   |   |       iaStorAC.cat
+|       |   |   |       iaStorAC.inf
+|       |   |   |       iaStorAC.sys
+|       |   |   |       iaStorAfs.sys
+|       |   |   |       iaStorAfsNative.exe
+|       |   |   |       iaStorAfsService.exe
+|       |   |   |       iaStorF.sys
+|       |   |   |       
+|       |   |   \---f6flpy-x86
+|       |   |           iaAHCIC.cat
+|       |   |           iaAHCIC.inf
+|       |   |           iaStorAC.cat
+|       |   |           iaStorAC.inf
+|       |   |           iaStorAC.sys
+|       |   |           iaStorF.sys
+|       |   |           
+|       |   \---USB
+|       |       |   Intel(R)_USB_3.0_eXtensible_Host_Controller_Driver_5.0.4.43_v2.zip
+|       |       |   
+|       |       \---Intel(R)_USB_3.0_eXtensible_Host_Controller_Driver_5.0.4.43_v2
+|       |           \---Intel(R)_USB_3.0_eXtensible_Host_Controller_Driver_5.0.4.43_v2
+|       |               |   difxapi.dll
+|       |               |   mup.xml
+|       |               |   Readme.txt
+|       |               |   Setup.exe
+|       |               |   Setup30.if2
+|       |               |   Setup31.if2
+|       |               |   USB3Ver.dll
+|       |               |   
+|       |               +---apps
+|       |               |   |   iusb3mon.dll
+|       |               |   |   iusb3mon.exe
+|       |               |   |   
+|       |               |   +---0401
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0404
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0405
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0406
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0407
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0408
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0409
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---040B
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---040C
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---040D
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---040E
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0410
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0411
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0412
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0413
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0414
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0415
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0416
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0419
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---041B
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---041D
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---041E
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---041F
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0424
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0804
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0816
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   +---0C04
+|       |               |   |       iusb3mon.exe.mui
+|       |               |   |       
+|       |               |   \---0C0A
+|       |               |           iusb3mon.exe.mui
+|       |               |           
+|       |               +---Drivers
+|       |               |   +---HCSwitch
+|       |               |   |   +---x64
+|       |               |   |   |       iusb3hcs.cat
+|       |               |   |   |       iusb3hcs.inf
+|       |               |   |   |       iusb3hcs.sys
+|       |               |   |   |       WdfCoInstaller01009.dll
+|       |               |   |   |       
+|       |               |   |   \---x86
+|       |               |   |           iusb3hcs.cat
+|       |               |   |           iusb3hcs.inf
+|       |               |   |           iusb3hcs.sys
+|       |               |   |           WdfCoInstaller01009.dll
+|       |               |   |           
+|       |               |   \---Win7
+|       |               |       +---x64
+|       |               |       |       iusb3hub.cat
+|       |               |       |       iusb3hub.inf
+|       |               |       |       IUsb3Hub.man
+|       |               |       |       iusb3hub.sys
+|       |               |       |       iusb3xhc.cat
+|       |               |       |       iusb3xhc.inf
+|       |               |       |       iusb3xhc.man
+|       |               |       |       iusb3xhc.sys
+|       |               |       |       
+|       |               |       \---x86
+|       |               |               iusb3hub.cat
+|       |               |               iusb3hub.inf
+|       |               |               IUsb3Hub.man
+|       |               |               iusb3hub.sys
+|       |               |               iusb3xhc.cat
+|       |               |               iusb3xhc.inf
+|       |               |               iusb3xhc.man
+|       |               |               iusb3xhc.sys
+|       |               |               
+|       |               +---Lang
+|       |               |   +---ar-SA
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---cs-CZ
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---da-DK
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---de-DE
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---el-GR
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---en-US
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---es-ES
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---fi-FI
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---fr-FR
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---he-IL
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---hu-HU
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---it-IT
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---ja-JP
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---ko-KR
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---nb-NO
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---nl-NL
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---pl-PL
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---pt-BR
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---pt-PT
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---ru-RU
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---sk-SK
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---sl-SI
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---sv-SE
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---th-TH
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---tr-TR
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   +---zh-CN
+|       |               |   |       license.txt
+|       |               |   |       Setup.exe.mui
+|       |               |   |       
+|       |               |   \---zh-TW
+|       |               |           license.txt
+|       |               |           Setup.exe.mui
+|       |               |           
+|       |               \---x64
+|       |                       difxapi.dll
+|       |                       Drv64.exe
+|       |                       
+|       +---x64
+|       |   |   ie11-windows6.1-kb3185319-x64.msu
+|       |   |   ie11-windows6.1-kb4534251-x64.msu
+|       |   |   IE11-Windows6.1-x64-ja-jp.exe
+|       |   |   MicrosoftEdgeEnterprise-x64.msi
+|       |   |   mpam-fe-x64.exe
+|       |   |   mpas-fe-x64.exe
+|       |   |   MSEInstall-x64.exe
+|       |   |   ndp48-kb4503575-x64.exe
+|       |   |   ndp48-kb4515847-x64.exe
+|       |   |   ndp48-x86-x64-allos-jpn.exe
+|       |   |   ndp48-x86-x64-enu.exe
+|       |   |   silverlight.exe
+|       |   |   Win7AndW2K8R2-KB3191566-x64.msu
+|       |   |   Win7AndW2K8R2-KB3191566-x64.zip
+|       |   |   windows-kb890830-x64-v5.79.exe
+|       |   |   windows6.1-kb2454826-v2-x64.msu
+|       |   |   windows6.1-kb2533552-x64.msu
+|       |   |   Windows6.1-KB2534366-x64.msu
+|       |   |   windows6.1-kb2545698-x64.msu
+|       |   |   windows6.1-kb2547666-x64.msu
+|       |   |   windows6.1-kb2574819-v2-x64.msu
+|       |   |   windows6.1-kb2592687-x64.msu
+|       |   |   windows6.1-kb2603229-x64.msu
+|       |   |   windows6.1-kb2667402-v2-x64.msu
+|       |   |   windows6.1-kb2670838-x64.msu
+|       |   |   Windows6.1-KB2679255-v2-x64.msu
+|       |   |   windows6.1-kb2685811-x64.msu
+|       |   |   windows6.1-kb2685813-x64.msu
+|       |   |   windows6.1-kb2698365-x64.msu
+|       |   |   windows6.1-kb2729094-v2-x64.msu
+|       |   |   windows6.1-kb2732059-v5-x64.msu
+|       |   |   windows6.1-kb2750841-x64.msu
+|       |   |   windows6.1-kb2761217-x64.msu
+|       |   |   windows6.1-kb2773072-x64.msu
+|       |   |   windows6.1-kb2818604-x64.msu
+|       |   |   windows6.1-kb2830477-x64.msu
+|       |   |   windows6.1-kb2834140-v2-x64.msu
+|       |   |   windows6.1-kb2862330-v2-x64.msu
+|       |   |   windows6.1-kb2894844-x64.msu
+|       |   |   windows6.1-kb2898851-x64.msu
+|       |   |   windows6.1-kb2900986-x64.msu
+|       |   |   windows6.1-kb2919469-x64.msu
+|       |   |   windows6.1-kb2923545-x64.msu
+|       |   |   windows6.1-kb2970228-x64.msu
+|       |   |   windows6.1-kb2984972-x64.msu
+|       |   |   Windows6.1-KB2990941-v3-x64.msu
+|       |   |   windows6.1-kb3004375-v3-x64.msu
+|       |   |   windows6.1-kb3006137-x64.msu
+|       |   |   windows6.1-kb3020369-x64.msu
+|       |   |   windows6.1-kb3020387-x64.msu
+|       |   |   windows6.1-kb3020388-x64.msu
+|       |   |   windows6.1-kb3021917-x64.msu
+|       |   |   windows6.1-kb3031432-x64.msu
+|       |   |   windows6.1-kb3042058-x64.msu
+|       |   |   windows6.1-kb3046269-x64.msu
+|       |   |   windows6.1-kb3059317-x64.msu
+|       |   |   windows6.1-kb3068708-x64.msu
+|       |   |   windows6.1-kb3075226-x64.msu
+|       |   |   windows6.1-kb3080149-x64.msu
+|       |   |   Windows6.1-kb3087873-v2-x64.msu
+|       |   |   windows6.1-kb3102429-v2-x64.msu
+|       |   |   windows6.1-kb3125574-v4-x64.msu
+|       |   |   windows6.1-kb3138612-x64.msu
+|       |   |   windows6.1-kb3150513-x64.msu
+|       |   |   windows6.1-kb3155178-x64.msu
+|       |   |   windows6.1-kb3156016-x64.msu
+|       |   |   windows6.1-kb3159398-x64.msu
+|       |   |   windows6.1-kb3161102-x64.msu
+|       |   |   windows6.1-kb3161949-x64.msu
+|       |   |   windows6.1-kb3170735-x64.msu
+|       |   |   windows6.1-kb3172605-x64.msu
+|       |   |   windows6.1-kb3179573-x64.msu
+|       |   |   windows6.1-kb3184143-x64.msu
+|       |   |   windows6.1-kb4019990-x64.msu
+|       |   |   windows6.1-kb4040980-x64.msu
+|       |   |   windows6.1-kb4474419-v3-x64.msu
+|       |   |   windows6.1-kb4490628-x64.msu
+|       |   |   windows6.1-kb4507004-x64.msu
+|       |   |   windows6.1-kb4532945-x64.msu
+|       |   |   windows6.1-kb4534310-x64.msu
+|       |   |   windows6.1-kb4536952-x64.msu
+|       |   |   windows6.1-kb947821-v34-x64.msu
+|       |   |   
+|       |   +---IE11-Windows6.1-x64-ja-jp
+|       |   |       HARDWAREBLOCKINGLIST.XML
+|       |   |       IE-Hyphenation-en.MSU
+|       |   |       IE-Spelling-en.MSU
+|       |   |       IE-Win7.CAB
+|       |   |       ielangpack-ja-JP.CAB
+|       |   |       IE_SUPPORT_amd64_ja-JP.CAB
+|       |   |       SETUPDOWNLOADLIST.TXT
+|       |   |       SQMAPI.DLL
+|       |   |       
+|       |   \---Win7AndW2K8R2-KB3191566-x64
+|       |           Install-WMF5.1.ps1
+|       |           Win7AndW2K8R2-KB3191566-x64.msu
+|       |           
+|       +---x86
+|       |   |   ie11-windows6.1-kb3185319-x86.msu
+|       |   |   ie11-windows6.1-kb4534251-x86.msu
+|       |   |   IE11-Windows6.1-x86-ja-jp.exe
+|       |   |   MicrosoftEdgeEnterprise-x86.msi
+|       |   |   mpam-fe-x86.exe
+|       |   |   mpas-fe-x86.exe
+|       |   |   MSEInstall-x86.exe
+|       |   |   ndp48-kb4503575-x86.exe
+|       |   |   ndp48-kb4515847-x86.exe
+|       |   |   ndp48-x86-x64-allos-jpn.exe
+|       |   |   ndp48-x86-x64-enu.exe
+|       |   |   silverlight.exe
+|       |   |   Win7-KB3191566-x86.msu
+|       |   |   Win7-KB3191566-x86.zip
+|       |   |   windows-kb890830-x86-v5.79.exe
+|       |   |   windows6.1-kb2454826-v2-x86.msu
+|       |   |   windows6.1-kb2533552-x86.msu
+|       |   |   Windows6.1-KB2534366-x86.msu
+|       |   |   windows6.1-kb2545698-x86.msu
+|       |   |   windows6.1-kb2547666-x86.msu
+|       |   |   windows6.1-kb2574819-v2-x86.msu
+|       |   |   windows6.1-kb2592687-x86.msu
+|       |   |   windows6.1-kb2667402-v2-x86.msu
+|       |   |   windows6.1-kb2670838-x86.msu
+|       |   |   Windows6.1-KB2679255-v2-x86.msu
+|       |   |   windows6.1-kb2685811-x86.msu
+|       |   |   windows6.1-kb2685813-x86.msu
+|       |   |   windows6.1-kb2698365-x86.msu
+|       |   |   windows6.1-kb2729094-v2-x86.msu
+|       |   |   windows6.1-kb2732059-v5-x86.msu
+|       |   |   windows6.1-kb2750841-x86.msu
+|       |   |   windows6.1-kb2761217-x86.msu
+|       |   |   windows6.1-kb2773072-x86.msu
+|       |   |   windows6.1-kb2818604-x86.msu
+|       |   |   windows6.1-kb2830477-x86.msu
+|       |   |   windows6.1-kb2834140-v2-x86.msu
+|       |   |   windows6.1-kb2862330-v2-x86.msu
+|       |   |   windows6.1-kb2894844-x86.msu
+|       |   |   windows6.1-kb2898851-x86.msu
+|       |   |   windows6.1-kb2900986-x86.msu
+|       |   |   windows6.1-kb2919469-x86.msu
+|       |   |   windows6.1-kb2923545-x86.msu
+|       |   |   windows6.1-kb2970228-x86.msu
+|       |   |   windows6.1-kb2984972-x86.msu
+|       |   |   Windows6.1-KB2990941-v3-x86.msu
+|       |   |   windows6.1-kb3004375-v3-x86.msu
+|       |   |   windows6.1-kb3006137-x86.msu
+|       |   |   windows6.1-kb3020369-x86.msu
+|       |   |   windows6.1-kb3020387-x86.msu
+|       |   |   windows6.1-kb3020388-x86.msu
+|       |   |   windows6.1-kb3021917-x86.msu
+|       |   |   windows6.1-kb3031432-x86.msu
+|       |   |   windows6.1-kb3042058-x86.msu
+|       |   |   windows6.1-kb3046269-x86.msu
+|       |   |   windows6.1-kb3059317-x86.msu
+|       |   |   windows6.1-kb3068708-x86.msu
+|       |   |   windows6.1-kb3075226-x86.msu
+|       |   |   windows6.1-kb3080149-x86.msu
+|       |   |   Windows6.1-KB3087873-v2-x86.msu
+|       |   |   windows6.1-kb3102429-v2-x86.msu
+|       |   |   windows6.1-kb3125574-v4-x86.msu
+|       |   |   windows6.1-kb3138612-x86.msu
+|       |   |   windows6.1-kb3150513-x86.msu
+|       |   |   windows6.1-kb3155178-x86.msu
+|       |   |   windows6.1-kb3156016-x86.msu
+|       |   |   windows6.1-kb3159398-x86.msu
+|       |   |   windows6.1-kb3161102-x86.msu
+|       |   |   windows6.1-kb3161949-x86.msu
+|       |   |   windows6.1-kb3170735-x86.msu
+|       |   |   windows6.1-kb3172605-x86.msu
+|       |   |   windows6.1-kb3179573-x86.msu
+|       |   |   windows6.1-kb3184143-x86.msu
+|       |   |   windows6.1-kb4019990-x86.msu
+|       |   |   windows6.1-kb4040980-x86.msu
+|       |   |   windows6.1-kb4474419-v3-x86.msu
+|       |   |   windows6.1-kb4490628-x86.msu
+|       |   |   windows6.1-kb4507004-x86.msu
+|       |   |   windows6.1-kb4532945-x86.msu
+|       |   |   windows6.1-kb4534310-x86.msu
+|       |   |   windows6.1-kb4536952-x86.msu
+|       |   |   windows6.1-kb947821-v34-x86.msu
+|       |   |   
+|       |   +---IE11-Windows6.1-x86-ja-jp
+|       |   |       HARDWAREBLOCKINGLIST.XML
+|       |   |       IE-Hyphenation-en.MSU
+|       |   |       IE-Spelling-en.MSU
+|       |   |       IE-Win7.CAB
+|       |   |       ielangpack-ja-JP.CAB
+|       |   |       IE_SUPPORT_x86_ja-JP.CAB
+|       |   |       SETUPDOWNLOADLIST.TXT
+|       |   |       SQMAPI.DLL
+|       |   |       
+|       |   \---Win7-KB3191566-x86
+|       |           Install-WMF5.1.ps1
+|       |           Win7-KB3191566-x86.msu
+|       |           
+|       \---zip
+|               7z1900-x64.msi
+|               7z1900-x86.msi
+|               
++---usr
+\---wrk
+    |   Initial-Downloader_work.dat
+    |   Initial-Downloader_work.wrk
+    |   
+    +---w10
+    |   +---x64
+    |   |   +---img
+    |   |   +---mnt
+    |   |   \---wre
+    |   \---x86
+    |       +---img
+    |       +---mnt
+    |       \---wre
+    \---w7
+        +---x64
+        |   +---img
+        |   +---mnt
+        |   \---wre
+        \---x86
+            +---img
+            +---mnt
+            \---wre
