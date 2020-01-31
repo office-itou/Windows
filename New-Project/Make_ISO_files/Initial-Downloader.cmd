@@ -47,6 +47,7 @@ Rem *** 作業環境設定 **********************************************************
 
 Rem --- 環境変数設定 ----------------------------------------------------------
     Set WIN_VER=7 10
+    Set ARC_TYP=86 64
 Rem Set WIM_TOP=C:\WimWK
     Set WIM_BIN=%WIM_TOP%\bin
     Set WIM_CFG=%WIM_TOP%\cfg
@@ -76,6 +77,19 @@ Rem Set WIM_TOP=C:\WimWK
     Set GIT_URL=%GIT_TOP%/Initial-Downloader.lst
     Set GIT_FIL=!WRK_DIR!\!WRK_NAM!.lst
     Set GIT_WIM=!WIM_LST!\!WRK_NAM!.lst
+
+    Set UTL_ARC=amd64 arm arm64 x86
+
+Rem --- 破損イメージの削除 ----------------------------------------------------
+    For %%I In (%WIN_VER%) Do (
+        For %%J In (%ARC_TYP%) Do (
+            Set WIM_IMG=%WIM_WRK%\w%%I\x%%J\img
+            Set WIM_MNT=%WIM_WRK%\w%%I\x%%J\mnt
+            Set WIM_WRE=%WIM_WRK%\w%%I\x%%J\wre
+            If Exist "%WIM_WRE%\Windows" (Dism /UnMount-Wim /MountDir:"%WIM_WRE%" /Discard)
+            If Exist "%WIM_MNT%\Windows" (Dism /UnMount-Wim /MountDir:"%WIM_MNT%" /Discard)
+        )
+    )
 
 Rem --- 既存フォルダーの移動 --------------------------------------------------
     If Exist "%WIM_TOP%" (
@@ -114,10 +128,34 @@ Rem --- 作業フォルダーの作成 --------------------------------------------------
     If Not Exist "%WIM_USR%" (MkDIr "%WIM_USR%" || GoTo DONE)
     If Not Exist "%WIM_WRK%" (MkDIr "%WIM_WRK%" || GoTo DONE)
 
+    For %%I In (%WIN_VER%) Do (
+        For %%J In (%ARC_TYP%) Do (
+            Set WIM_IMG=%WIM_WRK%\w%%I\x%%J\img
+            Set WIM_MNT=%WIM_WRK%\w%%I\x%%J\mnt
+            Set WIM_WRE=%WIM_WRK%\w%%I\x%%J\wre
+            If Not Exist "!WIM_IMG!" (MkDir "!WIM_IMG!" || GoTo DONE)
+            If Not Exist "!WIM_MNT!" (MkDir "!WIM_MNT!" || GoTo DONE)
+            If Not Exist "!WIM_WRE!" (MkDir "!WIM_WRE!" || GoTo DONE)
+        )
+    )
+
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "%CMD_FIL%" (Del /F "%CMD_FIL%" || GoTo DONE)
     If Exist "%CMD_DAT%" (Del /F "%CMD_DAT%" || GoTo DONE)
     If Exist "%CMD_WRK%" (Del /F "%CMD_WRK%" || GoTo DONE)
+
+Rem --- Oscdimg取得 -----------------------------------------------------------
+    Echo --- Oscdimg取得 ---------------------------------------------------------------
+    For /R "%ProgramFiles(x86)%" %%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%~dpI)
+    If /I "!UTL_WRK!" EQU "" (
+        Echo Windows ADK をインストールして下さい。
+        GoTo :DONE
+    )
+    For %%I In (%UTL_ARC%) DO (
+        Set UTL_SRC=!UTL_WRK!\..\..\%%~I\Oscdimg
+        Set UTL_DST=!WIM_BIN!\Oscdimg\%%~I
+        Robocopy /J /MIR /A-:RHS /NDL "!UTL_SRC!" "!UTL_DST!" > Nul
+    )
 
 Rem *** ファイルダウンロード **************************************************
 Rem --- GitHub ----------------------------------------------------------------
@@ -262,7 +300,86 @@ Rem --- リストファイル --------------------------------------------------------
             )
         )
     )
+Rem ---------------------------------------------------------------------------
     Sort "%CMD_WRK%" > "%CMD_DAT%"
+Rem --- ファイル取得 ----------------------------------------------------------
+    Echo --- ファイル取得 --------------------------------------------------------------
+    For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
+        Set LST_WINDOWS=%%~I
+        Set LST_PACKAGE=%%~J
+        Set LST_TYPE=%%~K
+        Set LST_RUN_ORDER=%%~L
+        Set LST_SECTION=%%~M
+        Set LST_EXTENSION=%%~N
+        Set LST_CMD=%%~O
+        Set LST_RENAME=%%~P
+        Set LST_FILE=%%~Q
+        Set WIM_WIN=!WIM_PKG!\!LST_WINDOWS!
+        For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
+        For /F "delims=: tokens=2 usebackq" %%X In ('!LST_FILE!') Do (
+            If /I "%%X" NEQ "" (
+                If Not Exist "!LST_RENAME!" (
+                    Echo "!LST_FNAME!"
+                    Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                ) Else (
+                    For /F "delims=: tokens=2 usebackq" %%Y In (`Curl -L -s -R -S -I "!LST_FILE!" ^| Find /I "Content-Length:"`) Do (
+                        Set LST_LEN=%%Y
+                    )
+                    For /F "delims=/ usebackq" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
+                    If !LST_LEN! NEQ !LST_SIZE! (
+                        Echo "!LST_FNAME!" : !LST_SIZE! : !LST_LEN!
+                        Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                    )
+                )
+                If /I "!LST_EXTENSION!" EQU "zip" (
+                    For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
+                    If Not Exist "!LST_DIR!" (
+                        Echo --- ファイル展開 --------------------------------------------------------------
+                        MkDir "!LST_DIR!"
+                        Tar -xzf "!LST_RENAME!" -C "!LST_DIR!"
+                    )
+                    Pushd "!LST_DIR!"
+                        For /R %%E In (*.zip) Do (
+                            Set LST_ZIPFILE=%%E
+                            Set LST_ZIPDIR=%%~dpnE
+                            If Not Exist "!LST_ZIPDIR!" (
+                                Echo --- ファイル展開 --------------------------------------------------------------
+                                MkDir "!LST_ZIPDIR!"
+                                Tar -xzf "!LST_ZIPFILE!" -C "!LST_ZIPDIR!"
+                            )
+                            Pushd "!LST_ZIPDIR!"
+                                For /R %%F In (*.msu) Do (
+                                    For /F "delims=x tokens=2" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%G)
+                                    If Not Exist "!WIM_WIN!\x!LST_PACKAGE!\%%~nxF" (
+                                        Echo --- ファイル転送 --------------------------------------------------------------
+                                        If Not Exist "!WIM_WIN!\x!LST_PACKAGE!" (MkDir "!WIM_WIN!\x!LST_PACKAGE!")
+                                        Copy /Y "%%F" "!WIM_WIN!\x!LST_PACKAGE!" > Nul
+                                    )
+                                )
+                            Popd
+                        )
+                        For /R %%F In (*.msu) Do (
+                            For /F "delims=x tokens=2" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%G)
+                            If Not Exist "!WIM_WIN!\x!LST_PACKAGE!\%%~nxF" (
+                                Echo --- ファイル転送 --------------------------------------------------------------
+                                If Not Exist "!WIM_WIN!\x!LST_PACKAGE!" (MkDir "!WIM_WIN!\x!LST_PACKAGE!")
+                                Copy /Y "%%F" "!WIM_WIN!\x!LST_PACKAGE!" > Nul
+                            )
+                        )
+                    Popd
+                ) Else If /I "!LST_SECTION!" EQU "IE11" (
+                    For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
+                    If Not Exist "!LST_DIR!" (
+                        Echo --- ファイル展開 --------------------------------------------------------------
+                        MkDir "!LST_DIR!"
+                        "!LST_RENAME!" /x:"!LST_DIR!"
+                    )
+                )
+            )
+        )
+    )
+GoTo DONE
+:OUTPUT_MAKE_COMMAND
 Rem ***************************************************************************
     Echo>>"%CMD_FIL%" Rem ***************************************************************************
     Echo>>"%CMD_FIL%"     @Echo Off
@@ -284,6 +401,27 @@ Rem ***************************************************************************
     Echo>>"%CMD_FIL%"         )
     Echo>>"%CMD_FIL%"     )
     Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%" Rem --- Windows バージョンの設定 ----------------------------------------------
+    Echo>>"%CMD_FIL%" :INPUT_WIN_TYPE
+    Echo>>"%CMD_FIL%"     Set IDX_WIN=0
+    Echo>>"%CMD_FIL%"     Echo --- Windows バージョンの設定 --------------------------------------------------
+    Echo>>"%CMD_FIL%"     Echo 0: 全バージョン
+    Echo>>"%CMD_FIL%"     Echo 1: Windows  7版
+    Echo>>"%CMD_FIL%"     Echo 2: Windows 10版
+    Echo>>"%CMD_FIL%"     Set /P IDX_WIN=Windowsのバージョンを0～2の数字から選んで下さい。
+    Echo>>"%CMD_FIL%"     If %%IDX_WIN%% LSS 0 If %%IDX_WIN%% GTR 2 (GoTo INPUT_WIN_TYPE)
+    Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%" Rem --- Windowsのアーキテクチャー設定 -----------------------------------------
+    Echo>>"%CMD_FIL%" :INPUT_CPU_TYPE
+    Echo>>"%CMD_FIL%"     Set IDX_CPU=0
+    Echo>>"%CMD_FIL%"     Echo --- Windowsのアーキテクチャー設定 ---------------------------------------------
+    Echo>>"%CMD_FIL%"     Echo 0: 全アーキテクチャー
+    Echo>>"%CMD_FIL%"     Echo 1: 32bit版
+    Echo>>"%CMD_FIL%"     Echo 2: 64bit版
+    Echo>>"%CMD_FIL%"     Set /P IDX_CPU=Windowsのアーキテクチャーを0～2の数字から選んで下さい。
+    Echo>>"%CMD_FIL%"     If %%IDX_CPU%% LSS 0 If %%IDX_CPU%% GTR 2 (GoTo INPUT_CPU_TYPE)
+    Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%" :SETUP
     Echo>>"%CMD_FIL%" Rem --- 環境変数設定 ----------------------------------------------------------
     Echo>>"%CMD_FIL%"     For /F "usebackq delims=" %%%%I In (`Echo ^%%0`) Do (
     Echo>>"%CMD_FIL%"         Set WRK_DIR=%%%%~dpI
@@ -315,18 +453,6 @@ Rem ***************************************************************************
     Echo>>"%CMD_FIL%"     Set CMD_WRK=^^!WIM_WRK^^!\^^!WRK_NAM^^!.wrk
     Echo.>>"%CMD_FIL%"
     Echo>>"%CMD_FIL%" Rem --- Oscdimg取得 -----------------------------------------------------------
-    Echo>>"%CMD_FIL%"     Echo --- Oscdimg取得 ---------------------------------------------------------------
-    Echo>>"%CMD_FIL%"     Set UTL_ARC=amd64 arm arm64 x86
-    Echo>>"%CMD_FIL%"     For /R "%%ProgramFiles(x86)%%" %%%%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%%%~dpI)
-    Echo>>"%CMD_FIL%"     If /I "^!UTL_WRK^!" EQU "" (
-    Echo>>"%CMD_FIL%"         Echo Windows ADK をインストールして下さい。
-    Echo>>"%CMD_FIL%"         GoTo :DONE
-    Echo>>"%CMD_FIL%"     )
-    Echo>>"%CMD_FIL%"     For %%%%I In (%%UTL_ARC%%) DO (
-    Echo>>"%CMD_FIL%"         Set UTL_SRC=^^!UTL_WRK^^!\..\..\%%%%~I\Oscdimg
-    Echo>>"%CMD_FIL%"         Set UTL_DST=^^!WIM_BIN^^!\Oscdimg\%%%%~I
-    Echo>>"%CMD_FIL%"         Robocopy /J /MIR /A-:RHS /NDL "^!UTL_SRC^!" "^!UTL_DST^!" ^> Nul
-    Echo>>"%CMD_FIL%"     )
     Echo>>"%CMD_FIL%"     Set Path=%%WIM_BIN%%\Oscdimg\%%PROCESSOR_ARCHITECTURE%%;%%Path%%
     Echo>>"%CMD_FIL%"     Oscdimg ^> NUL 2^>^&1
     Echo>>"%CMD_FIL%"     If "%%ErrorLevel%%" EQU "9009" (
@@ -411,7 +537,7 @@ Rem ***************************************************************************
     Echo>>"%CMD_FIL%"         ^)
     Echo>>"%CMD_FIL%"     ^)
     Echo.>>"%CMD_FIL%"
-    Echo>>"%CMD_FIL%" Rem *** ファイル取得 **********************************************************
+    Echo>>"%CMD_FIL%" Rem *** 統合パッケージの準備 **************************************************
     Echo>>"%CMD_FIL%" Rem *** 作業終了 **************************************************************
     Echo>>"%CMD_FIL%" :DONE
     Echo>>"%CMD_FIL%"     EndLocal
@@ -421,7 +547,7 @@ Rem ***************************************************************************
     Echo>>"%CMD_FIL%" Rem Pause ^> Nul 2^>^&1
     Echo>>"%CMD_FIL%" Rem Echo On
 Rem ---------------------------------------------------------------------------
-    Call "%CMD_FIL%"
+Rem Call "%CMD_FIL%"
 
 Rem *** 作業終了 **************************************************************
 :DONE
