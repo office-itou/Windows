@@ -314,6 +314,26 @@ Rem ***************************************************************************
     Echo>>"%CMD_FIL%"     Set CMD_DAT=^^!WIM_WRK^^!\^^!WRK_NAM^^!.dat
     Echo>>"%CMD_FIL%"     Set CMD_WRK=^^!WIM_WRK^^!\^^!WRK_NAM^^!.wrk
     Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%" Rem --- Oscdimg取得 -----------------------------------------------------------
+    Echo>>"%CMD_FIL%"     Echo --- Oscdimg取得 ---------------------------------------------------------------
+    Echo>>"%CMD_FIL%"     Set UTL_ARC=amd64 arm arm64 x86
+    Echo>>"%CMD_FIL%"     For /R "%%ProgramFiles(x86)%%" %%%%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%%%~dpI)
+    Echo>>"%CMD_FIL%"     If /I "^!UTL_WRK^!" EQU "" (
+    Echo>>"%CMD_FIL%"         Echo Windows ADK をインストールして下さい。
+    Echo>>"%CMD_FIL%"         GoTo :DONE
+    Echo>>"%CMD_FIL%"     )
+    Echo>>"%CMD_FIL%"     For %%%%I In (%%UTL_ARC%%) DO (
+    Echo>>"%CMD_FIL%"         Set UTL_SRC=^^!UTL_WRK^^!\..\..\%%%%~I\Oscdimg
+    Echo>>"%CMD_FIL%"         Set UTL_DST=^^!WIM_BIN^^!\Oscdimg\%%%%~I
+    Echo>>"%CMD_FIL%"         Robocopy /J /MIR /A-:RHS /NDL "^!UTL_SRC^!" "^!UTL_DST^!" ^> Nul
+    Echo>>"%CMD_FIL%"     )
+    Echo>>"%CMD_FIL%"     Set Path=%%WIM_BIN%%\Oscdimg\%%PROCESSOR_ARCHITECTURE%%;%%Path%%
+    Echo>>"%CMD_FIL%"     Oscdimg ^> NUL 2^>^&1
+    Echo>>"%CMD_FIL%"     If "%%ErrorLevel%%" EQU "9009" (
+    Echo>>"%CMD_FIL%"         Echo Windows ADK をインストールして下さい。
+    Echo>>"%CMD_FIL%"         GoTo :DONE
+    Echo>>"%CMD_FIL%"     )
+    Echo.>>"%CMD_FIL%"
     Echo>>"%CMD_FIL%" Rem *** ファイル取得 **********************************************************
     Echo>>"%CMD_FIL%"     Echo *** ファイル取得 **************************************************************
     Echo>>"%CMD_FIL%"     For /F "delims=, tokens=1-9 usebackq" %%%%I In ^(^^!CMD_DAT^^!^) Do ^(
@@ -391,6 +411,7 @@ Rem ***************************************************************************
     Echo>>"%CMD_FIL%"         ^)
     Echo>>"%CMD_FIL%"     ^)
     Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%" Rem *** ファイル取得 **********************************************************
     Echo>>"%CMD_FIL%" Rem *** 作業終了 **************************************************************
     Echo>>"%CMD_FIL%" :DONE
     Echo>>"%CMD_FIL%"     EndLocal
