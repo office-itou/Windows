@@ -276,9 +276,47 @@ Rem ***************************************************************************
     Echo>>"%CMD_FIL%"     SetLocal EnableExtensions
     Echo>>"%CMD_FIL%"     SetLocal EnableDelayedExpansion
     Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%" Rem --- 作業環境確認 ----------------------------------------------------------
+    Echo>>"%CMD_FIL%"     If /I "%%USERNAME%%" NEQ "Administrator" (
+    Echo>>"%CMD_FIL%"         If /I "%%SESSIONNAME%%" NEQ "" (
+    Echo>>"%CMD_FIL%"             Echo 管理者特権で実行して下さい。
+    Echo>>"%CMD_FIL%"             GoTo :DONE
+    Echo>>"%CMD_FIL%"         )
+    Echo>>"%CMD_FIL%"     )
+    Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%" Rem --- 環境変数設定 ----------------------------------------------------------
+    Echo>>"%CMD_FIL%"     For /F "usebackq delims=" %%%%I In (`Echo ^%%0`) Do (
+    Echo>>"%CMD_FIL%"         Set WRK_DIR=%%%%~dpI
+    Echo>>"%CMD_FIL%"         Set WRK_DIR=^^!WRK_DIR:~0,-1^^!
+    Echo>>"%CMD_FIL%"         Set WRK_FIL=%%%%~nxI
+    Echo>>"%CMD_FIL%"         Set WRK_NAM=%%%%~nI
+    Echo>>"%CMD_FIL%"     )
+    Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%"     Set NOW_DAY=^%%date:~0,4^%%^%%date:~5,2^%%^%%date:~8,2^%%
+    Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%"     If /I "%%time:~0,1%%" EQU " " (
+    Echo>>"%CMD_FIL%"         Set NOW_TIM=0^%%time:~1,1^%%^%%time:~3,2^%%^%%time:~6,2^%%
+    Echo>>"%CMD_FIL%"     ) Else (
+    Echo>>"%CMD_FIL%"         Set NOW_TIM=^%%time:~0,2^%%^%%time:~3,2^%%^%%time:~6,2^%%
+    Echo>>"%CMD_FIL%"     )
+    Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%" Rem *** 作業環境設定 **********************************************************
+    Echo>>"%CMD_FIL%"     Set WIM_TOP=^^!WRK_DIR^^!\..
+    Echo>>"%CMD_FIL%"     Set WIM_BIN=^^!WIM_TOP^^!\bin
+    Echo>>"%CMD_FIL%"     Set WIM_CFG=^^!WIM_TOP^^!\cfg
+    Echo>>"%CMD_FIL%"     Set WIM_ISO=^^!WIM_TOP^^!\iso
+    Echo>>"%CMD_FIL%"     Set WIM_LST=^^!WIM_TOP^^!\lst
+    Echo>>"%CMD_FIL%"     Set WIM_PKG=^^!WIM_TOP^^!\pkg
+    Echo>>"%CMD_FIL%"     Set WIM_USR=^^!WIM_TOP^^!\usr
+    Echo>>"%CMD_FIL%"     Set WIM_WRK=^^!WIM_TOP^^!\wrk
+    Echo.>>"%CMD_FIL%"
+    Echo>>"%CMD_FIL%"     Set CMD_FIL=^^!WIM_WRK^^!\^^!WRK_NAM^^!.cmd
+    Echo>>"%CMD_FIL%"     Set CMD_DAT=^^!WIM_WRK^^!\^^!WRK_NAM^^!.dat
+    Echo>>"%CMD_FIL%"     Set CMD_WRK=^^!WIM_WRK^^!\^^!WRK_NAM^^!.wrk
+    Echo.>>"%CMD_FIL%"
     Echo>>"%CMD_FIL%" Rem *** ファイル取得 **********************************************************
     Echo>>"%CMD_FIL%"     Echo *** ファイル取得 **************************************************************
-    Echo>>"%CMD_FIL%"     For /F "delims=, tokens=1-9 usebackq" %%%%I In ^(%CMD_DAT%^) Do ^(
+    Echo>>"%CMD_FIL%"     For /F "delims=, tokens=1-9 usebackq" %%%%I In ^(^^!CMD_DAT^^!^) Do ^(
     Echo>>"%CMD_FIL%"         Set LST_WINDOWS=%%%%~I
     Echo>>"%CMD_FIL%"         Set LST_PACKAGE=%%%%~J
     Echo>>"%CMD_FIL%"         Set LST_TYPE=%%%%~K
@@ -288,7 +326,7 @@ Rem ***************************************************************************
     Echo>>"%CMD_FIL%"         Set LST_CMD=%%%%~O
     Echo>>"%CMD_FIL%"         Set LST_RENAME=%%%%~P
     Echo>>"%CMD_FIL%"         Set LST_FILE=%%%%~Q
-    Echo>>"%CMD_FIL%"         Set WIM_WIN=%WIM_PKG%\^^!LST_WINDOWS^^!
+    Echo>>"%CMD_FIL%"         Set WIM_WIN=^^!WIM_PKG^^!\^^!LST_WINDOWS^^!
     Echo>>"%CMD_FIL%"         For %%%%E In ^("^!LST_RENAME^!"^) Do ^(Set LST_FNAME=%%%%~nxE^)
     Echo>>"%CMD_FIL%"         For /F "delims=: tokens=2 usebackq" %%%%X In ^('^^!LST_FILE^^!'^) Do ^(
     Echo>>"%CMD_FIL%"             If /I "%%%%X" NEQ "" ^(
