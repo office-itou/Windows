@@ -47,7 +47,7 @@ Rem *** 作業環境設定 **********************************************************
 
 Rem --- 環境変数設定 ----------------------------------------------------------
     Set WIN_VER=7 10
-    Set ARC_TYP=86 64
+    Set ARC_TYP=x86 x64
     Set LST_PKG=adk drv zip %ARC_TYP%
 Rem Set WIM_TOP=C:\WimWK
     Set WIM_BIN=%WIM_TOP%\bin
@@ -85,9 +85,9 @@ Rem Set WIM_TOP=C:\WimWK
 Rem --- 破損イメージの削除 ----------------------------------------------------
     For %%I In (%WIN_VER%) Do (
         For %%J In (%ARC_TYP%) Do (
-            Set WIM_IMG=%WIM_WRK%\w%%I\x%%J\img
-            Set WIM_MNT=%WIM_WRK%\w%%I\x%%J\mnt
-            Set WIM_WRE=%WIM_WRK%\w%%I\x%%J\wre
+            Set WIM_IMG=%WIM_WRK%\w%%I\%%J\img
+            Set WIM_MNT=%WIM_WRK%\w%%I\%%J\mnt
+            Set WIM_WRE=%WIM_WRK%\w%%I\%%J\wre
             If Exist "%WIM_WRE%\Windows" (Dism /UnMount-Wim /MountDir:"%WIM_WRE%" /Discard)
             If Exist "%WIM_MNT%\Windows" (Dism /UnMount-Wim /MountDir:"%WIM_MNT%" /Discard)
         )
@@ -132,9 +132,9 @@ Rem --- 作業フォルダーの作成 --------------------------------------------------
 
     For %%I In (%WIN_VER%) Do (
         For %%J In (%ARC_TYP%) Do (
-            Set WIM_IMG=%WIM_WRK%\w%%I\x%%J\img
-            Set WIM_MNT=%WIM_WRK%\w%%I\x%%J\mnt
-            Set WIM_WRE=%WIM_WRK%\w%%I\x%%J\wre
+            Set WIM_IMG=%WIM_WRK%\w%%I\%%J\img
+            Set WIM_MNT=%WIM_WRK%\w%%I\%%J\mnt
+            Set WIM_WRE=%WIM_WRK%\w%%I\%%J\wre
             If Not Exist "!WIM_IMG!" (MkDir "!WIM_IMG!" || GoTo DONE)
             If Not Exist "!WIM_MNT!" (MkDir "!WIM_MNT!" || GoTo DONE)
             If Not Exist "!WIM_WRE!" (MkDir "!WIM_WRE!" || GoTo DONE)
