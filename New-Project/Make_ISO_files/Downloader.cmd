@@ -14,7 +14,7 @@ Rem --- 作業環境確認 ----------------------------------------------------------
     If /I "%USERNAME%" NEQ "Administrator" (
         If /I "%SESSIONNAME%" NEQ "" (
             Echo 管理者特権で実行して下さい。
-            GoTo :DONE
+            GoTo DONE
         )
     )
 
@@ -39,48 +39,48 @@ Rem --- 環境変数設定 ----------------------------------------------------------
     Set WIN_VER=%~1
     Set LST_PKG=%~2
     Set WIM_TOP=%~3
-    Set WIM_BIN=%WIM_TOP%\bin
-    Set WIM_CFG=%WIM_TOP%\cfg
-    Set WIM_ISO=%WIM_TOP%\iso
-    Set WIM_LST=%WIM_TOP%\lst
-    Set WIM_PKG=%WIM_TOP%\pkg
-    Set WIM_USR=%WIM_TOP%\usr
-    Set WIM_WRK=%WIM_TOP%\wrk
-    Set CMD_DAT=%WIM_WRK%\!WRK_NAM!.dat
-    Set CMD_WRK=%WIM_WRK%\!WRK_NAM!.wrk
+    Set WIM_BIN=!WIM_TOP!\bin
+    Set WIM_CFG=!WIM_TOP!\cfg
+    Set WIM_ISO=!WIM_TOP!\iso
+    Set WIM_LST=!WIM_TOP!\lst
+    Set WIM_PKG=!WIM_TOP!\pkg
+    Set WIM_USR=!WIM_TOP!\usr
+    Set WIM_WRK=!WIM_TOP!\wrk
+    Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
+    Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
 
-    If /I "%WIN_VER%" EQU "" (
+    If /I "!WIN_VER!" EQU "" (
         Echo 引数1[WIN_VER]が設定されていません。
         GoTo DONE
     )
 
-    If /I "%LST_PKG%" EQU "" (
+    If /I "!LST_PKG!" EQU "" (
         Echo 引数2[LST_PKG]が設定されていません。
         GoTo DONE
     )
 
-    If /I "%WIM_TOP%" EQU "" (
+    If /I "!WIM_TOP!" EQU "" (
         Echo 引数3[WIM_TOP]が設定されていません。
         GoTo DONE
     )
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
-    If Exist "%CMD_DAT%" (Del /F "%CMD_DAT%" || GoTo DONE)
-    If Exist "%CMD_WRK%" (Del /F "%CMD_WRK%" || GoTo DONE)
+    If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
+    If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
 
-Rem *** ファイルダウンロード **************************************************
-Rem --- リストファイル変換 ----------------------------------------------------
+Rem *** リストファイル変換 ****************************************************
     Echo --- リストファイル変換 --------------------------------------------------------
     Set LST_FIL=
-    For %%I In (%WIN_VER%) Do (
+    For %%I In (!WIN_VER!) Do (
         Set LST_WINVER=%%~I
-        For %%J In (%LST_PKG%) Do (
+        For %%J In (!LST_PKG!) Do (
             Set LST_PACKAGE=%%~J
-            Set LST_LFNAME=%WIM_LST%\Windows!LST_WINVER!!LST_PACKAGE!*.lst
-            Set LST_WINPACK=%WIM_PKG%\w!LST_WINVER!\!LST_PACKAGE!
+            Set LST_LFSNAME=!WIM_LST!\Windows!LST_WINVER!!LST_PACKAGE!*.lst
+            Set LST_WINPACK=!WIM_PKG!\w!LST_WINVER!\!LST_PACKAGE!
             Set LST_SECTION=
-            For %%K In (!LST_LFNAME!) Do (
-                For /F "delims== tokens=1* usebackq" %%L In (%%~K) Do (
+            For %%K In (!LST_LFSNAME!) Do (
+                Set LST_LFNAME=%%~K
+                For /F "delims== tokens=1* usebackq" %%L In (!LST_LFNAME!) Do (
                     Set LST_KEY=%%~L
                     Set LST_VAL=%%~M
                     If /I "!LST_KEY:~0,1!!LST_KEY:~-1,1!" EQU "[]" (
@@ -94,7 +94,7 @@ Rem --- リストファイル変換 ----------------------------------------------------
                             Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
                             Set LST_EXTENSION=!LST_EXTENSION:~1!
                             If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                            Echo>>"%CMD_WRK%" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                            Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
                         )
                         Set LST_SECTION=!LST_KEY:~1,-1!
                         Set LST_TITLE=
@@ -145,23 +145,23 @@ Rem --- リストファイル変換 ----------------------------------------------------
                     )
                 )
                 If /I "!LST_SECTION!" NEQ "" (
-                    If /I "!LST_SECTION!" NEQ "" (
-                        If /I "!LST_RENAME!" EQU "" (For %%E In ("!LST_FILE!")   Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE&Set LST_RENAME=%%~nxE)
-                        ) Else                      (For %%E In ("!LST_RENAME!") Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE)
-                        )
-                        If /I "!LST_RUN_ORDER!" EQU "" (Set LST_RUN_ORDER=000)
-                        Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
-                        Set LST_EXTENSION=!LST_EXTENSION:~1!
-                        If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                        Echo>>"%CMD_WRK%" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                    If /I "!LST_RENAME!" EQU "" (For %%E In ("!LST_FILE!")   Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE&Set LST_RENAME=%%~nxE)
+                    ) Else                      (For %%E In ("!LST_RENAME!") Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE)
                     )
+                    If /I "!LST_RUN_ORDER!" EQU "" (Set LST_RUN_ORDER=000)
+                    Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
+                    Set LST_EXTENSION=!LST_EXTENSION:~1!
+                    If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
+                    Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
                 )
             )
         )
     )
+
 Rem --- ファイルソート --------------------------------------------------------
-    Sort "%CMD_WRK%" > "%CMD_DAT%"
-Rem --- ファイル取得 ----------------------------------------------------------
+    Sort "!CMD_WRK!" > "!CMD_DAT!"
+
+Rem *** ファイル取得 **********************************************************
     Echo --- ファイル取得 --------------------------------------------------------------
     For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
         Set LST_WINDOWS=%%~I
@@ -173,7 +173,7 @@ Rem --- ファイル取得 ----------------------------------------------------------
         Set LST_CMD=%%~O
         Set LST_RENAME=%%~P
         Set LST_FILE=%%~Q
-        Set LST_WINPKG=%WIM_PKG%\!LST_WINDOWS!
+        Set LST_WINPKG=!WIM_PKG!\!LST_WINDOWS!
         For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
         For /F "delims=: tokens=2 usebackq" %%X In ('!LST_FILE!') Do (
             If /I "%%X" NEQ "" (
@@ -237,6 +237,10 @@ Rem --- ファイル取得 ----------------------------------------------------------
             )
         )
     )
+
+Rem --- 作業ファイルの削除 ----------------------------------------------------
+    If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
+    If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
 
 Rem *** 作業終了 **************************************************************
 :DONE
