@@ -70,7 +70,7 @@ Rem Set WIM_TOP=C:\WimWK
     Set MOV_WIM=%WIM_TOP%.%NOW_DAY%%NOW_TIM%
     Set MOV_ISO=%MOV_WIM%\iso
 
-    Set CMD_FIL=%WIM_WRK%\Downloader.cmd
+    Set CMD_FIL=%WIM_BIN%\Downloader.cmd
     Set CMD_DAT=%WIM_WRK%\Downloader.dat
     Set CMD_WRK=%WIM_WRK%\Downloader.wrk
 
