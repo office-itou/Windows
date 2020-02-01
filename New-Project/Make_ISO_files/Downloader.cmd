@@ -73,14 +73,14 @@ Rem --- リストファイル変換 ----------------------------------------------------
     Echo --- リストファイル変換 --------------------------------------------------------
     Set LST_FIL=
     For %%I In (%WIN_VER%) Do (
+        Set LST_WINVER=%%~I
         For %%J In (%LST_PKG%) Do (
-            Set LST_WINVER=%%~I
             Set LST_PACKAGE=%%~J
             Set LST_LFNAME=%WIM_LST%\Windows!LST_WINVER!!LST_PACKAGE!*.lst
             Set LST_WINPACK=%WIM_PKG%\w!LST_WINVER!\!LST_PACKAGE!
             Set LST_SECTION=
             For %%K In (!LST_LFNAME!) Do (
-                For /F "delims== tokens=1,2* usebackq" %%L In (%%~K) Do (
+                For /F "delims== tokens=1* usebackq" %%L In (%%~K) Do (
                     Set LST_KEY=%%~L
                     Set LST_VAL=%%~M
                     If /I "!LST_KEY:~0,1!!LST_KEY:~-1,1!" EQU "[]" (
