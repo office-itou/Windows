@@ -46,8 +46,8 @@ Rem --- ä¬ã´ïœêîê›íË ----------------------------------------------------------
     Set WIM_PKG=!WIM_TOP!\pkg
     Set WIM_USR=!WIM_TOP!\usr
     Set WIM_WRK=!WIM_TOP!\wrk
-    Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
-    Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
+    Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.dat
+    Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.wrk
 
     If /I "!WIN_VER!" EQU "" (
         Echo à¯êî1[WIN_VER]Ç™ê›íËÇ≥ÇÍÇƒÇ¢Ç‹ÇπÇÒÅB
