@@ -335,6 +335,84 @@ Rem === Unattend ==============================================================
 
 Rem === options.cmd の作成 ====================================================
     Echo --- options.cmd の作成 ---------------------------------------------------------
+    Set OPT_DIR=autounattend\options
+    Set OPT_PKG=!OPT_DIR!\wupd
+    Set OPT_CMD=!WIM_IMG!\!OPT_DIR!\options.cmd
+    Set OPT_LST=
+    If Not Exist "!WIM_IMG!\!OPT_DIR!" (MkDir "!WIM_IMG!\!OPT_DIR!")
+    If Exist "!OPT_CMD!" (Del /F "!OPT_CMD!")
+Rem --- options.cmd の作成 ----------------------------------------------------
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!" Rem %DATE% %TIME% maked
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% Start
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!" Rem Cmd /C sc stop wuauserv
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    If !WIN_VER! EQU 7 (
+        Echo>>"%OPT_CMD%"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 2
+        Echo>>"%OPT_CMD%"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "IncludeRecommendedUpdates" /t REG_DWORD /d 1
+        Echo>>"%OPT_CMD%"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "ElevateNonAdmins" /t REG_DWORD /d 1
+        Echo>>"%OPT_CMD%"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "EnableFeaturedSoftware" /t REG_DWORD /d 1
+        Echo>>"%OPT_CMD%" Rem ---------------------------------------------------------------------------
+    )
+Rem ---------------------------------------------------------------------------
+    For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
+        Set LST_WINDOWS=%%~I
+        Set LST_PACKAGE=%%~J
+        Set LST_TYPE=%%~K
+        Set LST_RUN_ORDER=%%~L
+        Set LST_SECTION=%%~M
+        Set LST_EXTENSION=%%~N
+        Set LST_CMD=%%~O
+        Set LST_RENAME=%%~P
+        Set LST_FILE=%%~Q
+        For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
+        If /I "!LST_WINDOWS!" EQU "w!WIN_VER!" (
+            If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
+                If /I "!LST_EXTENSION!" EQU "exe" (
+                    If /I "!LST_SECTION!" NEQ "IE11" (
+                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME! !LST_CMD!
+                        Set OPT_LST=!OPT_LST! "!LST_FNAME!"
+                    )
+                ) Else If /I "!LST_EXTENSION!" EQU "wus" (
+                    If /I "!LST_CMD!" NEQ "" (
+                        Echo>>"!OPT_CMD!"     Cmd /C Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME! !LST_CMD!
+                        Set OPT_LST=!OPT_LST! "!LST_FNAME!"
+                    )
+                ) Else If /I "!LST_EXTENSION!" EQU "msi" (
+                    Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME! !LST_CMD!
+                    Set OPT_LST=!OPT_LST! "!LST_FNAME!"
+                ) Else If /I "!LST_EXTENSION!" EQU "zip" (
+                    Pushd 
+                        Set LST_UNQ=
+                        For /R %%Z In (*!LST_SECTION!*.msu) Do (
+                            If /I "!LST_UNQ!" NEQ "%%~nxZ" (
+                                Set LST_FNAME=%%~Z
+                                Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME! !LST_CMD!
+                                Set OPT_LST=!OPT_LST! "!LST_FNAME!"
+                                Set LST_UNQ=%%~nxZ
+                            )
+                        )
+                    Popd
+                )
+            )
+        )
+    )
+Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!" Rem Cmd /C RmDel /S /Q "%%configsetroot%%"
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!"     Cmd /C shutdown /r /t 3
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% End
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!"     pause
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+Rem ---------------------------------------------------------------------------
+    If /I "!OPT_LST!" NEQ "" (
+        Robocopy /J /MIR /A-:RHS /NDL "%WIM_WUD%" "%WIM_IMG%\%OPT_PKG%" !OPT_LST! > Nul
+    )
 
 Rem === ドライバー ============================================================
     If !WIN_VER! EQU 7 (
@@ -360,6 +438,51 @@ Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!
         Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
         Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
 Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
+        Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
+
+Rem --- install.wimを更新する -------------------------------------------------
+        Dism /Mount-WIM /WimFile:"!WIM_IMG!\sources\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
+        Echo --- winRE.wimを更新する -------------------------------------------------------
+        Dism /Mount-WIM /WimFile:"!WIM_MNT!\Windows\System32\Recovery\winRE.wim" /Index:1 /MountDir:"!WIM_WRE!"    || GoTo :DONE
+Rem     Dism !WRE_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"           || GoTo :DONE
+Rem     Dism !WRE_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"           || GoTo :DONE
+        Dism !WRE_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
+        Dism !WRE_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
+Rem     Dism !WRE_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
+        Dism /UnMount-Wim /MountDir:"!WIM_WRE!" /Commit                                         || GoTo :DONE
+        Echo --- install.wimを更新する -----------------------------------------------------
+Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"           || GoTo :DONE
+Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"           || GoTo :DONE
+        Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
+        Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
+Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
+Rem --- Windows Update ファイルの統合 -----------------------------------------
+        For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
+            Set LST_WINDOWS=%%~I
+            Set LST_PACKAGE=%%~J
+            Set LST_TYPE=%%~K
+            Set LST_RUN_ORDER=%%~L
+            Set LST_SECTION=%%~M
+            Set LST_EXTENSION=%%~N
+            Set LST_CMD=%%~O
+            Set LST_RENAME=%%~P
+            Set LST_FILE=%%~Q
+            For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
+            If /I "!LST_WINDOWS!" EQU "w!WIN_VER!" (
+                If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
+                    If /I "!LST_EXTENSION!" EQU "msu" (
+                        Dism !ADD_PAC! /PackagePath:"!LST_RENAME!"                              || GoTo :DONE
+                    ) Else If /I "!LST_EXTENSION!" EQU "exe" (
+                        If /I "!LST_SECTION!" NEQ "IE11" (
+                            Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Win7.CAB"           || GoTo :DONE
+                            Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\ielangpack-ja-JP.CAB"  || GoTo :DONE
+                            Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Spelling-en.MSU"    || GoTo :DONE
+                            Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Hyphenation-en.MSU" || GoTo :DONE
+                        )
+                    )
+                )
+            )
+        )
         Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
     )
 
