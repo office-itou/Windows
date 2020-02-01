@@ -38,12 +38,16 @@ Rem *** 作業環境設定 **********************************************************
 Rem --- 環境変数設定 ----------------------------------------------------------
     Set WIN_VER=%~1
     Set LST_PKG=%~2
-    Set WIM_LST=%~3
-    Set WIM_PKG=%~4
-
-    Set CMD_FIL=!WRK_DIR!\!WRK_NAM!.cmd
-    Set CMD_DAT=!WRK_DIR!\!WRK_NAM!.dat
-    Set CMD_WRK=!WRK_DIR!\!WRK_NAM!.wrk
+    Set WIM_TOP=%~3
+    Set WIM_BIN=%WIM_TOP%\bin
+    Set WIM_CFG=%WIM_TOP%\cfg
+    Set WIM_ISO=%WIM_TOP%\iso
+    Set WIM_LST=%WIM_TOP%\lst
+    Set WIM_PKG=%WIM_TOP%\pkg
+    Set WIM_USR=%WIM_TOP%\usr
+    Set WIM_WRK=%WIM_TOP%\wrk
+    Set CMD_DAT=%WIM_WRK%\!WRK_NAM!.dat
+    Set CMD_WRK=%WIM_WRK%\!WRK_NAM!.wrk
 
     If /I "%WIN_VER%" EQU "" (
         Echo 引数1[WIN_VER]が設定されていません。
@@ -55,13 +59,8 @@ Rem --- 環境変数設定 ----------------------------------------------------------
         GoTo DONE
     )
 
-    If /I "%WIM_LST%" EQU "" (
-        Echo 引数3[WIM_LST]が設定されていません。
-        GoTo DONE
-    )
-
-    If /I "%WIM_PKG%" EQU "" (
-        Echo 引数4[WIM_PKG]が設定されていません。
+    If /I "%WIM_TOP%" EQU "" (
+        Echo 引数3[WIM_TOP]が設定されていません。
         GoTo DONE
     )
 

@@ -70,9 +70,10 @@ Rem Set WIM_TOP=C:\WimWK
     Set MOV_WIM=%WIM_TOP%.%NOW_DAY%%NOW_TIM%
     Set MOV_ISO=%MOV_WIM%\iso
 
-    Set CMD_FIL=%WIM_BIN%\Downloader.cmd
-    Set CMD_DAT=%WIM_WRK%\Downloader.dat
-    Set CMD_WRK=%WIM_WRK%\Downloader.wrk
+    Set DWL_NAM=Downloader
+    Set DWL_FIL=%WIM_BIN%\%DWL_NAM%.cmd
+    Set DWL_DAT=%WIM_WRK%\%DWL_NAM%.dat
+    Set DWL_WRK=%WIM_WRK%\%DWL_NAM%.wrk
 
     Set GIT_TOP=https://raw.githubusercontent.com/office-itou/Windows/master/New-Project/Make_ISO_files
     Set GIT_URL=%GIT_TOP%/Initial-Downloader.lst
@@ -141,9 +142,9 @@ Rem --- 作業フォルダーの作成 --------------------------------------------------
     )
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
-    If Exist "%CMD_FIL%" (Del /F "%CMD_FIL%" || GoTo DONE)
-    If Exist "%CMD_DAT%" (Del /F "%CMD_DAT%" || GoTo DONE)
-    If Exist "%CMD_WRK%" (Del /F "%CMD_WRK%" || GoTo DONE)
+Rem If Exist "%DWL_FIL%" (Del /F "%DWL_FIL%" || GoTo DONE)
+    If Exist "%DWL_DAT%" (Del /F "%DWL_DAT%" || GoTo DONE)
+    If Exist "%DWL_WRK%" (Del /F "%DWL_WRK%" || GoTo DONE)
 
 Rem --- Oscdimg取得 -----------------------------------------------------------
     Echo --- Oscdimg取得 ---------------------------------------------------------------
@@ -207,7 +208,7 @@ Rem     If Exist "*.lst" (Copy /Y "*.lst" "%WIM_LST%" > Nul)
 Rem )
 
 Rem --- ファイル取得 ----------------------------------------------------------
-    Call "%CMD_FIL%" "%WIN_VER%" "%LST_PKG%" "%WIM_LST%" "%WIM_PKG%"
+    Call "%DWL_FIL%" "%WIN_VER%" "%LST_PKG%" "%WIM_TOP%"
 
 Rem *** 作業終了 **************************************************************
 :DONE
