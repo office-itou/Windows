@@ -1,0 +1,379 @@
+Rem ***************************************************************************
+@Echo Off
+    Cls
+
+Rem *** 作業開始 **************************************************************
+:START
+    Echo *** 作業開始 ******************************************************************
+    Echo %DATE% %TIME%
+
+    SetLocal EnableExtensions
+    SetLocal EnableDelayedExpansion
+
+Rem --- 作業環境確認 ----------------------------------------------------------
+    If /I "%USERNAME%" NEQ "Administrator" (
+        If /I "%SESSIONNAME%" NEQ "" (
+            Echo 管理者特権で実行して下さい。
+            GoTo DONE
+        )
+    )
+
+Rem --- 環境変数設定 ----------------------------------------------------------
+    For /F "usebackq delims=" %%I In (`Echo %0`) Do (
+        Set WRK_DIR=%%~dpI
+        Set WRK_DIR=!WRK_DIR:~0,-1!
+        Set WRK_FIL=%%~nxI
+        Set WRK_NAM=%%~nI
+    )
+
+    Set NOW_DAY=%date:~0,4%%date:~5,2%%date:~8,2%
+
+    If /I "%time:~0,1%" EQU " " (
+        Set NOW_TIM=0%time:~1,1%%time:~3,2%%time:~6,2%
+    ) Else (
+        Set NOW_TIM=%time:~0,2%%time:~3,2%%time:~6,2%
+    )
+
+Rem *** 作業環境設定 **********************************************************
+:INP_FOLDER
+    Set WIM_TOP=C:\WimWK
+    Set /P WIM_TOP=作業環境のフォルダーを指定して下さい。（規定値[!WIM_TOP!]）
+    If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=C:\WimWK)
+
+    Echo "!WIM_TOP!"
+    Set INP_ANS=
+    Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)
+    If /I "!INP_ANS!" NEQ "Y" (GoTo INP_FOLDER)
+
+Rem --- Windowsのバージョン設定 -----------------------------------------------
+:INPUT_WIN_TYPE
+    Echo --- Windowsのバージョン設定 ---------------------------------------------------
+    Echo 1: Windows 7
+    Echo 2: Windows 10
+    Set IDX_WIN=2
+    Set /P IDX_WIN=Windowsのバージョンを1～2の数字から選んで下さい。（規定値[!IDX_WIN!]）
+
+           If /I "!IDX_WIN!" EQU "1" (Set WIN_VER=7
+    ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_VER=10
+    ) Else                           (GoTo INPUT_WIN_TYPE
+    )
+
+Rem --- Windowsのアーキテクチャー設定 -----------------------------------------
+:INPUT_ARC_TYPE
+    Echo --- Windowsのアーキテクチャー設定 ---------------------------------------------
+    Echo 1: 32bit版
+    Echo 2: 64bit版
+    Set IDX_CPU=2
+    Set /P IDX_CPU=Windowsのアーキテクチャーを1～2の数字から選んで下さい。（規定値[!IDX_CPU!]）
+
+           If /I "!IDX_CPU!" EQU "1" (Set ARC_TYP=x86&Set CPU_BIT=32
+    ) Else If /I "!IDX_CPU!" EQU "2" (Set ARC_TYP=x64&Set CPU_BIT=64
+    ) Else                           (GoTo INPUT_ARC_TYPE
+    )
+
+Rem --- DVDのドライブ名設定 ---------------------------------------------------
+:CHK_DVD_DRIVE
+    Echo --- DVDのドライブ名設定 -------------------------------------------------------
+    Set DRV_DVD=
+    Set /P DRV_DVD=DVDのドライブ名を入力して下さい。 [A-Z]
+    If /I "!DRV_DVD!" EQU "" (GoTo CHK_DVD_DRIVE)
+
+    If /I "!DRV_DVD:~1,1!" NEQ ":" (Set DRV_DVD=!DRV_DVD:~0,1!:)
+
+:SET_DVD_DRIVE
+    If Not Exist "!DRV_DVD!\sources\install.wim" If Not Exist "!DRV_DVD!\sources\install.swm" (
+        Echo 統合する!ARC_TYP!版のDVDを"!DRV_DVD!"にセットして下さい。
+        Echo 準備ができたら[Enter]を押下して下さい。
+        Pause > Nul 2>&1
+        GoTo SET_DVD_DRIVE
+    )
+
+Rem --- wimバージョンの取得 ---------------------------------------------------
+    If Exist "!DRV_DVD!\Sources\Install.wim" (Set WIM_WIM=!DRV_DVD!\Sources\Install.wim
+    ) Else                                   (Set WIM_WIM=!DRV_DVD!\Sources\Install.swm
+    )
+    For /F "Usebackq Tokens=3 Delims=: " %%I In (`Dism /Get-WimInfo /WimFile:"!WIM_WIM!" /Index:1 ^| FindStr /C:"名前:"`)           Do (Set WIM_NME=%%I)
+    For /F "Usebackq Tokens=2 Delims=: " %%I In (`Dism /Get-WimInfo /WimFile:"!WIM_WIM!" /Index:1 ^| FindStr /C:"アーキテクチャ:"`) Do (Set WIM_ARC=%%I)
+    For /F "Usebackq Tokens=2 Delims=: " %%I In (`Dism /Get-WimInfo /WimFile:"!WIM_WIM!" /Index:1 ^| FindStr /C:"バージョン :"`)    Do (Set WIM_VER=%%I)
+    If !WIM_NME! NEQ !WIN_VER! (
+        Echo DVDがWindows !WIM_NME! !WIM_ARC!版です。
+        Echo 統合するWindows !WIN_VER! !ARC_TYP!版のDVDを"!DRV_DVD!"にセットして下さい。
+        Echo 準備ができたら[Enter]を押下して下さい。
+        Pause > Nul 2>&1
+        GoTo SET_DVD_DRIVE
+    )
+    If /I "!WIM_ARC!" NEQ "!ARC_TYP!" (
+        Echo DVDがWindows !WIM_NME! !WIM_ARC!版です。
+        Echo 統合するWindows !WIN_VER! !ARC_TYP!版のDVDを"!DRV_DVD!"にセットして下さい。
+        Echo 準備ができたら[Enter]を押下して下さい。
+        Pause > Nul 2>&1
+        GoTo SET_DVD_DRIVE
+    )
+
+Rem --- Windowsのエディション設定 ---------------------------------------------
+    If !WIN_VER! EQU 7 (
+        Echo --- Windowsのエディション設定 -------------------------------------------------
+        Echo 1: Windows 7 Starter ^(32bit版のみ^)
+        Echo 2: Windows 7 HomeBasic
+        Echo 3: Windows 7 HomePremium
+        Echo 4: Windows 7 Professional
+        Echo 5: Windows 7 Ultimate
+        Set IDX_WIN=4
+        Set /P IDX_WIN=Windowsのエディションを1～5の数字から選んで下さい。（規定値[!IDX_WIN!]）
+
+               If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 7 Starter
+        ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 7 HomeBasic
+        ) Else If /I "!IDX_WIN!" EQU "3" (Set WIN_TYP=Windows 7 HomePremium
+        ) Else If /I "!IDX_WIN!" EQU "4" (Set WIN_TYP=Windows 7 Professional
+        ) Else If /I "!IDX_WIN!" EQU "5" (Set WIN_TYP=Windows 7 Ultimate
+        )
+    ) Else If !WIN_VER! EQU 10 (
+Rem     Echo --- Windowsのエディション設定 -------------------------------------------------
+Rem     Echo 1: Windows 10 Home
+Rem     Echo 2: Windows 10 Education
+Rem     Echo 3: Windows 10 Pro
+Rem     Echo 4: Windows 10 Pro Education
+Rem     Echo 5: Windows 10 Pro for Workstations
+        Set IDX_WIN=3
+Rem     Set /P IDX_WIN=Windowsのエディションを1～5の数字から選んで下さい。（規定値[!IDX_WIN!]）
+
+               If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 10 Home
+        ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 10 Education
+        ) Else If /I "!IDX_WIN!" EQU "3" (Set WIN_TYP=Windows 10 Pro
+        ) Else If /I "!IDX_WIN!" EQU "4" (Set WIN_TYP=Windows 10 Pro Education
+        ) Else If /I "!IDX_WIN!" EQU "5" (Set WIN_TYP=Windows 10 Pro for Workstations
+        )
+    )
+
+Rem --- 環境変数設定 ----------------------------------------------------------
+Rem Set WIN_VER=%~1
+    Set LST_PKG=adk drv zip !ARC_TYP!
+Rem Set WIM_TOP=%~3
+    Set WIM_BIN=!WIM_TOP!\bin
+    Set WIM_CFG=!WIM_TOP!\cfg
+    Set WIM_ISO=!WIM_TOP!\iso
+    Set WIM_LST=!WIM_TOP!\lst
+    Set WIM_PKG=!WIM_TOP!\pkg
+    Set WIM_USR=!WIM_TOP!\usr
+    Set WIM_WRK=!WIM_TOP!\wrk
+    Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
+    Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
+
+    Set DVD_SRC=!DRV_DVD!\\
+    Set DVD_DST=!WIM_TOP!\windows_!WIN_VER!_!ARC_TYP!_dvd_custom_VER_.iso
+    Set DVD_DST=%DVD_DST:_VER_=_!WIM_VER!%
+
+Rem --- 作業フォルダーの作成 --------------------------------------------------
+    Echo *** 作業フォルダーの作成 ******************************************************
+Rem --- 破損イメージの削除 ----------------------------------------------------
+    For %%I In (!WIN_VER!) Do (
+        For %%J In (!ARC_TYP!) Do (
+            Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
+            Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
+            Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
+            If Exist "!WIM_WRE!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_WRE!" /Discard)
+            If Exist "!WIM_MNT!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Discard)
+        )
+    )
+
+    If Not Exist "!WIM_BIN!" (MkDIr "!WIM_BIN!" || GoTo DONE)
+    If Not Exist "!WIM_CFG!" (MkDIr "!WIM_CFG!" || GoTo DONE)
+    If Not Exist "!WIM_LST!" (MkDIr "!WIM_LST!" || GoTo DONE)
+    If Not Exist "!WIM_PKG!" (MkDIr "!WIM_PKG!" || GoTo DONE)
+    If Not Exist "!WIM_USR!" (MkDIr "!WIM_USR!" || GoTo DONE)
+    If Not Exist "!WIM_WRK!" (MkDIr "!WIM_WRK!" || GoTo DONE)
+
+    For %%I In (!WIN_VER!) Do (
+        For %%J In (!ARC_TYP!) Do (
+            Set WIM_DRV=!WIM_PKG!\w%%I\drv
+            Set WIM_WUD=!WIM_PKG!\w%%I\%%J
+            Set WIM_EFI=!WIM_WRK!\w%%I\%%J\efi
+            Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
+            Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
+            Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
+            If Not Exist "!WIM_WUD!" (MkDir "!WIM_WUD!" || GoTo DONE)
+            If Not Exist "!WIM_EFI!" (MkDir "!WIM_EFI!" || GoTo DONE)
+            If Not Exist "!WIM_IMG!" (MkDir "!WIM_IMG!" || GoTo DONE)
+            If Not Exist "!WIM_MNT!" (MkDir "!WIM_MNT!" || GoTo DONE)
+            If Not Exist "!WIM_WRE!" (MkDir "!WIM_WRE!" || GoTo DONE)
+        )
+    )
+
+Rem --- Oscdimgのパスを設定する -----------------------------------------------
+    Set Path=!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%;%Path%
+    Oscdimg > NUL 2>&1
+    If "%ErrorLevel%" EQU "9009" (
+        Echo Windows ADK をインストールして下さい。
+        GoTo DONE
+    )
+
+Rem --- 作業ファイルの削除 ----------------------------------------------------
+    If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
+    If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
+
+Rem *** リストファイル変換 ****************************************************
+    Echo --- リストファイル変換 --------------------------------------------------------
+    Set LST_FIL=
+    For %%I In (!WIN_VER!) Do (
+        Set LST_WINVER=%%~I
+        For %%J In (!LST_PKG!) Do (
+            Set LST_PACKAGE=%%~J
+            Set LST_LFSNAME=!WIM_LST!\Windows!LST_WINVER!!LST_PACKAGE!*.lst
+            Set LST_WINPACK=!WIM_PKG!\w!LST_WINVER!\!LST_PACKAGE!
+            Set LST_SECTION=
+            For %%K In (!LST_LFSNAME!) Do (
+                Set LST_LFNAME=%%~K
+                For /F "delims== tokens=1* usebackq" %%L In (!LST_LFNAME!) Do (
+                    Set LST_KEY=%%~L
+                    Set LST_VAL=%%~M
+                    If /I "!LST_KEY:~0,1!!LST_KEY:~-1,1!" EQU "[]" (
+                        If /I "!LST_SECTION!" EQU "INFO" (Set LST_SECTION=)
+                        If /I "!LST_SECTION!" EQU "LIST" (Set LST_SECTION=)
+                        If /I "!LST_SECTION!" NEQ "" (
+                            If /I "!LST_RENAME!" EQU "" (For %%E In ("!LST_FILE!")   Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE&Set LST_RENAME=%%~nxE)
+                            ) Else                      (For %%E In ("!LST_RENAME!") Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE)
+                            )
+                            If /I "!LST_RUN_ORDER!" EQU "" (Set LST_RUN_ORDER=000)
+                            Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
+                            Set LST_EXTENSION=!LST_EXTENSION:~1!
+                            If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
+                            Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                        )
+                        Set LST_SECTION=!LST_KEY:~1,-1!
+                        Set LST_TITLE=
+                        Set LST_INFO=
+                        Set LST_FILE=
+                        Set LST_RENAME=
+                        Set LST_SIZE=
+                        Set LST_TYPE=
+                        Set LST_CATEGORY=
+                        Set LST_TIE_UP=
+                        Set LST_XOR_KEY=
+                        Set LST_SYNCHRO_KEY=
+                        Set LST_RELEASE=
+                        Set LST_RUN_ORDER=
+                        Set LST_CMD=
+                        Set LST_DECODE=
+                        Set LST_DECODE_TYPE=
+                        Set LST_DECODE_GET=
+                        Set LST_IEXPRESS=
+                        Set LST_IEXPRESS_LIST=
+                        Set LST_IEXPRESS_CMD=
+                        Set LST_PREVIOUS_SP=
+                        Set LST_COMMENT=
+                    )
+                    If /I "!LST_SECTION!" NEQ "" (
+                               If /I "!LST_KEY!" EQU "TITLE"         (Set LST_TITLE=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "INFO"          (Set LST_INFO=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "FILE"          (Set LST_FILE=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "RENAME"        (Set LST_RENAME=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "SIZE"          (Set LST_SIZE=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "TYPE"          (Set LST_TYPE=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "CATEGORY"      (Set LST_CATEGORY=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "TIE_UP"        (Set LST_TIE_UP=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "XOR_KEY"       (Set LST_XOR_KEY=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "SYNCHRO_KEY"   (Set LST_SYNCHRO_KEY=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "RELEASE"       (Set LST_RELEASE=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "RUN_ORDER"     (Set LST_RUN_ORDER=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "CMD"           (Set LST_CMD=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "DECODE"        (Set LST_DECODE=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "DECODE_TYPE"   (Set LST_DECODE_TYPE=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "DECODE_GET"    (Set LST_DECODE_GET=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "IEXPRESS"      (Set LST_IEXPRESS=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "IEXPRESS_LIST" (Set LST_IEXPRESS_LIST=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "IEXPRESS_CMD"  (Set LST_IEXPRESS_CMD=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "PREVIOUS_SP"   (Set LST_PREVIOUS_SP=!LST_VAL!
+                        ) Else If /I "!LST_KEY!" EQU "COMMENT"       (Set LST_COMMENT=!LST_VAL!
+                        )
+                    )
+                )
+                If /I "!LST_SECTION!" NEQ "" (
+                    If /I "!LST_RENAME!" EQU "" (For %%E In ("!LST_FILE!")   Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE&Set LST_RENAME=%%~nxE)
+                    ) Else                      (For %%E In ("!LST_RENAME!") Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE)
+                    )
+                    If /I "!LST_RUN_ORDER!" EQU "" (Set LST_RUN_ORDER=000)
+                    Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
+                    Set LST_EXTENSION=!LST_EXTENSION:~1!
+                    If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
+                    Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                )
+            )
+        )
+    )
+
+Rem --- ファイルソート --------------------------------------------------------
+    Sort "!CMD_WRK!" > "!CMD_DAT!"
+
+:UPDATE
+Rem *** 統合ISOファイル作成 ***************************************************
+    Set ADD_PAC=/Image:^"!WIM_MNT!^" /Add-Package /IgnoreCheck
+    Set ADD_DRV=/Image:^"!WIM_MNT!^" /Add-Driver /ForceUnsigned /Recurse
+    Set WRE_PAC=/Image:^"!WIM_WRE!^" /Add-Package /IgnoreCheck
+    Set WRE_DRV=/Image:^"!WIM_WRE!^" /Add-Driver /ForceUnsigned /Recurse
+
+Rem === 原本から作業フォルダーにコピーする ====================================
+    Echo --- 原本から作業フォルダーにコピーする ----------------------------------------
+    Robocopy /J /MIR /A-:RHS /NDL "!DVD_SRC!" "!WIM_IMG!" > Nul
+
+Rem === UEFIブート準備 ========================================================
+    If !WIN_VER! EQU 7 If /I "!ARC_TYP!" EQU "x64" (
+        If Not Exist "!WIM_EFI!\bootx64.efi" (
+            Echo --- bootx64.efi の抽出 --------------------------------------------------------
+            Dism /Mount-Wim /WimFile:"!WIM_IMG!\sources\boot.wim" /index:1 /MountDir:"!WIM_MNT!" /ReadOnly || GoTo DONE
+            Copy /Y "!WIM_MNT!\Windows\Boot\EFI\bootmgfw.efi" "!WIM_EFI!\bootx64.efi" > Nul || GoTo DONE
+            Dism /Unmount-Wim /MountDir:"!WIM_MNT!" /Discard || GoTo DONE
+        )
+        Echo --- bootx64.efi のコピー ------------------------------------------------------
+        Robocopy /J /MIR /A-:RHS /NDL "!WIM_EFI!" "!WIM_IMG!\efi\boot" "bootx64.efi" > Nul
+    )
+
+Rem === Unattend ==============================================================
+    If Exist "!WIM_CFG!\autounattend-windows!WIN_VER!-!ARC_TYP!.xml" (
+        Echo --- autounattend.xml のコピー -------------------------------------------------
+        Copy /Y "!WIM_CFG!\autounattend-windows!WIN_VER!-!ARC_TYP!.xml" "!WIM_IMG!\autounattend.xml" > Nul
+    )
+
+Rem === options.cmd の作成 ====================================================
+    Echo --- options.cmd の作成 ---------------------------------------------------------
+
+Rem === ドライバー ============================================================
+    If !WIN_VER! EQU 7 (
+        Echo --- ドライバーの統合 -----------------------------------------------------------
+        Pushd "!WIM_DRV!\USB" &For /R %%I In (Win7\!ARC_TYP!\iusb3hub.inf*)  Do (Set DRV_USB=%%~dpI&Set DRV_USB=!DRV_USB:~0,-1!)&Popd
+        Pushd "!WIM_DRV!\RST" &For /R %%I In (f6flpy-!ARC_TYP!\iaAHCIC.inf*) Do (Set DRV_RST=%%~dpI&Set DRV_RST=!DRV_RST:~0,-1!)&Popd
+        Pushd "!WIM_DRV!\NVMe"&For /R %%I In (Client-!ARC_TYP!\IaNVMe.inf*)  Do (Set DRV_NVM=%%~dpI&Set DRV_NVM=!DRV_NVM:~0,-1!)&Popd
+
+Rem --- boot.wimを更新する ----------------------------------------------------
+        Echo --- boot.wimを更新する [1] ----------------------------------------------------
+        Dism /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:1 /MountDir:"!WIM_MNT!"    || GoTo :DONE
+Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"           || GoTo :DONE
+Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"           || GoTo :DONE
+        Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
+        Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
+Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
+        Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
+
+        Echo --- boot.wimを更新する [2] ----------------------------------------------------
+        Dism /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:2 /MountDir:"!WIM_MNT!"    || GoTo :DONE
+Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"           || GoTo :DONE
+Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"           || GoTo :DONE
+        Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
+        Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
+Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
+        Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
+    )
+
+Rem === Windows Update ファイルの統合 =========================================
+
+Rem --- 作業ファイルの削除 ----------------------------------------------------
+    If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
+    If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
+
+Rem *** 作業終了 **************************************************************
+:DONE
+    EndLocal
+    Echo *** 作業終了 ******************************************************************
+    Echo %DATE% %TIME%
+    Echo [Enter]を押下して下さい。
+    Pause > Nul 2>&1
+    Echo On
