@@ -40,9 +40,9 @@ Rem *** 作業環境設定 **********************************************************
     Set /P WIM_TOP=作業環境のフォルダーを指定して下さい。（規定値[!WIM_TOP!]）
     If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=C:\WimWK)
 
-    Set INP_ANS=
+    Set INP_ANS=N
     Echo "!WIM_TOP!"
-    Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)
+    Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
     If /I "!INP_ANS!" NEQ "Y" (GoTo INP_FOLDER)
 
 Rem --- 環境変数設定 ----------------------------------------------------------
@@ -58,8 +58,8 @@ Rem Set WIM_TOP=C:\WimWK
     Set WIM_USR=!WIM_TOP!\usr
     Set WIM_WRK=!WIM_TOP!\wrk
 
-    Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
-    Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
+    Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.dat
+    Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.wrk
 
     Set BAK_WIM=!WIM_WRK!\!NOW_DAY!!NOW_TIM!
     Set BAK_BIN=!BAK_TOP!\bin
@@ -93,8 +93,8 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
 
 Rem --- 既存フォルダーの移動 --------------------------------------------------
     If Exist "!WIM_TOP!" (
-        Set INP_ANS=
-        Set /P INP_ANS=既存フォルダーがありますが上書きしますか？ [Y/N] ^(Yes/No^)
+        Set INP_ANS=N
+        Set /P INP_ANS=既存フォルダーがありますが上書きしますか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
         If /I "!INP_ANS!" EQU "Y" (
             Echo *** 既存フォルダーのバックアップ **********************************************
             Robocopy /J /MIR /A-:RHS /NDL "!WIM_BIN!" "!BAK_BIN!" > Nul
@@ -122,8 +122,8 @@ Rem         Robocopy /J /MIR /A-:RHS /NDL "!WIM_PKG!" "!BAK_PKG!" > Nul
 Rem --- 作業フォルダーの作成 --------------------------------------------------
     Echo *** 作業フォルダーの作成 ******************************************************
 Rem --- 破損イメージの削除 ----------------------------------------------------
-    For %%I In (!WIN_VER!) Do (
-        For %%J In (!ARC_TYP!) Do (
+    For %%I In (%WIN_VER%) Do (
+        For %%J In (%ARC_TYP%) Do (
             Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
             Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
             Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
@@ -139,8 +139,8 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
     If Not Exist "!WIM_USR!" (MkDIr "!WIM_USR!" || GoTo DONE)
     If Not Exist "!WIM_WRK!" (MkDIr "!WIM_WRK!" || GoTo DONE)
 
-    For %%I In (!WIN_VER!) Do (
-        For %%J In (!ARC_TYP!) Do (
+    For %%I In (%WIN_VER%) Do (
+        For %%J In (%ARC_TYP%) Do (
             Set WIM_DRV=!WIM_PKG!\w%%I\drv
             Set WIM_WUD=!WIM_PKG!\w%%I\%%J
             Set WIM_BAK=!WIM_WRK!\w%%I\%%J\bak
@@ -233,7 +233,7 @@ Rem )
 Rem *** リストファイル変換 ****************************************************
     Echo --- リストファイル変換 --------------------------------------------------------
     Set LST_FIL=
-    For %%I In (!WIN_VER!) Do (
+    For %%I In (%WIN_VER%) Do (
         Set LST_WINVER=%%~I
         For %%J In (!LST_PKG!) Do (
             Set LST_PACKAGE=%%~J
