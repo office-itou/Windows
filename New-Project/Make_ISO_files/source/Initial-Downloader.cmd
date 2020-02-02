@@ -1,6 +1,6 @@
 Rem ***************************************************************************
 @Echo Off
-Rem Cls
+    Cls
 
 Rem *** 作業開始 **************************************************************
 :START
@@ -35,10 +35,21 @@ Rem --- 環境変数設定 ----------------------------------------------------------
     )
 
 Rem *** 作業環境設定 **********************************************************
+:INP_FOLDER
+    Set WIM_TOP=C:\WimWK
+    Set /P WIM_TOP=作業環境のフォルダーを指定して下さい。（規定値[!WIM_TOP!]）
+    If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=C:\WimWK)
+
+    Set INP_ANS=N
+    Echo "!WIM_TOP!"
+    Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
+    If /I "!INP_ANS!" NEQ "Y" (GoTo INP_FOLDER)
+
 Rem --- 環境変数設定 ----------------------------------------------------------
-    Set WIN_VER=%~1
-    Set LST_PKG=%~2
-    Set WIM_TOP=%~3
+    Set WIN_VER=7 10
+    Set ARC_TYP=x86 x64
+    Set LST_PKG=adk drv zip %ARC_TYP%
+Rem Set WIM_TOP=C:\WimWK
     Set WIM_BIN=!WIM_TOP!\bin
     Set WIM_CFG=!WIM_TOP!\cfg
     Set WIM_ISO=!WIM_TOP!\iso
@@ -46,32 +57,183 @@ Rem --- 環境変数設定 ----------------------------------------------------------
     Set WIM_PKG=!WIM_TOP!\pkg
     Set WIM_USR=!WIM_TOP!\usr
     Set WIM_WRK=!WIM_TOP!\wrk
+
     Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.dat
     Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.wrk
 
-    If /I "!WIN_VER!" EQU "" (
-        Echo 引数1[WIN_VER]が設定されていません。
-        GoTo DONE
+    Set BAK_WIM=!WIM_WRK!\!NOW_DAY!!NOW_TIM!
+    Set BAK_BIN=!BAK_TOP!\bin
+    Set BAK_CFG=!BAK_TOP!\cfg
+    Set BAK_ISO=!BAK_TOP!\iso
+    Set BAK_LST=!BAK_TOP!\lst
+    Set BAK_PKG=!BAK_TOP!\pkg
+    Set BAK_USR=!BAK_TOP!\usr
+    Set BAK_WRK=!BAK_TOP!\wrk
+
+    Set MOV_WIM=!WIM_TOP!.!NOW_DAY!!NOW_TIM!
+    Set MOV_ISO=!MOV_WIM!\iso
+
+    Set GIT_TOP=https://raw.githubusercontent.com/office-itou/Windows/master/New-Project/Make_ISO_files/source
+    Set GIT_URL=%GIT_TOP%/Initial-Downloader.lst
+    Set GIT_FIL=!WRK_DIR!\!WRK_NAM!.lst
+    Set GIT_WIM=!WIM_LST!\!WRK_NAM!.lst
+
+    Set UTL_ARC=amd64 arm arm64 x86
+
+Rem --- 破損イメージの削除 ----------------------------------------------------
+    For %%I In (%WIN_VER%) Do (
+        For %%J In (%ARC_TYP%) Do (
+            Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
+            Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
+            Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
+            If Exist "!WIM_WRE!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_WRE!" /Discard)
+            If Exist "!WIM_MNT!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Discard)
+        )
     )
 
-    If /I "!LST_PKG!" EQU "" (
-        Echo 引数2[LST_PKG]が設定されていません。
-        GoTo DONE
+Rem --- 既存フォルダーの移動 --------------------------------------------------
+    If Exist "!WIM_TOP!" (
+        Set INP_ANS=N
+        Set /P INP_ANS=既存フォルダーがありますが上書きしますか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
+        If /I "!INP_ANS!" EQU "Y" (
+            Echo *** 既存フォルダーのバックアップ **********************************************
+            Robocopy /J /MIR /A-:RHS /NDL "!WIM_BIN!" "!BAK_BIN!" > Nul
+            Robocopy /J /MIR /A-:RHS /NDL "!WIM_CFG!" "!BAK_CFG!" > Nul
+            Robocopy /J /MIR /A-:RHS /NDL "!WIM_LST!" "!BAK_LST!" > Nul
+Rem         Robocopy /J /MIR /A-:RHS /NDL "!WIM_PKG!" "!BAK_PKG!" > Nul
+            Echo !BAK_WIM! にバックアップしました。
+        ) Else (
+            If /I "!WRK_DIR!" EQU "!WIM_BIN!" (
+                Echo 以下のフォルダーで作業中のため実行を中止します。
+                Echo "!WIM_BIN!"
+                GoTo DONE
+            )
+            Echo *** 既存フォルダーの移動 ******************************************************
+            Echo 既存フォルダーを以下の名前に移動します。
+            Echo "!WIM_TOP!"
+            Echo      ↓↓
+            Echo "!MOV_WIM!"
+            Move "!WIM_TOP!" "!MOV_WIM!" || GoTo DONE
+            If Not Exist "!WIM_TOP!" (MkDir "!WIM_TOP!" || GoTo DONE)
+            If Exist "!MOV_ISO!" (Move "!MOV_ISO!" "!WIM_ISO!" || GoTo DONE)
+        )
     )
 
-    If /I "!WIM_TOP!" EQU "" (
-        Echo 引数3[WIM_TOP]が設定されていません。
-        GoTo DONE
+Rem --- 作業フォルダーの作成 --------------------------------------------------
+    Echo *** 作業フォルダーの作成 ******************************************************
+Rem --- 破損イメージの削除 ----------------------------------------------------
+    For %%I In (%WIN_VER%) Do (
+        For %%J In (%ARC_TYP%) Do (
+            Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
+            Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
+            Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
+            If Exist "!WIM_WRE!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_WRE!" /Discard)
+            If Exist "!WIM_MNT!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Discard)
+        )
+    )
+
+    If Not Exist "!WIM_BIN!" (MkDIr "!WIM_BIN!" || GoTo DONE)
+    If Not Exist "!WIM_CFG!" (MkDIr "!WIM_CFG!" || GoTo DONE)
+    If Not Exist "!WIM_LST!" (MkDIr "!WIM_LST!" || GoTo DONE)
+    If Not Exist "!WIM_PKG!" (MkDIr "!WIM_PKG!" || GoTo DONE)
+    If Not Exist "!WIM_USR!" (MkDIr "!WIM_USR!" || GoTo DONE)
+    If Not Exist "!WIM_WRK!" (MkDIr "!WIM_WRK!" || GoTo DONE)
+
+    For %%I In (%WIN_VER%) Do (
+        For %%J In (%ARC_TYP%) Do (
+            Set WIM_DRV=!WIM_PKG!\w%%I\drv
+            Set WIM_WUD=!WIM_PKG!\w%%I\%%J
+            Set WIM_BAK=!WIM_WRK!\w%%I\%%J\bak
+            Set WIM_EFI=!WIM_WRK!\w%%I\%%J\efi
+            Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
+            Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
+            Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
+            If Not Exist "!WIM_WUD!" (MkDir "!WIM_WUD!" || GoTo DONE)
+            If Not Exist "!WIM_BAK!" (MkDir "!WIM_BAK!" || GoTo DONE)
+            If Not Exist "!WIM_EFI!" (MkDir "!WIM_EFI!" || GoTo DONE)
+            If Not Exist "!WIM_IMG!" (MkDir "!WIM_IMG!" || GoTo DONE)
+            If Not Exist "!WIM_MNT!" (MkDir "!WIM_MNT!" || GoTo DONE)
+            If Not Exist "!WIM_WRE!" (MkDir "!WIM_WRE!" || GoTo DONE)
+        )
     )
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
     If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
 
+Rem --- Oscdimg取得 -----------------------------------------------------------
+    Echo --- Oscdimg取得 ---------------------------------------------------------------
+    For /R "%ProgramFiles(x86)%" %%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%~dpI)
+    If /I "!UTL_WRK!" EQU "" (
+        Echo Windows ADK をインストールして下さい。
+        GoTo DONE
+    )
+    For %%I In (%UTL_ARC%) DO (
+        Set UTL_SRC=!UTL_WRK!\..\..\%%~I\Oscdimg
+        Set UTL_DST=!WIM_BIN!\Oscdimg\%%~I
+        Robocopy /J /MIR /A-:RHS /NDL "!UTL_SRC!" "!UTL_DST!" > Nul
+    )
+
+Rem --- Oscdimgのパスを設定する -----------------------------------------------
+    Set Path=!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%;%Path%
+    Oscdimg > NUL 2>&1
+    If "%ErrorLevel%" EQU "9009" (
+        Echo Windows ADK をインストールして下さい。
+        GoTo DONE
+    )
+
+Rem *** ファイルダウンロード **************************************************
+Rem --- GitHub ----------------------------------------------------------------
+    Echo --- GitHub --------------------------------------------------------------------
+Rem --- GitHub ダウンロードファイル -------------------------------------------
+    Set INP_ANS=
+    If Exist "!GIT_FIL!" (
+        Echo "!GIT_FIL!"
+        Set /P INP_ANS=上記を使用しますか？ [Y/N] ^(Yes/No^)
+    )
+    If /I "!INP_ANS!" EQU "Y" (
+        Copy /Y "!GIT_FIL!" "!GIT_WIM!" > Nul
+    ) Else (
+        Curl -L -# -R -S -f --create-dirs -o "!GIT_WIM!" "%GIT_URL%" || GoTo DONE
+    )
+    If Not Exist "!GIT_WIM!" (
+        Echo 以下のファイルが無いため実行を中止します。
+        Echo "!GIT_WIM!"
+        GoTo DONE
+    )
+    For /F %%I In (!GIT_WIM!) Do (
+        Set URL_LST=%%~I
+        Set URL_FIL=%%~nxI
+        Set URL_EXT=%%~xI
+        Set URL_EXT=!URL_EXT:~1!
+               If /I "!URL_EXT!" EQU "cmd" (Set WIM_DIR=!WIM_BIN!
+        ) Else If /I "!URL_EXT!" EQU "url" (Set WIM_DIR=!WIM_BIN!
+        ) Else If /I "!URL_EXT!" EQU "xml" (Set WIM_DIR=!WIM_CFG!
+        ) Else If /I "!URL_EXT!" EQU "lst" (Set WIM_DIR=!WIM_LST!
+        ) Else                             (Set WIM_DIR=!WIM_WRK!
+        )
+        If /I "!WRK_DIR!" EQU "!WIM_BIN!" If /I "!URL_FIL!" EQU "!WRK_FIL!" (
+            Set URL_FIL=!URL_FIL!.!NOW_DAY!!NOW_TIM!
+        )
+Rem     If Not Exist "!WIM_DIR!\!URL_FIL!" (
+            Echo "!URL_FIL!"
+            Curl -L -# -R -S -f --create-dirs -o "!WIM_DIR!\!URL_FIL!" "%%I" || GoTo DONE
+Rem     )
+    )
+
+Rem --- User Custom file ------------------------------------------------------
+Rem If Exist "!WIM_USR!" (
+Rem     Echo --- User Custom file ----------------------------------------------------------
+Rem     If Exist "*.cmd" (Copy /Y "*.cmd" "!WIM_BIN!" > Nul)
+Rem     If Exist "*.url" (Copy /Y "*.url" "!WIM_BIN!" > Nul)
+Rem     If Exist "*.xml" (Copy /Y "*.xml" "!WIM_CFG!" > Nul)
+Rem     If Exist "*.lst" (Copy /Y "*.lst" "!WIM_LST!" > Nul)
+Rem )
+
 Rem *** リストファイル変換 ****************************************************
     Echo --- リストファイル変換 --------------------------------------------------------
     Set LST_FIL=
-    For %%I In (!WIN_VER!) Do (
+    For %%I In (%WIN_VER%) Do (
         Set LST_WINVER=%%~I
         For %%J In (!LST_PKG!) Do (
             Set LST_PACKAGE=%%~J
@@ -247,6 +409,6 @@ Rem *** 作業終了 **************************************************************
     EndLocal
     Echo *** 作業終了 ******************************************************************
     Echo %DATE% %TIME%
-Rem Echo [Enter]を押下して下さい。
-Rem Pause > Nul 2>&1
-Rem Echo On
+    Echo [Enter]を押下して下さい。
+    Pause > Nul 2>&1
+    Echo On
