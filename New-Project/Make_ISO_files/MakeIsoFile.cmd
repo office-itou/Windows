@@ -75,10 +75,19 @@ Rem --- DVDのドライブ名設定 ---------------------------------------------------
 :CHK_DVD_DRIVE
     Echo --- DVDのドライブ名設定 -------------------------------------------------------
     Set DRV_DVD=
-    Set /P DRV_DVD=DVDのドライブ名を入力して下さい。 [A-Z]
+    Set /P DRV_DVD=DVDのドライブ名[A-Z] 又はイメージフォルダー名を入力して下さい。
     If /I "!DRV_DVD!" EQU "" (GoTo CHK_DVD_DRIVE)
 
-    If /I "!DRV_DVD:~1,1!" NEQ ":" (Set DRV_DVD=!DRV_DVD:~0,1!:)
+    If /I "!DRV_DVD:~1,1!" EQU "" (
+        Set DRV_DVD=!DRV_DVD!:\)
+    )
+
+    For %%I in (!DRV_DVD!\) Do (
+        Set DVD_SRC=%%~dpI
+        If /I "!DVD_SRC:~-1!" EQU "\" (
+            Set DVD_SRC=!DVD_SRC:~0,-1!
+        )
+    )
 
 :SET_DVD_DRIVE
     If Not Exist "!DRV_DVD!\sources\install.wim" If Not Exist "!DRV_DVD!\sources\install.swm" (
@@ -305,6 +314,83 @@ Rem *** リストファイル変換 ****************************************************
 
 Rem --- ファイルソート --------------------------------------------------------
     Sort "!CMD_WRK!" > "!CMD_DAT!"
+
+Rem *** ファイル取得 **********************************************************
+    Echo --- ファイル取得 --------------------------------------------------------------
+    For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
+        Set LST_WINDOWS=%%~I
+        Set LST_PACKAGE=%%~J
+        Set LST_TYPE=%%~K
+        Set LST_RUN_ORDER=%%~L
+        Set LST_SECTION=%%~M
+        Set LST_EXTENSION=%%~N
+        Set LST_CMD=%%~O
+        Set LST_RENAME=%%~P
+        Set LST_FILE=%%~Q
+        Set LST_WINPKG=!WIM_PKG!\!LST_WINDOWS!
+        For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
+        For /F "delims=: tokens=2 usebackq" %%X In ('!LST_FILE!') Do (
+            If /I "%%X" NEQ "" (
+                If Not Exist "!LST_RENAME!" (
+                    Echo "!LST_FNAME!"
+                    Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                ) Else (
+                    For /F "delims=: tokens=2 usebackq" %%Y In (`Curl -L -s -R -S -I "!LST_FILE!" ^| Find /I "Content-Length:"`) Do (
+                        Set LST_LEN=%%Y
+                    )
+                    For /F "delims=/ usebackq" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
+                    If !LST_LEN! NEQ !LST_SIZE! (
+                        Echo "!LST_FNAME!" : !LST_SIZE! : !LST_LEN!
+                        Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                    )
+                )
+                If /I "!LST_EXTENSION!" EQU "zip" (
+                    For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
+                    If Not Exist "!LST_DIR!" (
+                        Echo --- ファイル展開 --------------------------------------------------------------
+                        MkDir "!LST_DIR!"
+                        Tar -xzf "!LST_RENAME!" -C "!LST_DIR!"
+                    )
+                    Pushd "!LST_DIR!"
+                        For /R %%E In (*.zip) Do (
+                            Set LST_ZIPFILE=%%E
+                            Set LST_ZIPDIR=%%~dpnE
+                            If Not Exist "!LST_ZIPDIR!" (
+                                Echo --- ファイル展開 --------------------------------------------------------------
+                                MkDir "!LST_ZIPDIR!"
+                                Tar -xzf "!LST_ZIPFILE!" -C "!LST_ZIPDIR!"
+                            )
+                            Pushd "!LST_ZIPDIR!"
+                                For /R %%F In (*.msu) Do (
+                                    For /F "delims=x tokens=2" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%G)
+                                    If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!\%%~nxF" (
+                                        Echo --- ファイル転送 --------------------------------------------------------------
+                                        If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!" (MkDir "!LST_WINPKG!\x!LST_PACKAGE!")
+                                        Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul
+                                    )
+                                )
+                            Popd
+                        )
+                        For /R %%F In (*.msu) Do (
+                            For /F "delims=x tokens=2" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%G)
+                            If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!\%%~nxF" (
+                                Echo --- ファイル転送 --------------------------------------------------------------
+                                If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!" (MkDir "!LST_WINPKG!\x!LST_PACKAGE!")
+                                Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul
+                            )
+                        )
+                    Popd
+                ) Else If /I "!LST_SECTION!" EQU "IE11" (
+                    For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
+                    If Not Exist "!LST_DIR!" (
+                        Echo --- ファイル展開 --------------------------------------------------------------
+                        MkDir "!LST_DIR!"
+                        "!LST_RENAME!" /x:"!LST_DIR!"
+                    )
+                )
+            )
+        )
+    )
 
 :UPDATE
 Rem *** 統合ISOファイル作成 ***************************************************
