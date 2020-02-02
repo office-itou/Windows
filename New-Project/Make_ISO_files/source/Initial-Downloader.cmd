@@ -343,8 +343,12 @@ Rem *** ƒtƒ@ƒCƒ‹Žæ“¾ **********************************************************
                     Echo "!LST_FNAME!"
                     Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                 ) Else (
-                    For /F "delims=: tokens=2 usebackq" %%Y In (`Curl -L -s -R -S -I "!LST_FILE!" ^| Find /I "Content-Length:"`) Do (
-                        Set LST_LEN=%%Y
+                    Curl -L -s --dump-header "!CMD_WRK!" "!LST_FILE!"
+                    Set LST_LEN=0
+                    For /F "delims=: tokens=1,2* usebackq" %%Y In ("!CMD_WRK!") Do (
+                        If /I "%%~Y" EQU "Content-Length" (
+                            Set LST_LEN=%%~Z
+                        )
                     )
                     For /F "delims=/ usebackq" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
                     If !LST_LEN! NEQ !LST_SIZE! (

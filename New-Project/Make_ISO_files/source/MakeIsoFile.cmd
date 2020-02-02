@@ -320,6 +320,28 @@ Rem *** リストファイル変換 ****************************************************
                     Set LST_EXTENSION=!LST_EXTENSION:~1!
                     If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
                     Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                    Set LST_SECTION=
+                    Set LST_TITLE=
+                    Set LST_INFO=
+                    Set LST_FILE=
+                    Set LST_RENAME=
+                    Set LST_SIZE=
+                    Set LST_TYPE=
+                    Set LST_CATEGORY=
+                    Set LST_TIE_UP=
+                    Set LST_XOR_KEY=
+                    Set LST_SYNCHRO_KEY=
+                    Set LST_RELEASE=
+                    Set LST_RUN_ORDER=
+                    Set LST_CMD=
+                    Set LST_DECODE=
+                    Set LST_DECODE_TYPE=
+                    Set LST_DECODE_GET=
+                    Set LST_IEXPRESS=
+                    Set LST_IEXPRESS_LIST=
+                    Set LST_IEXPRESS_CMD=
+                    Set LST_PREVIOUS_SP=
+                    Set LST_COMMENT=
                 )
             )
         )
@@ -348,8 +370,12 @@ Rem *** ファイル取得 **********************************************************
                     Echo "!LST_FNAME!"
                     Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                 ) Else (
-                    For /F "delims=: tokens=2 usebackq" %%Y In (`Curl -L -s -R -S -I "!LST_FILE!" ^| Find /I "Content-Length:"`) Do (
-                        Set LST_LEN=%%Y
+                    Curl -L -s --dump-header "!CMD_WRK!" "!LST_FILE!"
+                    Set LST_LEN=0
+                    For /F "delims=: tokens=1,2* usebackq" %%Y In ("!CMD_WRK!") Do (
+                        If /I "%%~Y" EQU "Content-Length" (
+                            Set LST_LEN=%%~Z
+                        )
                     )
                     For /F "delims=/ usebackq" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
                     If !LST_LEN! NEQ !LST_SIZE! (
@@ -393,6 +419,13 @@ Rem *** ファイル取得 **********************************************************
                             )
                         )
                     Popd
+                ) Else If /I "!LST_EXTENSION!" EQU "cab" (
+                    For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
+                    If Not Exist "!LST_DIR!" (
+                        Echo --- ファイル展開 --------------------------------------------------------------
+                        MkDir "!LST_DIR!"
+                        Expand "!LST_RENAME!" -F:* "!LST_DIR!" > Nul || GoTo DONE
+                    )
                 ) Else If /I "!LST_SECTION!" EQU "IE11" (
                     For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
                     If Not Exist "!LST_DIR!" (
@@ -440,6 +473,7 @@ Rem === options.cmd の作成 ====================================================
     Set OPT_PKG=!OPT_DIR!\wupd
     Set OPT_CMD=!WIM_IMG!\!OPT_DIR!\options.cmd
     Set OPT_LST=
+    Set OPT_DRV=
     If Not Exist "!WIM_IMG!\!OPT_DIR!" (MkDir "!WIM_IMG!\!OPT_DIR!")
     If Exist "!OPT_CMD!" (Del /F "!OPT_CMD!")
 Rem --- options.cmd の作成 ----------------------------------------------------
@@ -484,6 +518,9 @@ Rem ---------------------------------------------------------------------------
                 ) Else If /I "!LST_EXTENSION!" EQU "msi" (
                     Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                     Set OPT_LST=!OPT_LST! "!LST_FNAME!"
+                ) Else If /I "!LST_EXTENSION!" EQU "cab" (
+                    Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
+                    Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                 ) Else If /I "!LST_EXTENSION!" EQU "zip" (
                     Pushd 
                         Set LST_UNQ=
@@ -496,6 +533,10 @@ Rem ---------------------------------------------------------------------------
                             )
                         )
                     Popd
+                )
+            ) Else If /I "!LST_PACKAGE!" EQU "drv" (
+                If /I "!LST_EXTENSION!" EQU "cab" (
+                    Set OPT_DRV=!OPT_DRV! "!LST_RENAME!"
                 )
             )
         )
@@ -557,6 +598,11 @@ Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!
         Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
         Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
 Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
+        If "!OPT_DRV!" NEQ "" (
+            For %%I In (!OPT_DRV!) Do (
+                Dism !ADD_DRV! /Driver:"%%~dpnI"                                                || GoTo :DONE
+            )
+        )
 Rem --- Windows Update ファイルの統合 -----------------------------------------
         For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
             Set LST_WINDOWS=%%~I
