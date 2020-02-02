@@ -473,16 +473,16 @@ Rem ---------------------------------------------------------------------------
             If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
                 If /I "!LST_EXTENSION!" EQU "exe" (
                     If /I "!LST_SECTION!" NEQ "IE11" (
-                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME! !LST_CMD!
+                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                         Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "wus" (
                     If /I "!LST_CMD!" NEQ "" (
-                        Echo>>"!OPT_CMD!"     Cmd /C Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME! !LST_CMD!
+                        Echo>>"!OPT_CMD!"     Cmd /C Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                         Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "msi" (
-                    Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME! !LST_CMD!
+                    Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                     Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                 ) Else If /I "!LST_EXTENSION!" EQU "zip" (
                     Pushd 
@@ -490,7 +490,7 @@ Rem ---------------------------------------------------------------------------
                         For /R %%Z In (*!LST_SECTION!*.msu) Do (
                             If /I "!LST_UNQ!" NEQ "%%~nxZ" (
                                 Set LST_FNAME=%%~Z
-                                Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME! !LST_CMD!
+                                Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                                 Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                                 Set LST_UNQ=%%~nxZ
                             )
