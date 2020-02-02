@@ -210,6 +210,23 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
         )
     )
 
+Rem --- 作業ファイルの削除 ----------------------------------------------------
+    If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
+    If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
+
+Rem --- Oscdimg取得 -----------------------------------------------------------
+    Echo --- Oscdimg取得 ---------------------------------------------------------------
+    For /R "%ProgramFiles(x86)%" %%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%~dpI)
+    If /I "!UTL_WRK!" EQU "" (
+        Echo Windows ADK をインストールして下さい。
+        GoTo DONE
+    )
+    For %%I In (%UTL_ARC%) DO (
+        Set UTL_SRC=!UTL_WRK!\..\..\%%~I\Oscdimg
+        Set UTL_DST=!WIM_BIN!\Oscdimg\%%~I
+        Robocopy /J /MIR /A-:RHS /NDL "!UTL_SRC!" "!UTL_DST!" > Nul
+    )
+
 Rem --- Oscdimgのパスを設定する -----------------------------------------------
     Set Path=!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%;%Path%
     Oscdimg > NUL 2>&1
@@ -217,10 +234,6 @@ Rem --- Oscdimgのパスを設定する -----------------------------------------------
         Echo Windows ADK をインストールして下さい。
         GoTo DONE
     )
-
-Rem --- 作業ファイルの削除 ----------------------------------------------------
-    If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
-    If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
 
 Rem *** リストファイル変換 ****************************************************
     Echo --- リストファイル変換 --------------------------------------------------------

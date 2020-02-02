@@ -95,6 +95,7 @@ Rem --- DVDとUSBのドライブ名設定 ----------------------------------------------
 Rem --- 環境変数設定 ----------------------------------------------------------
     Set CMD_WK1=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.DiskPart1.txt
     Set CMD_WK2=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.DiskPart2.txt
+    Set CMD_IMG=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_WK1!" (Del /F "!CMD_WK1!" || GoTo DONE)
@@ -143,10 +144,10 @@ Rem *** USBメモリーを作成する *************************************************
                 Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin"
             ) Else (
                 Echo --- ファイル分割 --------------------------------------------------------------
-                Set WRK_IMG=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!
-                Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!WRK_IMG!"
-                Dism /Split-Image /ImageFile:"!WRK_IMG!\sources\install.wim" /SWMFile:"!WRK_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
-                Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!WRK_IMG!" "!USB_DST!" /XF install.wim /XD "System Volume Information" "$Recycle.Bin"
+                Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!CMD_IMG!" install.wim
+                Dism /Split-Image /ImageFile:"!CMD_IMG!\sources\install.wim" /SWMFile:"!CMD_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
+                Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XF install.wim /XD "System Volume Information" "$Recycle.Bin"
+                Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!CMD_IMG!" "!USB_DST!" install*.swm /XD "System Volume Information" "$Recycle.Bin"
             )
         )
     )
@@ -157,6 +158,7 @@ Rem CD /D "!DRV_DVD!\boot"
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_WK1!" (Del /F "!CMD_WK1!" || GoTo DONE)
     If Exist "!CMD_WK2!" (Del /F "!CMD_WK2!" || GoTo DONE)
+    If Exist "!CMD_IMG!" (RmDir /S /Q "!CMD_IMG!" || GoTo DONE)
 
 Rem *** 作業終了 **************************************************************
 :DONE
