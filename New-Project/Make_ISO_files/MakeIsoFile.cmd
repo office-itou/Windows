@@ -187,11 +187,13 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
         For %%J In (!ARC_TYP!) Do (
             Set WIM_DRV=!WIM_PKG!\w%%I\drv
             Set WIM_WUD=!WIM_PKG!\w%%I\%%J
+            Set WIM_BAK=!WIM_WRK!\w%%I\%%J\bak
             Set WIM_EFI=!WIM_WRK!\w%%I\%%J\efi
             Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
             Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
             Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
             If Not Exist "!WIM_WUD!" (MkDir "!WIM_WUD!" || GoTo DONE)
+            If Not Exist "!WIM_BAK!" (MkDir "!WIM_BAK!" || GoTo DONE)
             If Not Exist "!WIM_EFI!" (MkDir "!WIM_EFI!" || GoTo DONE)
             If Not Exist "!WIM_IMG!" (MkDir "!WIM_IMG!" || GoTo DONE)
             If Not Exist "!WIM_MNT!" (MkDir "!WIM_MNT!" || GoTo DONE)
@@ -414,7 +416,7 @@ Rem ---------------------------------------------------------------------------
         Robocopy /J /MIR /A-:RHS /NDL "%WIM_WUD%" "%WIM_IMG%\%OPT_PKG%" !OPT_LST! > Nul
     )
 
-Rem === ドライバー ============================================================
+Rem === Windows Update ファイル と ドライバー の統合 ==========================
     If !WIN_VER! EQU 7 (
         Echo --- ドライバーの統合 -----------------------------------------------------------
         Pushd "!WIM_DRV!\USB" &For /R %%I In (Win7\!ARC_TYP!\iusb3hub.inf*)  Do (Set DRV_USB=%%~dpI&Set DRV_USB=!DRV_USB:~0,-1!)&Popd
@@ -473,7 +475,7 @@ Rem --- Windows Update ファイルの統合 -----------------------------------------
                     If /I "!LST_EXTENSION!" EQU "msu" (
                         Dism !ADD_PAC! /PackagePath:"!LST_RENAME!"                              || GoTo :DONE
                     ) Else If /I "!LST_EXTENSION!" EQU "exe" (
-                        If /I "!LST_SECTION!" NEQ "IE11" (
+                        If /I "!LST_SECTION!" EQU "IE11" (
                             Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Win7.CAB"           || GoTo :DONE
                             Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\ielangpack-ja-JP.CAB"  || GoTo :DONE
                             Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Spelling-en.MSU"    || GoTo :DONE
@@ -486,7 +488,20 @@ Rem --- Windows Update ファイルの統合 -----------------------------------------
         Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
     )
 
-Rem === Windows Update ファイルの統合 =========================================
+Rem === DVDイメージを作成する =================================================
+    Echo --- DVDイメージを作成する -----------------------------------------------------
+    For %%I In ("!WIM_IMG!\sources\install.wim") Do (Set WIM_SIZ=%%~zI)
+Rem If !WIM_SIZ! GEQ 4294967296 (
+Rem     Echo --- ファイル分割 --------------------------------------------------------------
+Rem     Dism /Split-Image /ImageFile:"!WIM_IMG!\sources\install.wim" /SWMFile:"!WIM_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
+Rem     Move /Y "%WIM_IMG%\sources\install.wim" "%WIM_BAK%" > Nul
+Rem )
+    If Exist "!WIM_IMG!\efi\boot" (
+        Set MAK_IMG=-m -o -u1 -h -bootdata:2#p0,e,b"!WIM_IMG!\boot\etfsboot.com"#pEF,e,b"!WIM_IMG!\efi\microsoft\boot\efisys.bin"
+    ) Else (
+        Set MAK_IMG=-m -o -u1 -h -bootdata:1#p0,e,b"!WIM_IMG!\boot\etfsboot.com"
+    )
+    Oscdimg !MAK_IMG! "!WIM_IMG!" "!DVD_DST!" || GoTo :DONE
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
