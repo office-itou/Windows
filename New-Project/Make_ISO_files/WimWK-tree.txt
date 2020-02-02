@@ -1,8 +1,7 @@
 C:\WIMWK
 +---bin
-|   |   Downloader.cmd
-|   |   Initial-Downloader.cmd
 |   |   MakeIsoFile.cmd
+|   |   MakeUsbStick.cmd
 |   |   MicrosoftUpdateCatalog.url
 |   |   
 |   \---Oscdimg
@@ -1763,3 +1762,29 @@ C:\WIMWK
 |               
 +---usr
 \---wrk
+    +---w10
+    |   +---x64
+    |   |   +---bak
+    |   |   +---efi
+    |   |   +---img
+    |   |   +---mnt
+    |   |   \---wre
+    |   \---x86
+    |       +---bak
+    |       +---efi
+    |       +---img
+    |       +---mnt
+    |       \---wre
+    \---w7
+        +---x64
+        |   +---bak
+        |   +---efi
+        |   +---img
+        |   +---mnt
+        |   \---wre
+        \---x86
+            +---bak
+            +---efi
+            +---img
+            +---mnt
+            \---wre

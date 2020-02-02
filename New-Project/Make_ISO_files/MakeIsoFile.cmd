@@ -40,9 +40,9 @@ Rem *** 作業環境設定 **********************************************************
     Set /P WIM_TOP=作業環境のフォルダーを指定して下さい。（規定値[!WIM_TOP!]）
     If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=C:\WimWK)
 
+    Set INP_ANS=N
     Echo "!WIM_TOP!"
-    Set INP_ANS=
-    Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)
+    Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
     If /I "!INP_ANS!" NEQ "Y" (GoTo INP_FOLDER)
 
 Rem --- Windowsのバージョン設定 -----------------------------------------------
@@ -168,7 +168,7 @@ Rem Set WIM_TOP=%~3
     Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
     Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
 
-    Set DVD_SRC=!DRV_DVD!\\
+    Set DVD_SRC=!DRV_DVD!
     Set DVD_DST=!WIM_TOP!\windows_!WIN_VER!_!ARC_TYP!_dvd_custom_VER_.iso
     Set DVD_DST=%DVD_DST:_VER_=_!WIM_VER!%
 
@@ -414,7 +414,7 @@ Rem *** 統合ISOファイル作成 ***************************************************
 
 Rem === 原本から作業フォルダーにコピーする ====================================
     Echo --- 原本から作業フォルダーにコピーする ----------------------------------------
-    Robocopy /J /MIR /A-:RHS /NDL "!DVD_SRC!" "!WIM_IMG!" > Nul
+    Robocopy /J /MIR /A-:RHS /NDL "!DVD_SRC!\" "!WIM_IMG!" > Nul
 
 Rem === UEFIブート準備 ========================================================
     If !WIN_VER! EQU 7 If /I "!ARC_TYP!" EQU "x64" (
