@@ -462,6 +462,7 @@ Rem === 原本から作業フォルダーにコピーする ====================================
     Echo --- 原本から作業フォルダーにコピーする ----------------------------------------
     Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS /NFL "!DVD_SRC!\" "!WIM_IMG!"
 
+:ADD_BOOT_OPTIONS
 Rem === UEFIブート準備 ========================================================
     If !WIN_VER! EQU 7 If /I "!ARC_TYP!" EQU "x64" (
         If Not Exist "!WIM_EFI!\bootx64.efi" (
@@ -474,12 +475,14 @@ Rem === UEFIブート準備 ========================================================
         Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!WIM_EFI!" "!WIM_IMG!\efi\boot" "bootx64.efi"
     )
 
+:ADD_UNATTEND
 Rem === Unattend ==============================================================
     If Exist "!WIM_CFG!\autounattend-windows!WIN_VER!-!ARC_TYP!.xml" (
         Echo --- autounattend.xml のコピー -------------------------------------------------
         Copy /Y "!WIM_CFG!\autounattend-windows!WIN_VER!-!ARC_TYP!.xml" "!WIM_IMG!\autounattend.xml" > Nul
     )
 
+:ADD_OPTIONS
 Rem === options.cmd の作成 ====================================================
     Echo --- options.cmd の作成 ---------------------------------------------------------
     Set OPT_DIR=autounattend\options
@@ -537,15 +540,23 @@ Rem ---------------------------------------------------------------------------
                 )
             ) Else If /I "!LST_PACKAGE!" EQU "drv" (
                 If /I "!LST_EXTENSION!" EQU "cab" (
-                    For %%E In ("!LST_RENAME!") Do (
-                        Set OPT_WRK=%%~nE
-                        Echo>>"!OPT_CMD!"     Cmd /C PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" /SubDirs /Install
-                        Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!LST_FDIR!" "!WIM_IMG!\!OPT_DRV!\!OPT_WRK!"
+                    If /I "!LST_CMD!" NEQ "" (
+                        For %%E In ("!LST_RENAME!") Do (
+                            Set OPT_WRK=%%~nE
+                            If !WIN_VER! EQU 7 (
+                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil -A "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf"
+                            ) Else             (
+                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" /SubDirs /Install
+                            )
+                            Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!LST_FDIR!" "!WIM_IMG!\!OPT_DRV!\!OPT_WRK!"
+                        )
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "zip" (
-                    For %%E In ("!LST_RENAME!") Do (
-                        Set OPT_WRK=%%~nE
-                        Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!LST_FDIR!" "!WIM_IMG!\!OPT_DRV!\!OPT_WRK!"
+                    If /I "!LST_CMD!" NEQ "" (
+                        For %%E In ("!LST_RENAME!") Do (
+                            Set OPT_WRK=%%~nE
+                            Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!LST_FDIR!" "!WIM_IMG!\!OPT_DRV!\!OPT_WRK!"
+                        )
                     )
                 )
             )
@@ -566,6 +577,9 @@ Rem ---------------------------------------------------------------------------
         Robocopy /J /A-:RHS /NDL /NC /NJH /NJS "!WIM_WUD!" "!WIM_IMG!\!OPT_PKG!" !OPT_LST!
     )
 
+Rem GoTo MAKE_ISO_IMAGE
+
+:ADD_PACKAGE
 Rem === Windows Update ファイル と ドライバー の統合 ==========================
     Set ADD_PAC=/Image:^"!WIM_MNT!^" /Add-Package /IgnoreCheck
     Set ADD_DRV=/Image:^"!WIM_MNT!^" /Add-Driver /ForceUnsigned /Recurse
@@ -643,6 +657,7 @@ Rem --- Windows Update ファイルの統合 -----------------------------------------
         Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
     )
 
+:MAKE_ISO_IMAGE
 Rem === DVDイメージを作成する =================================================
     Echo --- DVDイメージを作成する -----------------------------------------------------
     For %%I In ("!WIM_IMG!\sources\install.wim") Do (Set WIM_SIZ=%%~zI)
