@@ -501,7 +501,7 @@ Rem --- options.cmd �̍쐬 ----------------------------------------------------
     Echo>>"!OPT_CMD!" Rem Cmd /C sc stop wuauserv
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     If !WIN_VER! EQU 7 (
-        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 2
+        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 1
         Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "IncludeRecommendedUpdates" /t REG_DWORD /d 1
         Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "ElevateNonAdmins" /t REG_DWORD /d 1
         Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "EnableFeaturedSoftware" /t REG_DWORD /d 1
