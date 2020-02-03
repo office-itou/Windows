@@ -38,7 +38,6 @@
 | [Windows7x86_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7x86_Rollup_202001.lst)  | Windows Update 32bit                        |
 | [Windows7x64_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7x64_Rollup_202001.lst)  | Windows Update 64bit                        |
 | [Windows7zip_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7zip_Rollup_202001.lst)  | 7zip                                        |
-| [Windows7drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7drv_dynabook.lst)       | dynabook SS N12シリーズ ドライバー          |
   
 【ダウンロードリストファイル：Windows 10用】  
   
@@ -49,6 +48,13 @@
 | [Windows10x86_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows10x86_Rollup_202001.lst) | Windows Update 32bit                        |
 | [Windows10x64_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows10x64_Rollup_202001.lst) | Windows Update 64bit                        |
 | [Windows10zip_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows10zip_Rollup_202001.lst) | 7zip                                        |
+  
+【ダウンロードリストファイル：dynabook SS N12 Windows 7用】  
+  
+| ファイル名                     | 機能                                        |
+| ------------------------------ | ------------------------------------------- |
+| [Windows7drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/dynabook_SS_N12/Windows7drv_dynabook.lst)       | dynabook SS N12シリーズ ドライバー          |
+| [options.cmd](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/dynabook_SS_N12/options.cmd)                    | dynabook SS N12シリーズ 用 サンプルファイル |
   
 【初期導入作業画面】  
   
