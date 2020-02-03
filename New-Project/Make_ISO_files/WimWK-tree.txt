@@ -1,4 +1,9 @@
-C:\WIMWK
+C:\WimWK
+|   windows_10_x64_dvd_custom_10.0.18362.iso
+|   windows_10_x86_dvd_custom_10.0.18362.iso
+|   windows_7_x64_dvd_custom_6.1.7601.iso
+|   windows_7_x86_dvd_custom_6.1.7601.iso
+|   
 +---bin
 |   |   MakeIsoFile.cmd
 |   |   MakeUsbStick.cmd
@@ -47,6 +52,7 @@ C:\WIMWK
 |       Windows10x86_Rollup_202001.lst
 |       Windows10zip_Rollup_202001.lst
 |       Windows7adk_Rollup_202001.lst
+|       Windows7drv_dynabook.lst
 |       Windows7drv_Rollup_202001.lst
 |       Windows7x64_Rollup_202001.lst
 |       Windows7x86_Rollup_202001.lst
@@ -936,6 +942,7 @@ C:\WIMWK
 |   |   |       mpam-fe-x64.exe
 |   |   |       updateplatform-x64.exe
 |   |   |       windows-kb890830-x64-v5.79.exe
+|   |   |       windows10.0-kb4497165-v4-x64.msu
 |   |   |       windows10.0-kb4528759-x64.msu
 |   |   |       windows10.0-kb4532695-x64.msu
 |   |   |       windows10.0-kb4534132-x64-ndp48.msu
@@ -945,6 +952,7 @@ C:\WIMWK
 |   |   |       mpam-fe-x86.exe
 |   |   |       updateplatform-x86.exe
 |   |   |       windows-kb890830-x86-v5.79.exe
+|   |   |       windows10.0-kb4497165-v4-x86.msu
 |   |   |       windows10.0-kb4528759-x86.msu
 |   |   |       windows10.0-kb4532695-x86.msu
 |   |   |       windows10.0-kb4534132-x86-ndp48.msu
@@ -958,6 +966,160 @@ C:\WIMWK
 |       |       adksetup.exe
 |       |       
 |       +---drv
+|       |   +---dynabook
+|       |   |   |   200000241_dbbd9421c7e464a2fd7a0f910946e140e52d7a88.cab
+|       |   |   |   20301636_d5e5018721292798b49e8cbc9d80ea2a51cf1577.cab
+|       |   |   |   20541202_69255649c39c0b2eeaa72014f7cfb1c4fd673ae1.cab
+|       |   |   |   20613990_06c69b11464d788830d23d3cc397c14337a40616.cab
+|       |   |   |   20941520_c8ce8c3504ee36697164eddda18aa8740f455849.cab
+|       |   |   |   
+|       |   |   +---200000241_dbbd9421c7e464a2fd7a0f910946e140e52d7a88
+|       |   |   |   |   atswpwdf.cat
+|       |   |   |   |   ATSwpWDF.inf
+|       |   |   |   |   atswpwdfamd64.cat
+|       |   |   |   |   
+|       |   |   |   +---amd64
+|       |   |   |   |       ATEngineAdapter.dll
+|       |   |   |   |       ATSensorAdapter.dll
+|       |   |   |   |       ATSwpWDF.sys
+|       |   |   |   |       ufma.exe
+|       |   |   |   |       WdfCoInstaller01009.dll
+|       |   |   |   |       
+|       |   |   |   \---i386
+|       |   |   |           ATEngineAdapter.dll
+|       |   |   |           ATSensorAdapter.dll
+|       |   |   |           ATSwpWDF.sys
+|       |   |   |           ufma.exe
+|       |   |   |           WdfCoInstaller01009.dll
+|       |   |   |           
+|       |   |   +---20301636_d5e5018721292798b49e8cbc9d80ea2a51cf1577
+|       |   |   |       athr.pdb
+|       |   |   |       athr.sys
+|       |   |   |       athrext.cat
+|       |   |   |       netathr.inf
+|       |   |   |       
+|       |   |   +---20541202_69255649c39c0b2eeaa72014f7cfb1c4fd673ae1
+|       |   |   |       d3dx10_40.dll
+|       |   |   |       difx32.dll
+|       |   |   |       Gfxres.ar-SA.resources
+|       |   |   |       Gfxres.cs-CZ.resources
+|       |   |   |       Gfxres.da-DK.resources
+|       |   |   |       Gfxres.de-DE.resources
+|       |   |   |       Gfxres.el-GR.resources
+|       |   |   |       Gfxres.en-US.resources
+|       |   |   |       Gfxres.es-ES.resources
+|       |   |   |       Gfxres.fi-FI.resources
+|       |   |   |       Gfxres.fr-FR.resources
+|       |   |   |       Gfxres.he-IL.resources
+|       |   |   |       Gfxres.hu-HU.resources
+|       |   |   |       Gfxres.it-IT.resources
+|       |   |   |       Gfxres.ja-JP.resources
+|       |   |   |       Gfxres.ko-KR.resources
+|       |   |   |       Gfxres.nb-NO.resources
+|       |   |   |       Gfxres.nl-NL.resources
+|       |   |   |       Gfxres.pl-PL.resources
+|       |   |   |       Gfxres.pt-BR.resources
+|       |   |   |       Gfxres.pt-PT.resources
+|       |   |   |       Gfxres.ru-RU.resources
+|       |   |   |       Gfxres.sk-SK.resources
+|       |   |   |       Gfxres.sl-SI.resources
+|       |   |   |       Gfxres.sv-SE.resources
+|       |   |   |       Gfxres.th-TH.resources
+|       |   |   |       Gfxres.tr-TR.resources
+|       |   |   |       Gfxres.zh-CN.resources
+|       |   |   |       Gfxres.zh-TW.resources
+|       |   |   |       gfxSrvc.dll
+|       |   |   |       GfxUI.exe
+|       |   |   |       GfxUI.exe.config
+|       |   |   |       hccutils.dll
+|       |   |   |       hkcmd.exe
+|       |   |   |       ig4icd32.dll
+|       |   |   |       igcompkrng500.bin
+|       |   |   |       igcompkrng575.bin
+|       |   |   |       igd10umd32.dll
+|       |   |   |       igdkmd32.sys
+|       |   |   |       igdlh.cat
+|       |   |   |       igdumd32.dll
+|       |   |   |       igdumdx32.dll
+|       |   |   |       igfcg500m.bin
+|       |   |   |       igfcg575m.bin
+|       |   |   |       igfxcpl.cpl
+|       |   |   |       igfxdev.dll
+|       |   |   |       IGFXDEVLib.dll
+|       |   |   |       igfxdo.dll
+|       |   |   |       igfxexps.dll
+|       |   |   |       igfxext.exe
+|       |   |   |       igfxpers.exe
+|       |   |   |       igfxpph.dll
+|       |   |   |       igfxrara.lrc
+|       |   |   |       igfxrchs.lrc
+|       |   |   |       igfxrcht.lrc
+|       |   |   |       igfxrcsy.lrc
+|       |   |   |       igfxrdan.lrc
+|       |   |   |       igfxrdeu.lrc
+|       |   |   |       igfxrell.lrc
+|       |   |   |       igfxrenu.lrc
+|       |   |   |       igfxresn.lrc
+|       |   |   |       igfxress.dll
+|       |   |   |       igfxrfin.lrc
+|       |   |   |       igfxrfra.lrc
+|       |   |   |       igfxrheb.lrc
+|       |   |   |       igfxrhun.lrc
+|       |   |   |       igfxrita.lrc
+|       |   |   |       igfxrjpn.lrc
+|       |   |   |       igfxrkor.lrc
+|       |   |   |       igfxrnld.lrc
+|       |   |   |       igfxrnor.lrc
+|       |   |   |       igfxrplk.lrc
+|       |   |   |       igfxrptb.lrc
+|       |   |   |       igfxrptg.lrc
+|       |   |   |       igfxrrus.lrc
+|       |   |   |       igfxrsky.lrc
+|       |   |   |       igfxrslv.lrc
+|       |   |   |       igfxrsve.lrc
+|       |   |   |       igfxrtha.lrc
+|       |   |   |       igfxrtrk.lrc
+|       |   |   |       igfxsrvc.dll
+|       |   |   |       igfxsrvc.exe
+|       |   |   |       igfxTMM.dll
+|       |   |   |       igfxtray.exe
+|       |   |   |       igkrng400.bin
+|       |   |   |       igkrng500.bin
+|       |   |   |       igkrng575.bin
+|       |   |   |       iglhcp32.dll
+|       |   |   |       iglhsip32.dll
+|       |   |   |       iglhxa32.cpa
+|       |   |   |       iglhxa32.vp
+|       |   |   |       iglhxc32.vp
+|       |   |   |       iglhxg32.vp
+|       |   |   |       iglhxo32.vp
+|       |   |   |       iglhxs32.vp
+|       |   |   |       igxpco32.dll
+|       |   |   |       igxpun.exe
+|       |   |   |       kit51500.cat
+|       |   |   |       kit51500.inf
+|       |   |   |       TVWSetup.exe
+|       |   |   |       
+|       |   |   +---20613990_06c69b11464d788830d23d3cc397c14337a40616
+|       |   |   |       e1k62x64.cat
+|       |   |   |       e1k62x64.din
+|       |   |   |       E1K62x64.INF
+|       |   |   |       e1k62x64.sys
+|       |   |   |       e1kmsg.dll
+|       |   |   |       NicCo36.dll
+|       |   |   |       NicInstK.dll
+|       |   |   |       
+|       |   |   \---20941520_c8ce8c3504ee36697164eddda18aa8740f455849
+|       |   |       |   unifhid.inf
+|       |   |       |   unifhidx64.cat
+|       |   |       |   unifhidx86.cat
+|       |   |       |   
+|       |   |       +---x64
+|       |   |       |       LogiLDA.dll
+|       |   |       |       
+|       |   |       \---x86
+|       |   |               LogiLDA.dll
+|       |   |               
 |       |   +---NVMe
 |       |   |   |   ASUS_EZInstaller_V10306.zip
 |       |   |   |   Client-x64.zip
@@ -1419,13 +1581,11 @@ C:\WIMWK
 |       |               |   |   |       iusb3hcs.cat
 |       |               |   |   |       iusb3hcs.inf
 |       |               |   |   |       iusb3hcs.sys
-|       |               |   |   |       WdfCoInstaller01009.dll
 |       |               |   |   |       
 |       |               |   |   \---x86
 |       |               |   |           iusb3hcs.cat
 |       |               |   |           iusb3hcs.inf
 |       |               |   |           iusb3hcs.sys
-|       |               |   |           WdfCoInstaller01009.dll
 |       |               |   |           
 |       |               |   \---Win7
 |       |               |       +---x64
@@ -1762,29 +1922,3 @@ C:\WIMWK
 |               
 +---usr
 \---wrk
-    +---w10
-    |   +---x64
-    |   |   +---bak
-    |   |   +---efi
-    |   |   +---img
-    |   |   +---mnt
-    |   |   \---wre
-    |   \---x86
-    |       +---bak
-    |       +---efi
-    |       +---img
-    |       +---mnt
-    |       \---wre
-    \---w7
-        +---x64
-        |   +---bak
-        |   +---efi
-        |   +---img
-        |   +---mnt
-        |   \---wre
-        \---x86
-            +---bak
-            +---efi
-            +---img
-            +---mnt
-            \---wre
