@@ -48,7 +48,7 @@ Rem *** 作業環境設定 **********************************************************
 Rem --- 環境変数設定 ----------------------------------------------------------
     Set WIN_VER=7 10
     Set ARC_TYP=x86 x64
-    Set LST_PKG=adk drv zip %ARC_TYP%
+    Set LST_PKG=adk drv zip !ARC_TYP!
 Rem Set WIM_TOP=C:\WimWK
     Set WIM_BIN=!WIM_TOP!\bin
     Set WIM_CFG=!WIM_TOP!\cfg
@@ -80,9 +80,11 @@ Rem Set WIM_TOP=C:\WimWK
 
     Set UTL_ARC=amd64 arm arm64 x86
 
+Rem --- 作業フォルダーの作成 --------------------------------------------------
+    Echo *** 作業フォルダーの作成 ******************************************************
 Rem --- 破損イメージの削除 ----------------------------------------------------
-    For %%I In (%WIN_VER%) Do (
-        For %%J In (%ARC_TYP%) Do (
+    For %%I In (!WIN_VER!) Do (
+        For %%J In (!ARC_TYP!) Do (
             Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
             Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
             Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
@@ -119,19 +121,6 @@ Rem         Robocopy /J /MIR /A-:RHS /NDL "!WIM_PKG!" "!BAK_PKG!" > Nul
         )
     )
 
-Rem --- 作業フォルダーの作成 --------------------------------------------------
-    Echo *** 作業フォルダーの作成 ******************************************************
-Rem --- 破損イメージの削除 ----------------------------------------------------
-    For %%I In (%WIN_VER%) Do (
-        For %%J In (%ARC_TYP%) Do (
-            Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
-            Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
-            Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
-            If Exist "!WIM_WRE!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_WRE!" /Discard)
-            If Exist "!WIM_MNT!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Discard)
-        )
-    )
-
     If Not Exist "!WIM_BIN!" (MkDIr "!WIM_BIN!" || GoTo DONE)
     If Not Exist "!WIM_CFG!" (MkDIr "!WIM_CFG!" || GoTo DONE)
     If Not Exist "!WIM_LST!" (MkDIr "!WIM_LST!" || GoTo DONE)
@@ -139,8 +128,8 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
     If Not Exist "!WIM_USR!" (MkDIr "!WIM_USR!" || GoTo DONE)
     If Not Exist "!WIM_WRK!" (MkDIr "!WIM_WRK!" || GoTo DONE)
 
-    For %%I In (%WIN_VER%) Do (
-        For %%J In (%ARC_TYP%) Do (
+    For %%I In (!WIN_VER!) Do (
+        For %%J In (!ARC_TYP!) Do (
             Set WIM_DRV=!WIM_PKG!\w%%I\drv
             Set WIM_WUD=!WIM_PKG!\w%%I\%%J
             Set WIM_BAK=!WIM_WRK!\w%%I\%%J\bak
@@ -148,12 +137,17 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
             Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
             Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
-            If Not Exist "!WIM_WUD!" (MkDir "!WIM_WUD!" || GoTo DONE)
-            If Not Exist "!WIM_BAK!" (MkDir "!WIM_BAK!" || GoTo DONE)
-            If Not Exist "!WIM_EFI!" (MkDir "!WIM_EFI!" || GoTo DONE)
-            If Not Exist "!WIM_IMG!" (MkDir "!WIM_IMG!" || GoTo DONE)
-            If Not Exist "!WIM_MNT!" (MkDir "!WIM_MNT!" || GoTo DONE)
-            If Not Exist "!WIM_WRE!" (MkDir "!WIM_WRE!" || GoTo DONE)
+
+            If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
+            If     Exist "!WIM_MNT!" (RmDir /S /Q "!WIM_MNT!" || GoTo DONE)
+            If     Exist "!WIM_WRE!" (RmDir /S /Q "!WIM_WRE!" || GoTo DONE)
+
+            If Not Exist "!WIM_WUD!" (MkDir       "!WIM_WUD!" || GoTo DONE)
+            If Not Exist "!WIM_BAK!" (MkDir       "!WIM_BAK!" || GoTo DONE)
+            If Not Exist "!WIM_EFI!" (MkDir       "!WIM_EFI!" || GoTo DONE)
+            If Not Exist "!WIM_IMG!" (MkDir       "!WIM_IMG!" || GoTo DONE)
+            If Not Exist "!WIM_MNT!" (MkDir       "!WIM_MNT!" || GoTo DONE)
+            If Not Exist "!WIM_WRE!" (MkDir       "!WIM_WRE!" || GoTo DONE)
         )
     )
 
@@ -162,22 +156,27 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
 
 Rem --- Oscdimg取得 -----------------------------------------------------------
-    Echo --- Oscdimg取得 ---------------------------------------------------------------
-    For /R "%ProgramFiles(x86)%" %%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%~dpI)
-    If /I "!UTL_WRK!" EQU "" (
-        Echo Windows ADK をインストールして下さい。
-        GoTo DONE
-    )
-    For %%I In (%UTL_ARC%) DO (
-        Set UTL_SRC=!UTL_WRK!\..\..\%%~I\Oscdimg
-        Set UTL_DST=!WIM_BIN!\Oscdimg\%%~I
-        Robocopy /J /MIR /A-:RHS /NDL "!UTL_SRC!" "!UTL_DST!" > Nul
+    If Not Exist "!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%" (
+        Echo --- Oscdimg取得 ---------------------------------------------------------------
+        Pushd "%ProgramFiles(x86)%"
+            For /R %%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%~dpI)
+        Popd
+        If /I "!UTL_WRK!" EQU "" (
+            Echo Windows ADK をインストールして下さい。
+            GoTo DONE
+        )
+        For %%I In (!UTL_ARC!) DO (
+            Set UTL_SRC=!UTL_WRK!\..\..\%%~I\Oscdimg
+            Set UTL_DST=!WIM_BIN!\Oscdimg\%%~I
+            Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!UTL_SRC!" "!UTL_DST!"
+        )
     )
 
 Rem --- Oscdimgのパスを設定する -----------------------------------------------
     Set Path=!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%;%Path%
     Oscdimg > NUL 2>&1
     If "%ErrorLevel%" EQU "9009" (
+        Echo Oscdimg がありません。
         Echo Windows ADK をインストールして下さい。
         GoTo DONE
     )
@@ -233,7 +232,7 @@ Rem )
 Rem *** リストファイル変換 ****************************************************
     Echo --- リストファイル変換 --------------------------------------------------------
     Set LST_FIL=
-    For %%I In (%WIN_VER%) Do (
+    For %%I In (!WIN_VER!) Do (
         Set LST_WINVER=%%~I
         For %%J In (!LST_PKG!) Do (
             Set LST_PACKAGE=%%~J
@@ -315,6 +314,28 @@ Rem *** リストファイル変換 ****************************************************
                     Set LST_EXTENSION=!LST_EXTENSION:~1!
                     If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
                     Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                    Set LST_SECTION=
+                    Set LST_TITLE=
+                    Set LST_INFO=
+                    Set LST_FILE=
+                    Set LST_RENAME=
+                    Set LST_SIZE=
+                    Set LST_TYPE=
+                    Set LST_CATEGORY=
+                    Set LST_TIE_UP=
+                    Set LST_XOR_KEY=
+                    Set LST_SYNCHRO_KEY=
+                    Set LST_RELEASE=
+                    Set LST_RUN_ORDER=
+                    Set LST_CMD=
+                    Set LST_DECODE=
+                    Set LST_DECODE_TYPE=
+                    Set LST_DECODE_GET=
+                    Set LST_IEXPRESS=
+                    Set LST_IEXPRESS_LIST=
+                    Set LST_IEXPRESS_CMD=
+                    Set LST_PREVIOUS_SP=
+                    Set LST_COMMENT=
                 )
             )
         )
@@ -392,6 +413,13 @@ Rem *** ファイル取得 **********************************************************
                             )
                         )
                     Popd
+                ) Else If /I "!LST_EXTENSION!" EQU "cab" (
+                    For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
+                    If Not Exist "!LST_DIR!" (
+                        Echo --- ファイル展開 --------------------------------------------------------------
+                        MkDir "!LST_DIR!"
+                        Expand "!LST_RENAME!" -F:* "!LST_DIR!" > Nul || GoTo DONE
+                    )
                 ) Else If /I "!LST_SECTION!" EQU "IE11" (
                     For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
                     If Not Exist "!LST_DIR!" (

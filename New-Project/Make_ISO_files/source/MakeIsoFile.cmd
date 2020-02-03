@@ -34,16 +34,24 @@ Rem --- 環境変数設定 ----------------------------------------------------------
         Set NOW_TIM=%time:~0,2%%time:~3,2%%time:~6,2%
     )
 
-Rem *** 作業環境設定 **********************************************************
-:INP_FOLDER
-    Set WIM_TOP=C:\WimWK
-    Set /P WIM_TOP=作業環境のフォルダーを指定して下さい。（規定値[!WIM_TOP!]）
-    If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=C:\WimWK)
+    For /F "delims=\ tokens=2 usebackq" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~dI\%%~I)
 
-    Set INP_ANS=N
-    Echo "!WIM_TOP!"
-    Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
-    If /I "!INP_ANS!" NEQ "Y" (GoTo INP_FOLDER)
+Rem *** 作業環境設定 **********************************************************
+    Set DEF_TOP=C:\WimWK
+
+    If /I "!WRK_TOP!" EQU "!DEF_TOP!" (
+        Set WIM_TOP=!DEF_TOP!
+    ) Else (
+:INP_FOLDER
+        Set WIM_TOP=!DEF_TOP!
+        Set /P WIM_TOP=作業環境のフォルダーを指定して下さい。（規定値[!WIM_TOP!]）
+        If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=C:\WimWK)
+
+        Set INP_ANS=N
+        Echo "!WIM_TOP!"
+        Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
+        If /I "!INP_ANS!" NEQ "Y" (GoTo INP_FOLDER)
+    )
 
 Rem --- Windowsのバージョン設定 -----------------------------------------------
 :INPUT_WIN_TYPE
@@ -201,12 +209,17 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
             Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
             Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
-            If Not Exist "!WIM_WUD!" (MkDir "!WIM_WUD!" || GoTo DONE)
-            If Not Exist "!WIM_BAK!" (MkDir "!WIM_BAK!" || GoTo DONE)
-            If Not Exist "!WIM_EFI!" (MkDir "!WIM_EFI!" || GoTo DONE)
-            If Not Exist "!WIM_IMG!" (MkDir "!WIM_IMG!" || GoTo DONE)
-            If Not Exist "!WIM_MNT!" (MkDir "!WIM_MNT!" || GoTo DONE)
-            If Not Exist "!WIM_WRE!" (MkDir "!WIM_WRE!" || GoTo DONE)
+
+            If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
+            If     Exist "!WIM_MNT!" (RmDir /S /Q "!WIM_MNT!" || GoTo DONE)
+            If     Exist "!WIM_WRE!" (RmDir /S /Q "!WIM_WRE!" || GoTo DONE)
+
+            If Not Exist "!WIM_WUD!" (MkDir       "!WIM_WUD!" || GoTo DONE)
+            If Not Exist "!WIM_BAK!" (MkDir       "!WIM_BAK!" || GoTo DONE)
+            If Not Exist "!WIM_EFI!" (MkDir       "!WIM_EFI!" || GoTo DONE)
+            If Not Exist "!WIM_IMG!" (MkDir       "!WIM_IMG!" || GoTo DONE)
+            If Not Exist "!WIM_MNT!" (MkDir       "!WIM_MNT!" || GoTo DONE)
+            If Not Exist "!WIM_WRE!" (MkDir       "!WIM_WRE!" || GoTo DONE)
         )
     )
 
@@ -215,22 +228,27 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
 
 Rem --- Oscdimg取得 -----------------------------------------------------------
-    Echo --- Oscdimg取得 ---------------------------------------------------------------
-    For /R "%ProgramFiles(x86)%" %%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%~dpI)
-    If /I "!UTL_WRK!" EQU "" (
-        Echo Windows ADK をインストールして下さい。
-        GoTo DONE
-    )
-    For %%I In (%UTL_ARC%) DO (
-        Set UTL_SRC=!UTL_WRK!\..\..\%%~I\Oscdimg
-        Set UTL_DST=!WIM_BIN!\Oscdimg\%%~I
-        Robocopy /J /MIR /A-:RHS /NDL "!UTL_SRC!" "!UTL_DST!" > Nul
+    If Not Exist "!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%" (
+        Echo --- Oscdimg取得 ---------------------------------------------------------------
+        Pushd "%ProgramFiles(x86)%"
+            For /R %%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%~dpI)
+        Popd
+        If /I "!UTL_WRK!" EQU "" (
+            Echo Windows ADK をインストールして下さい。
+            GoTo DONE
+        )
+        For %%I In (!UTL_ARC!) DO (
+            Set UTL_SRC=!UTL_WRK!\..\..\%%~I\Oscdimg
+            Set UTL_DST=!WIM_BIN!\Oscdimg\%%~I
+            Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!UTL_SRC!" "!UTL_DST!"
+        )
     )
 
 Rem --- Oscdimgのパスを設定する -----------------------------------------------
     Set Path=!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%;%Path%
     Oscdimg > NUL 2>&1
     If "%ErrorLevel%" EQU "9009" (
+        Echo Oscdimg がありません。
         Echo Windows ADK をインストールして下さい。
         GoTo DONE
     )
@@ -440,14 +458,9 @@ Rem *** ファイル取得 **********************************************************
 
 :UPDATE
 Rem *** 統合ISOファイル作成 ***************************************************
-    Set ADD_PAC=/Image:^"!WIM_MNT!^" /Add-Package /IgnoreCheck
-    Set ADD_DRV=/Image:^"!WIM_MNT!^" /Add-Driver /ForceUnsigned /Recurse
-    Set WRE_PAC=/Image:^"!WIM_WRE!^" /Add-Package /IgnoreCheck
-    Set WRE_DRV=/Image:^"!WIM_WRE!^" /Add-Driver /ForceUnsigned /Recurse
-
 Rem === 原本から作業フォルダーにコピーする ====================================
     Echo --- 原本から作業フォルダーにコピーする ----------------------------------------
-    Robocopy /J /MIR /A-:RHS /NDL "!DVD_SRC!\" "!WIM_IMG!" > Nul
+    Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS /NFL "!DVD_SRC!\" "!WIM_IMG!"
 
 Rem === UEFIブート準備 ========================================================
     If !WIN_VER! EQU 7 If /I "!ARC_TYP!" EQU "x64" (
@@ -458,7 +471,7 @@ Rem === UEFIブート準備 ========================================================
             Dism /Unmount-Wim /MountDir:"!WIM_MNT!" /Discard || GoTo DONE
         )
         Echo --- bootx64.efi のコピー ------------------------------------------------------
-        Robocopy /J /MIR /A-:RHS /NDL "!WIM_EFI!" "!WIM_IMG!\efi\boot" "bootx64.efi" > Nul
+        Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!WIM_EFI!" "!WIM_IMG!\efi\boot" "bootx64.efi"
     )
 
 Rem === Unattend ==============================================================
@@ -470,10 +483,10 @@ Rem === Unattend ==============================================================
 Rem === options.cmd の作成 ====================================================
     Echo --- options.cmd の作成 ---------------------------------------------------------
     Set OPT_DIR=autounattend\options
-    Set OPT_PKG=!OPT_DIR!\wupd
+    Set OPT_PKG=!OPT_DIR!\upd
+    Set OPT_DRV=!OPT_DIR!\drv
     Set OPT_CMD=!WIM_IMG!\!OPT_DIR!\options.cmd
     Set OPT_LST=
-    Set OPT_DRV=
     If Not Exist "!WIM_IMG!\!OPT_DIR!" (MkDir "!WIM_IMG!\!OPT_DIR!")
     If Exist "!OPT_CMD!" (Del /F "!OPT_CMD!")
 Rem --- options.cmd の作成 ----------------------------------------------------
@@ -485,11 +498,11 @@ Rem --- options.cmd の作成 ----------------------------------------------------
     Echo>>"!OPT_CMD!" Rem Cmd /C sc stop wuauserv
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     If !WIN_VER! EQU 7 (
-        Echo>>"%OPT_CMD%"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 2
-        Echo>>"%OPT_CMD%"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "IncludeRecommendedUpdates" /t REG_DWORD /d 1
-        Echo>>"%OPT_CMD%"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "ElevateNonAdmins" /t REG_DWORD /d 1
-        Echo>>"%OPT_CMD%"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "EnableFeaturedSoftware" /t REG_DWORD /d 1
-        Echo>>"%OPT_CMD%" Rem ---------------------------------------------------------------------------
+        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 2
+        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "IncludeRecommendedUpdates" /t REG_DWORD /d 1
+        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "ElevateNonAdmins" /t REG_DWORD /d 1
+        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "EnableFeaturedSoftware" /t REG_DWORD /d 1
+        Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     )
 Rem ---------------------------------------------------------------------------
     For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
@@ -502,7 +515,10 @@ Rem ---------------------------------------------------------------------------
         Set LST_CMD=%%~O
         Set LST_RENAME=%%~P
         Set LST_FILE=%%~Q
-        For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
+        For %%E In ("!LST_RENAME!") Do (
+            Set LST_FNAME=%%~nxE
+            Set LST_FDIR=%%~dpnE
+        )
         If /I "!LST_WINDOWS!" EQU "w!WIN_VER!" (
             If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
                 If /I "!LST_EXTENSION!" EQU "exe" (
@@ -518,25 +534,19 @@ Rem ---------------------------------------------------------------------------
                 ) Else If /I "!LST_EXTENSION!" EQU "msi" (
                     Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                     Set OPT_LST=!OPT_LST! "!LST_FNAME!"
-                ) Else If /I "!LST_EXTENSION!" EQU "cab" (
-                    Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
-                    Set OPT_LST=!OPT_LST! "!LST_FNAME!"
-                ) Else If /I "!LST_EXTENSION!" EQU "zip" (
-                    Pushd 
-                        Set LST_UNQ=
-                        For /R %%Z In (*!LST_SECTION!*.msu) Do (
-                            If /I "!LST_UNQ!" NEQ "%%~nxZ" (
-                                Set LST_FNAME=%%~Z
-                                Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
-                                Set OPT_LST=!OPT_LST! "!LST_FNAME!"
-                                Set LST_UNQ=%%~nxZ
-                            )
-                        )
-                    Popd
                 )
             ) Else If /I "!LST_PACKAGE!" EQU "drv" (
                 If /I "!LST_EXTENSION!" EQU "cab" (
-                    Set OPT_DRV=!OPT_DRV! "!LST_RENAME!"
+                    For %%E In ("!LST_RENAME!") Do (
+                        Set OPT_WRK=%%~nE
+                        Echo>>"!OPT_CMD!"     Cmd /C PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" /SubDirs /Install
+                        Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!LST_FDIR!" "!WIM_IMG!\!OPT_DRV!\!OPT_WRK!"
+                    )
+                ) Else If /I "!LST_EXTENSION!" EQU "zip" (
+                    For %%E In ("!LST_RENAME!") Do (
+                        Set OPT_WRK=%%~nE
+                        Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!LST_FDIR!" "!WIM_IMG!\!OPT_DRV!\!OPT_WRK!"
+                    )
                 )
             )
         )
@@ -553,10 +563,15 @@ Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
 Rem ---------------------------------------------------------------------------
     If /I "!OPT_LST!" NEQ "" (
-        Robocopy /J /A-:RHS /NDL "%WIM_WUD%" "%WIM_IMG%\%OPT_PKG%" !OPT_LST! > Nul
+        Robocopy /J /A-:RHS /NDL /NC /NJH /NJS "!WIM_WUD!" "!WIM_IMG!\!OPT_PKG!" !OPT_LST!
     )
 
 Rem === Windows Update ファイル と ドライバー の統合 ==========================
+    Set ADD_PAC=/Image:^"!WIM_MNT!^" /Add-Package /IgnoreCheck
+    Set ADD_DRV=/Image:^"!WIM_MNT!^" /Add-Driver /ForceUnsigned /Recurse
+    Set WRE_PAC=/Image:^"!WIM_WRE!^" /Add-Package /IgnoreCheck
+    Set WRE_DRV=/Image:^"!WIM_WRE!^" /Add-Driver /ForceUnsigned /Recurse
+
     If !WIN_VER! EQU 7 (
         Echo --- ドライバーの統合 -----------------------------------------------------------
         Pushd "!WIM_DRV!\USB" &For /R %%I In (Win7\!ARC_TYP!\iusb3hub.inf*)  Do (Set DRV_USB=%%~dpI&Set DRV_USB=!DRV_USB:~0,-1!)&Popd
@@ -598,11 +613,6 @@ Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!
         Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
         Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
 Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
-        If "!OPT_DRV!" NEQ "" (
-            For %%I In (!OPT_DRV!) Do (
-                Dism !ADD_DRV! /Driver:"%%~dpnI"                                                || GoTo :DONE
-            )
-        )
 Rem --- Windows Update ファイルの統合 -----------------------------------------
         For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
             Set LST_WINDOWS=%%~I
@@ -621,10 +631,10 @@ Rem --- Windows Update ファイルの統合 -----------------------------------------
                         Dism !ADD_PAC! /PackagePath:"!LST_RENAME!"                              || GoTo :DONE
                     ) Else If /I "!LST_EXTENSION!" EQU "exe" (
                         If /I "!LST_SECTION!" EQU "IE11" (
-                            Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Win7.CAB"           || GoTo :DONE
-                            Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\ielangpack-ja-JP.CAB"  || GoTo :DONE
-                            Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Spelling-en.MSU"    || GoTo :DONE
-                            Dism %ADD_PAC% /PackagePath:"%WIM_WUD%\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Hyphenation-en.MSU" || GoTo :DONE
+                            Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Win7.CAB"           || GoTo :DONE
+                            Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\ielangpack-ja-JP.CAB"  || GoTo :DONE
+                            Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Spelling-en.MSU"    || GoTo :DONE
+                            Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Hyphenation-en.MSU" || GoTo :DONE
                         )
                     )
                 )
@@ -639,7 +649,7 @@ Rem === DVDイメージを作成する =================================================
 Rem If !WIM_SIZ! GEQ 4294967296 (
 Rem     Echo --- ファイル分割 --------------------------------------------------------------
 Rem     Dism /Split-Image /ImageFile:"!WIM_IMG!\sources\install.wim" /SWMFile:"!WIM_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
-Rem     Move /Y "%WIM_IMG%\sources\install.wim" "%WIM_BAK%" > Nul
+Rem     Move /Y "!WIM_IMG!\sources\install.wim" "!WIM_BAK!" > Nul
 Rem )
     If Exist "!WIM_IMG!\efi\boot" (
         Set MAK_IMG=-m -o -u1 -h -bootdata:2#p0,e,b"!WIM_IMG!\boot\etfsboot.com"#pEF,e,b"!WIM_IMG!\efi\microsoft\boot\efisys.bin"
