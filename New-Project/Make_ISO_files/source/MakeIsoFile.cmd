@@ -500,13 +500,13 @@ Rem --- options.cmd �̍쐬 ----------------------------------------------------
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% Start
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    Echo>>"!OPT_CMD!" Rem Cmd /C sc stop wuauserv
+    Echo>>"!OPT_CMD!"     Cmd /C sc stop wuauserv
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     If !WIN_VER! EQU 7 (
-        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 1
-        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "IncludeRecommendedUpdates" /t REG_DWORD /d 1
-        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "ElevateNonAdmins" /t REG_DWORD /d 1
-        Echo>>"!OPT_CMD!"     Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "EnableFeaturedSoftware" /t REG_DWORD /d 1
+        Echo>>"!OPT_CMD!" Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 1
+        Echo>>"!OPT_CMD!" Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "IncludeRecommendedUpdates" /t REG_DWORD /d 1
+        Echo>>"!OPT_CMD!" Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "ElevateNonAdmins" /t REG_DWORD /d 1
+        Echo>>"!OPT_CMD!" Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "EnableFeaturedSoftware" /t REG_DWORD /d 1
         Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     )
 Rem ---------------------------------------------------------------------------
@@ -546,7 +546,7 @@ Rem ---------------------------------------------------------------------------
                         For %%E In ("!LST_RENAME!") Do (
                             Set OPT_WRK=%%~nE
                             If !WIN_VER! EQU 7 (
-                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil -A "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf"
+                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil -i -a "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf"
                             ) Else             (
                                 Echo>>"!OPT_CMD!"     Cmd /C PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" /SubDirs /Install
                             )

@@ -1,14 +1,14 @@
 Rem ---------------------------------------------------------------------------
-Rem 2020/02/04  7:44:26.07 maked
+Rem 2020/02/04 10:44:47.70 maked
 Rem ---------------------------------------------------------------------------
     Echo %DATE% %TIME% Start
 Rem ---------------------------------------------------------------------------
-Rem Cmd /C sc stop wuauserv
+    Cmd /C sc stop wuauserv
 Rem ---------------------------------------------------------------------------
-    Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 1
-    Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "IncludeRecommendedUpdates" /t REG_DWORD /d 1
-    Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "ElevateNonAdmins" /t REG_DWORD /d 1
-    Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "EnableFeaturedSoftware" /t REG_DWORD /d 1
+Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 1
+Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "IncludeRecommendedUpdates" /t REG_DWORD /d 1
+Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "ElevateNonAdmins" /t REG_DWORD /d 1
+Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "EnableFeaturedSoftware" /t REG_DWORD /d 1
 Rem ---------------------------------------------------------------------------
     Cmd /C Wusa "%configsetroot%\autounattend\options\upd\windows6.1-kb2533552-x64.msu" /quiet /norestart
     Cmd /C "%configsetroot%\autounattend\options\upd\ndp48-x86-x64-enu.exe" /norestart /passive
