@@ -34,20 +34,20 @@
 | ファイル名                     | 機能                                        |
 | ------------------------------ | ------------------------------------------- |
 | [Windows7adk_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7adk_Rollup_202001.lst)  | ADK                                         |
+| [Windows7bin_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7bin_Rollup_202001.lst)  | バイナリーファイル                          |
 | [Windows7drv_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7drv_Rollup_202001.lst)  | ドライバー                                  |
 | [Windows7x86_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7x86_Rollup_202001.lst)  | Windows Update 32bit                        |
 | [Windows7x64_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7x64_Rollup_202001.lst)  | Windows Update 64bit                        |
-| [Windows7zip_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows7zip_Rollup_202001.lst)  | 7zip                                        |
   
 【ダウンロードリストファイル：Windows 10用】  
   
 | ファイル名                     | 機能                                        |
 | ------------------------------ | ------------------------------------------- |
 | [Windows10adk_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows10adk_Rollup_202001.lst) | ADK                                         |
+| [Windows10bin_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows10bin_Rollup_202001.lst) | バイナリーファイル                          |
 | [Windows10drv_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows10drv_Rollup_202001.lst) | ドライバー                                  |
 | [Windows10x86_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows10x86_Rollup_202001.lst) | Windows Update 32bit                        |
 | [Windows10x64_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows10x64_Rollup_202001.lst) | Windows Update 64bit                        |
-| [Windows10zip_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/source/Windows10zip_Rollup_202001.lst) | 7zip                                        |
   
 【ダウンロードリストファイル：dynabook SS N12 Windows 7用】  
   
