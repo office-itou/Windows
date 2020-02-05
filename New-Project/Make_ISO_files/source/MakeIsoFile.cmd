@@ -164,7 +164,7 @@ Rem     Set /P IDX_WIN=Windowsのエディションを1～5の数字から選んで下さい。（規定
 
 Rem --- 環境変数設定 ----------------------------------------------------------
 Rem Set WIN_VER=%~1
-    Set LST_PKG=adk drv zip !ARC_TYP!
+    Set LST_PKG=adk bin drv !ARC_TYP!
 Rem Set WIM_TOP=%~3
     Set WIM_BIN=!WIM_TOP!\bin
     Set WIM_CFG=!WIM_TOP!\cfg
@@ -437,6 +437,15 @@ Rem *** ファイル取得 **********************************************************
                             )
                         )
                     Popd
+                ) Else If /I "!LST_EXTENSION!" EQU "msi" (
+                   	If /I "!LST_CMD!" EQU "" (
+                        For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
+                        If Not Exist "!LST_DIR!" (
+                            Echo --- ファイル展開 --------------------------------------------------------------
+                            MkDir "!LST_DIR!"
+                            MsiExec /a "!LST_RENAME!" targetdir="!LST_DIR!" /qn > Nul || GoTo DONE
+                        )
+                    )
                 ) Else If /I "!LST_EXTENSION!" EQU "cab" (
                     For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
                     If Not Exist "!LST_DIR!" (
