@@ -451,6 +451,28 @@ Rem *** ファイル取得 **********************************************************
                         MkDir "!LST_DIR!"
                         "!LST_RENAME!" /x:"!LST_DIR!"
                     )
+                ) Else If /I "!LST_EXTENSION!" EQU "msu" (
+                        If /I "!LST_SECTION!" EQU "KB2533552" (
+                            Echo --- ファイル展開 --------------------------------------------------------------
+                            For %%E In ("!LST_RENAME!") Do (
+                                Set LST_FPATH=%%~dpnE
+                                Set LST_FNAME=%%~nE
+                                Set LST_FCAB=!LST_FPATH!\!LST_FNAME!
+                            )
+                            If Exist "!LST_FPATH!" (RmDir /S /Q "!LST_FPATH!")
+                            MkDir "!LST_FCAB!"
+                            Expand -F:* "!LST_RENAME!" "!LST_FPATH!" > Nul
+                            Expand -F:* "!LST_FCAB!.cab" "!LST_FCAB!" > Nul
+                            For /F "usebackq delims=" %%E In ("!LST_FCAB!\update.mum") Do (
+                                Set LST_LINE=%%~E
+                                For /F "usebackq delims=" %%F In (`Echo "!LST_LINE!" ^| Find "allowedOffline"`) Do (
+                                    Set LST_LINE="		<mum:packageExtended xmlns:mum="urn:schemas-microsoft-com:asm.v3" exclusive="true" allowedOffline="true"/>"
+                                )
+                                Echo>>"!LST_FPATH!\update.wrk" !LST_LINE!
+                            )
+                            Move "!LST_FPATH!\update.wrk" "!LST_FCAB!\update.mum"
+                        )
+                    )
                 )
             )
         )
@@ -641,11 +663,15 @@ Rem --- Windows Update ファイルの統合 -----------------------------------------
             Set LST_CMD=%%~O
             Set LST_RENAME=%%~P
             Set LST_FILE=%%~Q
-            For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
             If /I "!LST_WINDOWS!" EQU "w!WIN_VER!" (
                 If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
                     If /I "!LST_EXTENSION!" EQU "msu" (
-                        Dism !ADD_PAC! /PackagePath:"!LST_RENAME!"                              || GoTo :DONE
+                        If /I "!LST_SECTION!" EQU "KB2533552" (
+                            For %%E In ("!LST_RENAME!") Do (Set LST_FCAB=%%~dpnE\%%~nE)
+                            Dism !ADD_PAC! /PackagePath:"!LST_FCAB!"                                || GoTo :DONE
+                        ) Else (
+                            Dism !ADD_PAC! /PackagePath:"!LST_RENAME!"                              || GoTo :DONE
+                        )
                     ) Else If /I "!LST_EXTENSION!" EQU "exe" (
                         If /I "!LST_SECTION!" EQU "IE11" (
                             Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Win7.CAB"           || GoTo :DONE
