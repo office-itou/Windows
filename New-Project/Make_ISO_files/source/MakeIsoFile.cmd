@@ -36,6 +36,30 @@ Rem --- 環境変数設定 ----------------------------------------------------------
 
     For /F "delims=\ tokens=2 usebackq" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~dI\%%~I)
 
+    Set ARG_LST=%*
+    Set FLG_OPT=0
+    Set FLG_DEL=0
+    Set FLG_DRV=0
+    Set FLG_IMG=0
+
+    For %%I In (!ARG_LST!) Do (
+        Set ARG_PRM=%%~I
+               If /I "!ARG_PRM!" EQU ""            (GoTo SETTING
+        ) Else If /I "!ARG_PRM!" EQU "Help"        (GoTo HELP
+        ) Else If /I "!ARG_PRM!" EQU "Reuse-Image" (Set FLG_OPT=1&Set FLG_DEL=1
+        ) Else If /I "!ARG_PRM!" EQU "Add-Driver"  (Set FLG_OPT=1&Set FLG_DRV=1
+        ) Else If /I "!ARG_PRM!" EQU "Split-Image" (Set FLG_OPT=1&Set FLG_IMG=1
+        ) Else                                     (GoTo HELP
+        )
+    )
+
+    GoTo SETTING
+
+:HELP
+    Echo !WRK_FIL! [Help] [Reuse-Image] [Add-Driver] [Split-Image]
+    GoTo DONE
+
+:SETTING
 Rem *** 作業環境設定 **********************************************************
     Set DEF_TOP=C:\WimWK
 
@@ -128,37 +152,39 @@ Rem --- wimバージョンの取得 ---------------------------------------------------
     )
 
 Rem --- Windowsのエディション設定 ---------------------------------------------
-    If !WIN_VER! EQU 7 (
-        Echo --- Windowsのエディション設定 -------------------------------------------------
-        Echo 1: Windows 7 Starter ^(32bit版のみ^)
-        Echo 2: Windows 7 HomeBasic
-        Echo 3: Windows 7 HomePremium
-        Echo 4: Windows 7 Professional
-        Echo 5: Windows 7 Ultimate
-        Set IDX_WIN=4
-        Set /P IDX_WIN=Windowsのエディションを1～5の数字から選んで下さい。（規定値[!IDX_WIN!]）
+    If !FLG_OPT! EQU 0 (
+        If !WIN_VER! EQU 7 (
+            Echo --- Windowsのエディション設定 -------------------------------------------------
+            Echo 1: Windows 7 Starter ^(32bit版のみ^)
+            Echo 2: Windows 7 HomeBasic
+            Echo 3: Windows 7 HomePremium
+            Echo 4: Windows 7 Professional
+            Echo 5: Windows 7 Ultimate
+            Set IDX_WIN=4
+            Set /P IDX_WIN=Windowsのエディションを1～5の数字から選んで下さい。（規定値[!IDX_WIN!]）
 
-               If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 7 Starter
-        ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 7 HomeBasic
-        ) Else If /I "!IDX_WIN!" EQU "3" (Set WIN_TYP=Windows 7 HomePremium
-        ) Else If /I "!IDX_WIN!" EQU "4" (Set WIN_TYP=Windows 7 Professional
-        ) Else If /I "!IDX_WIN!" EQU "5" (Set WIN_TYP=Windows 7 Ultimate
-        )
-    ) Else If !WIN_VER! EQU 10 (
-Rem     Echo --- Windowsのエディション設定 -------------------------------------------------
-Rem     Echo 1: Windows 10 Home
-Rem     Echo 2: Windows 10 Education
-Rem     Echo 3: Windows 10 Pro
-Rem     Echo 4: Windows 10 Pro Education
-Rem     Echo 5: Windows 10 Pro for Workstations
-        Set IDX_WIN=3
-Rem     Set /P IDX_WIN=Windowsのエディションを1～5の数字から選んで下さい。（規定値[!IDX_WIN!]）
+                   If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 7 Starter
+            ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 7 HomeBasic
+            ) Else If /I "!IDX_WIN!" EQU "3" (Set WIN_TYP=Windows 7 HomePremium
+            ) Else If /I "!IDX_WIN!" EQU "4" (Set WIN_TYP=Windows 7 Professional
+            ) Else If /I "!IDX_WIN!" EQU "5" (Set WIN_TYP=Windows 7 Ultimate
+            )
+        ) Else If !WIN_VER! EQU 10 (
+Rem         Echo --- Windowsのエディション設定 -------------------------------------------------
+Rem         Echo 1: Windows 10 Home
+Rem         Echo 2: Windows 10 Education
+Rem         Echo 3: Windows 10 Pro
+Rem         Echo 4: Windows 10 Pro Education
+Rem         Echo 5: Windows 10 Pro for Workstations
+            Set IDX_WIN=3
+Rem         Set /P IDX_WIN=Windowsのエディションを1～5の数字から選んで下さい。（規定値[!IDX_WIN!]）
 
-               If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 10 Home
-        ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 10 Education
-        ) Else If /I "!IDX_WIN!" EQU "3" (Set WIN_TYP=Windows 10 Pro
-        ) Else If /I "!IDX_WIN!" EQU "4" (Set WIN_TYP=Windows 10 Pro Education
-        ) Else If /I "!IDX_WIN!" EQU "5" (Set WIN_TYP=Windows 10 Pro for Workstations
+                   If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 10 Home
+            ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 10 Education
+            ) Else If /I "!IDX_WIN!" EQU "3" (Set WIN_TYP=Windows 10 Pro
+            ) Else If /I "!IDX_WIN!" EQU "4" (Set WIN_TYP=Windows 10 Pro Education
+            ) Else If /I "!IDX_WIN!" EQU "5" (Set WIN_TYP=Windows 10 Pro for Workstations
+            )
         )
     )
 
@@ -210,7 +236,10 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
             Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
 
-            If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
+            If FLG_DEL EQU 0 (
+                If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
+            )
+
             If     Exist "!WIM_MNT!" (RmDir /S /Q "!WIM_MNT!" || GoTo DONE)
             If     Exist "!WIM_WRE!" (RmDir /S /Q "!WIM_WRE!" || GoTo DONE)
 
@@ -253,6 +282,13 @@ Rem --- Oscdimgのパスを設定する -----------------------------------------------
         GoTo DONE
     )
 
+    If !FLG_DRV! EQU 0 (
+        If !FLG_IMG! EQU 1 (
+            GoTo MAKE_ISO_IMAGE
+        )
+    )
+
+:DOWNLOAD
 Rem *** リストファイル変換 ****************************************************
     Echo --- リストファイル変換 --------------------------------------------------------
     Set LST_FIL=
@@ -490,10 +526,8 @@ Rem *** ファイル取得 **********************************************************
 :UPDATE
 Rem *** 統合ISOファイル作成 ***************************************************
 Rem === 原本から作業フォルダーにコピーする ====================================
-    If /I "%1" NEQ "Add-Driver" (
-        Echo --- 原本から作業フォルダーにコピーする ----------------------------------------
-        Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS /NFL "!DVD_SRC!\" "!WIM_IMG!"
-    )
+    Echo --- 原本から作業フォルダーにコピーする ----------------------------------------
+    Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS /NFL "!DVD_SRC!\" "!WIM_IMG!"
 
 :ADD_BOOT_OPTIONS
 Rem === UEFIブート準備 ========================================================
@@ -597,7 +631,7 @@ Rem ---------------------------------------------------------------------------
     )
 Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    Echo>>"!OPT_CMD!" Rem Cmd /C RmDel /S /Q "%%configsetroot%%"
+    Echo>>"!OPT_CMD!" Rem Cmd /C RmDir /S /Q "%%configsetroot%%"
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!"     Cmd /C shutdown /r /t 3
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
@@ -611,7 +645,7 @@ Rem ---------------------------------------------------------------------------
     )
 
 Rem ---------------------------------------------------------------------------
-    If /I "%1" EQU "Add-Driver" (GoTo MAKE_ISO_IMAGE)
+    If !FLG_DRV! EQU 1 (GoTo MAKE_ISO_IMAGE)
 
 :ADD_PACKAGE
 Rem === Windows Update ファイル と ドライバー の統合 ==========================
@@ -698,12 +732,14 @@ Rem --- Windows Update ファイルの統合 -----------------------------------------
 :MAKE_ISO_IMAGE
 Rem === DVDイメージを作成する =================================================
     Echo --- DVDイメージを作成する -----------------------------------------------------
-    For %%I In ("!WIM_IMG!\sources\install.wim") Do (Set WIM_SIZ=%%~zI)
-Rem If !WIM_SIZ! GEQ 4294967296 (
-Rem     Echo --- ファイル分割 --------------------------------------------------------------
-Rem     Dism /Split-Image /ImageFile:"!WIM_IMG!\sources\install.wim" /SWMFile:"!WIM_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
-Rem     Move /Y "!WIM_IMG!\sources\install.wim" "!WIM_BAK!" > Nul
-Rem )
+    If !FLG_IMG! EQU 1 (
+        For %%I In ("!WIM_IMG!\sources\install.wim") Do (Set WIM_SIZ=%%~zI)
+        If !WIM_SIZ! GEQ 4294967296 (
+            Echo --- ファイル分割 --------------------------------------------------------------
+            Dism /Split-Image /ImageFile:"!WIM_IMG!\sources\install.wim" /SWMFile:"!WIM_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
+            Move /Y "!WIM_IMG!\sources\install.wim" "!WIM_BAK!" > Nul
+        )
+    )
     If Exist "!WIM_IMG!\efi\boot" (
         Set MAK_IMG=-m -o -u1 -h -bootdata:2#p0,e,b"!WIM_IMG!\boot\etfsboot.com"#pEF,e,b"!WIM_IMG!\efi\microsoft\boot\efisys.bin"
     ) Else (
