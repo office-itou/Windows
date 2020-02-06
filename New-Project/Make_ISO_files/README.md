@@ -71,3 +71,5 @@
 | 統合作業02                     | ![統合作業02](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/02.%E7%B5%B1%E5%90%88%E4%BD%9C%E6%A5%AD.02.jpg) |
 | 統合作業03                     | ![統合作業03](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/02.%E7%B5%B1%E5%90%88%E4%BD%9C%E6%A5%AD.03.jpg) |
 | 統合作業04                     | ![統合作業04](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/02.%E7%B5%B1%E5%90%88%E4%BD%9C%E6%A5%AD.04.jpg) |
+| 統合作業05                     | ![統合作業04](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/02.%E7%B5%B1%E5%90%88%E4%BD%9C%E6%A5%AD.05.jpg) |
+  
