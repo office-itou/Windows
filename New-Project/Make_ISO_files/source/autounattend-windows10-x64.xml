@@ -85,8 +85,8 @@
 -->
             <UserData>
                 <AcceptEula>true</AcceptEula>
-                <FullName>VMware User</FullName>
-                <Organization>VMware Group</Organization>
+                <FullName>Windows User</FullName>
+                <Organization>Windows Group</Organization>
                 <ProductKey>
                     <Key></Key>
                     <WillShowUI>OnError</WillShowUI>
@@ -103,7 +103,7 @@
         </component>
         <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <Identification>
-                <JoinWorkgroup>VMware</JoinWorkgroup>
+                <JoinWorkgroup>Workgroup</JoinWorkgroup>
             </Identification>
         </component>
     </settings>
