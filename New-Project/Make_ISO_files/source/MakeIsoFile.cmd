@@ -90,6 +90,11 @@ Rem --- Windowsのバージョン設定 -----------------------------------------------
     ) Else                           (GoTo INPUT_WIN_TYPE
     )
 
+           If !WIN_VER! EQU  7 (Set WIN_PNM=Windows6.1
+    ) Else If !WIN_VER! EQU 10 (Set WIN_PNM=Windows10.0
+    ) Else                     (GoTo INPUT_WIN_TYPE
+    )
+
 Rem --- Windowsのアーキテクチャー設定 -----------------------------------------
 :INPUT_ARC_TYPE
     Echo --- Windowsのアーキテクチャー設定 ---------------------------------------------
@@ -150,6 +155,8 @@ Rem --- wimバージョンの取得 ---------------------------------------------------
         Pause > Nul 2>&1
         GoTo SET_DVD_DRIVE
     )
+
+    For /F "Usebackq Tokens=5 Delims= " %%I In (`Vol h: ^| FindStr  /C:"ボリューム ラベル"`) Do (Set DVD_VOL=%%~I)
 
 Rem --- Windowsのエディション設定 ---------------------------------------------
     If !FLG_OPT! EQU 0 (
@@ -230,13 +237,14 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
         For %%J In (!ARC_TYP!) Do (
             Set WIM_DRV=!WIM_PKG!\w%%I\drv
             Set WIM_WUD=!WIM_PKG!\w%%I\%%J
+            Set WIM_CAB=!WIM_PKG!\w%%I\%%J\cab
             Set WIM_BAK=!WIM_WRK!\w%%I\%%J\bak
             Set WIM_EFI=!WIM_WRK!\w%%I\%%J\efi
             Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
             Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
             Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
 
-            If FLG_DEL EQU 0 (
+            If !FLG_DEL! EQU 0 (
                 If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
             )
 
@@ -244,6 +252,7 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             If     Exist "!WIM_WRE!" (RmDir /S /Q "!WIM_WRE!" || GoTo DONE)
 
             If Not Exist "!WIM_WUD!" (MkDir       "!WIM_WUD!" || GoTo DONE)
+            If Not Exist "!WIM_CAB!" (MkDir       "!WIM_CAB!" || GoTo DONE)
             If Not Exist "!WIM_BAK!" (MkDir       "!WIM_BAK!" || GoTo DONE)
             If Not Exist "!WIM_EFI!" (MkDir       "!WIM_EFI!" || GoTo DONE)
             If Not Exist "!WIM_IMG!" (MkDir       "!WIM_IMG!" || GoTo DONE)
@@ -259,7 +268,7 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
 Rem --- Oscdimg取得 -----------------------------------------------------------
     If Not Exist "!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%" (
         Echo --- Oscdimg取得 ---------------------------------------------------------------
-        Pushd "%ProgramFiles(x86)%"
+        Pushd "%ProgramFiles(x86)%" || GoTo DONE
             For /R %%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%~dpI)
         Popd
         If /I "!UTL_WRK!" EQU "" (
@@ -315,7 +324,7 @@ Rem *** リストファイル変換 ****************************************************
                             Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
                             Set LST_EXTENSION=!LST_EXTENSION:~1!
                             If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                            Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                            Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
                         )
                         Set LST_SECTION=!LST_KEY:~1,-1!
                         Set LST_TITLE=
@@ -339,6 +348,7 @@ Rem *** リストファイル変換 ****************************************************
                         Set LST_IEXPRESS_CMD=
                         Set LST_PREVIOUS_SP=
                         Set LST_COMMENT=
+                        Set LST_TYPE_NUM=
                     )
                     If /I "!LST_SECTION!" NEQ "" (
                                If /I "!LST_KEY!" EQU "TITLE"         (Set LST_TITLE=!LST_VAL!
@@ -363,6 +373,22 @@ Rem *** リストファイル変換 ****************************************************
                         ) Else If /I "!LST_KEY!" EQU "PREVIOUS_SP"   (Set LST_PREVIOUS_SP=!LST_VAL!
                         ) Else If /I "!LST_KEY!" EQU "COMMENT"       (Set LST_COMMENT=!LST_VAL!
                         )
+                        If /I "!LST_KEY!" EQU "TYPE" (
+                                   If /I "!LST_TYPE!" EQU "Service Pack"         (Set LST_TYPE_NUM=01
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(SVCPACK.INF)"  (Set LST_TYPE_NUM=02
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIXES.CMD)" (Set LST_TYPE_NUM=03
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX1.CMD)"  (Set LST_TYPE_NUM=04
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX2.CMD)"  (Set LST_TYPE_NUM=05
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX3.CMD)"  (Set LST_TYPE_NUM=06
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX4.CMD)"  (Set LST_TYPE_NUM=07
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX5.CMD)"  (Set LST_TYPE_NUM=08
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX6.CMD)"  (Set LST_TYPE_NUM=09
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX7.CMD)"  (Set LST_TYPE_NUM=10
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX8.CMD)"  (Set LST_TYPE_NUM=11
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX9.CMD)"  (Set LST_TYPE_NUM=12
+                            ) Else                                               (Set LST_TYPE_NUM=
+                            )
+                        )
                     )
                 )
                 If /I "!LST_SECTION!" NEQ "" (
@@ -373,7 +399,7 @@ Rem *** リストファイル変換 ****************************************************
                     Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
                     Set LST_EXTENSION=!LST_EXTENSION:~1!
                     If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                    Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                    Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
                     Set LST_SECTION=
                     Set LST_TITLE=
                     Set LST_INFO=
@@ -396,6 +422,7 @@ Rem *** リストファイル変換 ****************************************************
                     Set LST_IEXPRESS_CMD=
                     Set LST_PREVIOUS_SP=
                     Set LST_COMMENT=
+                    Set LST_TYPE_NUM=
                 )
             )
         )
@@ -406,16 +433,17 @@ Rem --- ファイルソート --------------------------------------------------------
 
 Rem *** ファイル取得 **********************************************************
     Echo --- ファイル取得 --------------------------------------------------------------
-    For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
+    For /F "delims=, tokens=1-10 usebackq" %%I In (!CMD_DAT!) Do (
         Set LST_WINDOWS=%%~I
         Set LST_PACKAGE=%%~J
-        Set LST_TYPE=%%~K
-        Set LST_RUN_ORDER=%%~L
-        Set LST_SECTION=%%~M
-        Set LST_EXTENSION=%%~N
-        Set LST_CMD=%%~O
-        Set LST_RENAME=%%~P
-        Set LST_FILE=%%~Q
+        Set LST_TYPE_NUM=%%~K
+        Set LST_TYPE=%%~L
+        Set LST_RUN_ORDER=%%~M
+        Set LST_SECTION=%%~N
+        Set LST_EXTENSION=%%~O
+        Set LST_CMD=%%~P
+        Set LST_RENAME=%%~Q
+        Set LST_FILE=%%~R
         Set LST_WINPKG=!WIM_PKG!\!LST_WINDOWS!
         For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
         For /F "delims=: tokens=2 usebackq" %%X In ('!LST_FILE!') Do (
@@ -427,9 +455,7 @@ Rem *** ファイル取得 **********************************************************
                     Curl -L -s --dump-header "!CMD_WRK!" "!LST_FILE!"
                     Set LST_LEN=0
                     For /F "delims=: tokens=1,2* usebackq" %%Y In ("!CMD_WRK!") Do (
-                        If /I "%%~Y" EQU "Content-Length" (
-                            Set LST_LEN=%%~Z
-                        )
+                        If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
                     )
                     For /F "delims=/ usebackq" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
                     If !LST_LEN! NEQ !LST_SIZE! (
@@ -444,7 +470,7 @@ Rem *** ファイル取得 **********************************************************
                         MkDir "!LST_DIR!"
                         Tar -xzf "!LST_RENAME!" -C "!LST_DIR!"
                     )
-                    Pushd "!LST_DIR!"
+                    Pushd "!LST_DIR!" || GoTo DONE
                         For /R %%E In (*.zip) Do (
                             Set LST_ZIPFILE=%%E
                             Set LST_ZIPDIR=%%~dpnE
@@ -453,13 +479,13 @@ Rem *** ファイル取得 **********************************************************
                                 MkDir "!LST_ZIPDIR!"
                                 Tar -xzf "!LST_ZIPFILE!" -C "!LST_ZIPDIR!"
                             )
-                            Pushd "!LST_ZIPDIR!"
+                            Pushd "!LST_ZIPDIR!" || GoTo DONE
                                 For /R %%F In (*.msu) Do (
                                     For /F "delims=x tokens=2" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%G)
                                     If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!\%%~nxF" (
                                         Echo --- ファイル転送 --------------------------------------------------------------
                                         If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!" (MkDir "!LST_WINPKG!\x!LST_PACKAGE!")
-                                        Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul
+                                        Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul || GoTo DONE
                                     )
                                 )
                             Popd
@@ -469,7 +495,7 @@ Rem *** ファイル取得 **********************************************************
                             If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!\%%~nxF" (
                                 Echo --- ファイル転送 --------------------------------------------------------------
                                 If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!" (MkDir "!LST_WINPKG!\x!LST_PACKAGE!")
-                                Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul
+                                Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul || GoTo DONE
                             )
                         )
                     Popd
@@ -497,26 +523,25 @@ Rem *** ファイル取得 **********************************************************
                         "!LST_RENAME!" /x:"!LST_DIR!"
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "msu" (
-                        If /I "!LST_SECTION!" EQU "KB2533552" (
-                            Echo --- ファイル展開 --------------------------------------------------------------
-                            For %%E In ("!LST_RENAME!") Do (
-                                Set LST_FPATH=%%~dpnE
-                                Set LST_FNAME=%%~nE
-                                Set LST_FCAB=!LST_FPATH!\!LST_FNAME!
-                            )
-                            If Exist "!LST_FPATH!" (RmDir /S /Q "!LST_FPATH!")
-                            MkDir "!LST_FCAB!"
-                            Expand -F:* "!LST_RENAME!" "!LST_FPATH!" > Nul
-                            Expand -F:* "!LST_FCAB!.cab" "!LST_FCAB!" > Nul
-                            For /F "usebackq delims=" %%E In ("!LST_FCAB!\update.mum") Do (
-                                Set LST_LINE=%%~E
-                                For /F "usebackq delims=" %%F In (`Echo "!LST_LINE!" ^| Find "allowedOffline"`) Do (
-                                    Set LST_LINE="		<mum:packageExtended xmlns:mum="urn:schemas-microsoft-com:asm.v3" exclusive="true" allowedOffline="true"/>"
-                                )
-                                Echo>>"!LST_FPATH!\update.wrk" !LST_LINE!
-                            )
-                            Move "!LST_FPATH!\update.wrk" "!LST_FCAB!\update.mum"
+                    If /I "!LST_SECTION!" EQU "KB2533552" (
+                        Echo --- ファイル展開 --------------------------------------------------------------
+                        For %%E In ("!LST_RENAME!") Do (
+                            Set LST_FPATH=%%~dpnE
+                            Set LST_FNAME=%%~nE
+                            Set LST_FCAB=!LST_FPATH!\!LST_FNAME!
                         )
+                        If Exist "!LST_FPATH!" (RmDir /S /Q "!LST_FPATH!")
+                        MkDir "!LST_FCAB!"
+                        Expand -F:* "!LST_RENAME!" "!LST_FPATH!" > Nul
+                        Expand -F:* "!LST_FCAB!.cab" "!LST_FCAB!" > Nul
+                        For /F "usebackq delims=" %%E In ("!LST_FCAB!\update.mum") Do (
+                            Set LST_LINE=%%~E
+                            For /F "usebackq delims=" %%F In (`Echo "!LST_LINE!" ^| Find "allowedOffline"`) Do (
+                                Set LST_LINE="		<mum:packageExtended xmlns:mum="urn:schemas-microsoft-com:asm.v3" exclusive="true" allowedOffline="true"/>"
+                            )
+                            Echo>>"!LST_FPATH!\update.wrk" !LST_LINE!
+                        )
+                        Move "!LST_FPATH!\update.wrk" "!LST_FCAB!\update.mum" || GoTo DONE
                     )
                 )
             )
@@ -546,7 +571,7 @@ Rem === UEFIブート準備 ========================================================
 Rem === Unattend ==============================================================
     If Exist "!WIM_CFG!\autounattend-windows!WIN_VER!-!ARC_TYP!.xml" (
         Echo --- autounattend.xml のコピー -------------------------------------------------
-        Copy /Y "!WIM_CFG!\autounattend-windows!WIN_VER!-!ARC_TYP!.xml" "!WIM_IMG!\autounattend.xml" > Nul
+        Copy /Y "!WIM_CFG!\autounattend-windows!WIN_VER!-!ARC_TYP!.xml" "!WIM_IMG!\autounattend.xml" > Nul || GoTo DONE
     )
 
 :ADD_OPTIONS
@@ -564,27 +589,32 @@ Rem --- options.cmd の作成 ----------------------------------------------------
     Echo>>"!OPT_CMD!" Rem %DATE% %TIME% maked
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% Start
+    Echo>>"!OPT_CMD!" Rem --- NTP Setup -------------------------------------------------------------
+    Echo>>"!OPT_CMD!" Rem Cmd /C sc stop w32time
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "" /t REG_SZ /d "0" /f                                       ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "0" /t REG_SZ /d "ntp.nict.jp" /f                            ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Config" /v "UpdateInterval" /t REG_DWORD /d "0x00057e40" /f                       ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "Type" /t REG_SZ /d "NTP" /f                                       ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "NtpServer" /t REG_SZ /d "ntp.nict.jp,0x9" /f                      ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollInterval" /t REG_DWORD /d "0x00005460" /f ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollTimeRemaining" /t REG_MULTI_SZ /d "" /f   ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C sc config w32time start= delayed-auto                                                                                                                   ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"Rem  Cmd /C sc start w32time
+    Echo>>"!OPT_CMD!" Rem --- Paint Desktop Version Setup -------------------------------------------
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v "PaintDesktopVersion" /t REG_DWORD /d "00000001" /f ^|^| GoTo DONE
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    Echo>>"!OPT_CMD!"     Cmd /C sc stop wuauserv
-    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    If !WIN_VER! EQU 7 (
-        Echo>>"!OPT_CMD!" Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "AUOptions" /t REG_DWORD /d 1
-        Echo>>"!OPT_CMD!" Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "IncludeRecommendedUpdates" /t REG_DWORD /d 1
-        Echo>>"!OPT_CMD!" Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "ElevateNonAdmins" /t REG_DWORD /d 1
-        Echo>>"!OPT_CMD!" Rem Cmd /C reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /f /v "EnableFeaturedSoftware" /t REG_DWORD /d 1
-        Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    )
 Rem ---------------------------------------------------------------------------
-    For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
+    For /F "delims=, tokens=1-10 usebackq" %%I In (!CMD_DAT!) Do (
         Set LST_WINDOWS=%%~I
         Set LST_PACKAGE=%%~J
-        Set LST_TYPE=%%~K
-        Set LST_RUN_ORDER=%%~L
-        Set LST_SECTION=%%~M
-        Set LST_EXTENSION=%%~N
-        Set LST_CMD=%%~O
-        Set LST_RENAME=%%~P
-        Set LST_FILE=%%~Q
+        Set LST_TYPE_NUM=%%~K
+        Set LST_TYPE=%%~L
+        Set LST_RUN_ORDER=%%~M
+        Set LST_SECTION=%%~N
+        Set LST_EXTENSION=%%~O
+        Set LST_CMD=%%~P
+        Set LST_RENAME=%%~Q
+        Set LST_FILE=%%~R
         For %%E In ("!LST_RENAME!") Do (
             Set LST_FNAME=%%~nxE
             Set LST_FDIR=%%~dpnE
@@ -593,16 +623,19 @@ Rem ---------------------------------------------------------------------------
             If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
                 If /I "!LST_EXTENSION!" EQU "exe" (
                     If /I "!LST_SECTION!" NEQ "IE11" (
-                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
+                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| GoTo DONE
+                        Set OPT_LST=!OPT_LST! "!LST_FNAME!"
+                    ) Else If /I "!LST_CMD!" NEQ "" (
+                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| GoTo DONE
                         Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "wus" (
                     If /I "!LST_CMD!" NEQ "" (
-                        Echo>>"!OPT_CMD!"     Cmd /C Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
+                        Echo>>"!OPT_CMD!"     Cmd /C Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| GoTo DONE
                         Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "msi" (
-                    Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
+                    Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| GoTo DONE
                     Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                 )
             ) Else If /I "!LST_PACKAGE!" EQU "drv" (
@@ -611,9 +644,9 @@ Rem ---------------------------------------------------------------------------
                         For %%E In ("!LST_RENAME!") Do (
                             Set OPT_WRK=%%~nE
                             If !WIN_VER! EQU 7 (
-                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil -i -a "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf"
+                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil -i -a "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" ^|^| GoTo DONE
                             ) Else             (
-                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" /SubDirs /Install
+                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" /SubDirs /Install ^|^| GoTo DONE
                             )
                             Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!LST_FDIR!" "!WIM_IMG!\!OPT_DRV!\!OPT_WRK!"
                         )
@@ -631,10 +664,11 @@ Rem ---------------------------------------------------------------------------
     )
 Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    Echo>>"!OPT_CMD!" Rem Cmd /C RmDir /S /Q "%%configsetroot%%"
+    Echo>>"!OPT_CMD!" Rem Cmd /C RmDir /S /Q "%%configsetroot%%" ^|^| GoTo DONE
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    Echo>>"!OPT_CMD!"     Cmd /C shutdown /r /t 3
+    Echo>>"!OPT_CMD!"     Cmd /C shutdown /r /t 3 ^|^| GoTo DONE
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!" :DONE
     Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% End
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!"     pause
@@ -696,16 +730,17 @@ Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!
         Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
 Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
 Rem --- Windows Update ファイルの統合 -----------------------------------------
-        For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
+        For /F "delims=, tokens=1-10 usebackq" %%I In (!CMD_DAT!) Do (
             Set LST_WINDOWS=%%~I
             Set LST_PACKAGE=%%~J
-            Set LST_TYPE=%%~K
-            Set LST_RUN_ORDER=%%~L
-            Set LST_SECTION=%%~M
-            Set LST_EXTENSION=%%~N
-            Set LST_CMD=%%~O
-            Set LST_RENAME=%%~P
-            Set LST_FILE=%%~Q
+            Set LST_TYPE_NUM=%%~K
+            Set LST_TYPE=%%~L
+            Set LST_RUN_ORDER=%%~M
+            Set LST_SECTION=%%~N
+            Set LST_EXTENSION=%%~O
+            Set LST_CMD=%%~P
+            Set LST_RENAME=%%~Q
+            Set LST_FILE=%%~R
             If /I "!LST_WINDOWS!" EQU "w!WIN_VER!" (
                 If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
                     If /I "!LST_EXTENSION!" EQU "msu" (
@@ -717,10 +752,12 @@ Rem --- Windows Update ファイルの統合 -----------------------------------------
                         )
                     ) Else If /I "!LST_EXTENSION!" EQU "exe" (
                         If /I "!LST_SECTION!" EQU "IE11" (
-                            Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Win7.CAB"           || GoTo :DONE
-                            Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\ielangpack-ja-JP.CAB"  || GoTo :DONE
-                            Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Spelling-en.MSU"    || GoTo :DONE
-                            Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Hyphenation-en.MSU" || GoTo :DONE
+                            If /I "!LST_CMD!" EQU "" (
+                                Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Win7.CAB"           || GoTo :DONE
+                                Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\ielangpack-ja-JP.CAB"  || GoTo :DONE
+                                Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Spelling-en.MSU"    || GoTo :DONE
+                                Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Hyphenation-en.MSU" || GoTo :DONE
+                            )
                         )
                     )
                 )
@@ -741,9 +778,9 @@ Rem === DVDイメージを作成する =================================================
         )
     )
     If Exist "!WIM_IMG!\efi\boot" (
-        Set MAK_IMG=-m -o -u1 -h -bootdata:2#p0,e,b"!WIM_IMG!\boot\etfsboot.com"#pEF,e,b"!WIM_IMG!\efi\microsoft\boot\efisys.bin"
+        Set MAK_IMG=-m -o -u1 -h -l!DVD_VOL! -bootdata:2#p0,e,b"!WIM_IMG!\boot\etfsboot.com"#pEF,e,b"!WIM_IMG!\efi\microsoft\boot\efisys.bin"
     ) Else (
-        Set MAK_IMG=-m -o -u1 -h -bootdata:1#p0,e,b"!WIM_IMG!\boot\etfsboot.com"
+        Set MAK_IMG=-m -o -u1 -h -l!DVD_VOL! -bootdata:1#p0,e,b"!WIM_IMG!\boot\etfsboot.com"
     )
     Oscdimg !MAK_IMG! "!WIM_IMG!" "!DVD_DST!" || GoTo :DONE
 

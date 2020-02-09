@@ -107,6 +107,7 @@
                     <CommandLine>%configsetroot%\autounattend\options\options.cmd</CommandLine>
                     <Description>Options Install</Description>
                     <Order>1</Order>
+                    <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
             </FirstLogonCommands>
             <OOBE>

@@ -437,26 +437,25 @@ Rem *** ファイル取得 **********************************************************
                         "!LST_RENAME!" /x:"!LST_DIR!"
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "msu" (
-                        If /I "!LST_SECTION!" EQU "KB2533552" (
-                            Echo --- ファイル展開 --------------------------------------------------------------
-                            For %%E In ("!LST_RENAME!") Do (
-                                Set LST_FPATH=%%~dpnE
-                                Set LST_FNAME=%%~nE
-                                Set LST_FCAB=!LST_FPATH!\!LST_FNAME!
-                            )
-                            If Exist "!LST_FPATH!" (RmDir /S /Q "!LST_FPATH!")
-                            MkDir "!LST_FCAB!"
-                            Expand -F:* "!LST_RENAME!" "!LST_FPATH!" > Nul
-                            Expand -F:* "!LST_FCAB!.cab" "!LST_FCAB!" > Nul
-                            For /F "usebackq delims=" %%E In ("!LST_FCAB!\update.mum") Do (
-                                Set LST_LINE=%%~E
-                                For /F "usebackq delims=" %%F In (`Echo "!LST_LINE!" ^| Find "allowedOffline"`) Do (
-                                    Set LST_LINE="		<mum:packageExtended xmlns:mum="urn:schemas-microsoft-com:asm.v3" exclusive="true" allowedOffline="true"/>"
-                                )
-                                Echo>>"!LST_FPATH!\update.wrk" !LST_LINE!
-                            )
-                            Move "!LST_FPATH!\update.wrk" "!LST_FCAB!\update.mum"
+                    If /I "!LST_SECTION!" EQU "KB2533552" (
+                        Echo --- ファイル展開 --------------------------------------------------------------
+                        For %%E In ("!LST_RENAME!") Do (
+                            Set LST_FPATH=%%~dpnE
+                            Set LST_FNAME=%%~nE
+                            Set LST_FCAB=!LST_FPATH!\!LST_FNAME!
                         )
+                        If Exist "!LST_FPATH!" (RmDir /S /Q "!LST_FPATH!")
+                        MkDir "!LST_FCAB!"
+                        Expand -F:* "!LST_RENAME!" "!LST_FPATH!" > Nul
+                        Expand -F:* "!LST_FCAB!.cab" "!LST_FCAB!" > Nul
+                        For /F "usebackq delims=" %%E In ("!LST_FCAB!\update.mum") Do (
+                            Set LST_LINE=%%~E
+                            For /F "usebackq delims=" %%F In (`Echo "!LST_LINE!" ^| Find "allowedOffline"`) Do (
+                                Set LST_LINE="		<mum:packageExtended xmlns:mum="urn:schemas-microsoft-com:asm.v3" exclusive="true" allowedOffline="true"/>"
+                            )
+                            Echo>>"!LST_FPATH!\update.wrk" !LST_LINE!
+                        )
+                        Move "!LST_FPATH!\update.wrk" "!LST_FCAB!\update.mum"
                     )
                 )
             )
