@@ -33,6 +33,12 @@ C:\WIMWK
 |       autounattend-windows7-x64.xml
 |       autounattend-windows7-x86.xml
 |       
++---iso
+|       ja_windows_7_ultimate_with_sp1_x64_dvd_u_677372.iso
+|       ja_windows_7_ultimate_with_sp1_x86_dvd_u_677445.iso
+|       Win10_1909_Japanese_x32.iso
+|       Win10_1909_Japanese_x64.iso
+|       
 +---lst
 |       Initial-Downloader.lst
 |       Windows10adk_Rollup_202001.lst
@@ -49,8 +55,15 @@ C:\WIMWK
 +---pkg
 |   +---w10
 |   |   +---adk
-|   |   |       adksetup.exe
-|   |   |       
+|   |   |   |   adksetup.exe
+|   |   |   |   WSIM1903.zip
+|   |   |   |   
+|   |   |   \---WSIM1903
+|   |   |           ImageCat.exe
+|   |   |           ImgMgr.exe
+|   |   |           ReadMe.txt
+|   |   |           UpdateWSIM.bat
+|   |   |           
 |   |   +---bin
 |   |   |   |   7z1900-x64.msi
 |   |   |   |   7z1900-x86.msi
@@ -1313,29 +1326,38 @@ C:\WIMWK
 |   |   |                   Drv64.exe
 |   |   |                   
 |   |   +---x64
-|   |   |       MicrosoftEdgeEnterprise-x64.msi
-|   |   |       mpam-fe-x64.exe
-|   |   |       updateplatform-x64.exe
-|   |   |       windows-kb890830-x64-v5.79.exe
-|   |   |       windows10.0-kb4497165-v4-x64.msu
-|   |   |       windows10.0-kb4528759-x64.msu
-|   |   |       windows10.0-kb4532695-x64.msu
-|   |   |       windows10.0-kb4534132-x64-ndp48.msu
-|   |   |       
+|   |   |   |   MicrosoftEdgeEnterprise-x64.msi
+|   |   |   |   mpam-fe-x64.exe
+|   |   |   |   updateplatform-x64.exe
+|   |   |   |   windows-kb890830-x64-v5.79.exe
+|   |   |   |   windows10.0-kb4497165-v4-x64.msu
+|   |   |   |   windows10.0-kb4528759-x64.msu
+|   |   |   |   windows10.0-kb4532695-x64.msu
+|   |   |   |   windows10.0-kb4534132-x64-ndp48.msu
+|   |   |   |   
+|   |   |   \---cab
 |   |   \---x86
-|   |           MicrosoftEdgeEnterprise-x86.msi
-|   |           mpam-fe-x86.exe
-|   |           updateplatform-x86.exe
-|   |           windows-kb890830-x86-v5.79.exe
-|   |           windows10.0-kb4497165-v4-x86.msu
-|   |           windows10.0-kb4528759-x86.msu
-|   |           windows10.0-kb4532695-x86.msu
-|   |           windows10.0-kb4534132-x86-ndp48.msu
-|   |           
+|   |       |   MicrosoftEdgeEnterprise-x86.msi
+|   |       |   mpam-fe-x86.exe
+|   |       |   updateplatform-x86.exe
+|   |       |   windows-kb890830-x86-v5.79.exe
+|   |       |   windows10.0-kb4497165-v4-x86.msu
+|   |       |   windows10.0-kb4528759-x86.msu
+|   |       |   windows10.0-kb4532695-x86.msu
+|   |       |   windows10.0-kb4534132-x86-ndp48.msu
+|   |       |   
+|   |       \---cab
 |   \---w7
 |       +---adk
-|       |       adksetup.exe
-|       |       
+|       |   |   adksetup.exe
+|       |   |   WSIM1903.zip
+|       |   |   
+|       |   \---WSIM1903
+|       |           ImageCat.exe
+|       |           ImgMgr.exe
+|       |           ReadMe.txt
+|       |           UpdateWSIM.bat
+|       |           
 |       +---bin
 |       |   |   7z1900-x64.msi
 |       |   |   7z1900-x86.msi
@@ -2343,51 +2365,43 @@ C:\WIMWK
 |       |   |   Win7AndW2K8R2-KB3191566-x64.msu
 |       |   |   Win7AndW2K8R2-KB3191566-x64.zip
 |       |   |   windows-kb890830-x64-v5.79.exe
-|       |   |   windows6.1-kb2454826-v2-x64.msu
 |       |   |   windows6.1-kb2533552-x64.msu
 |       |   |   windows6.1-kb2533623-x64.msu
-|       |   |   Windows6.1-KB2534366-x64.msu
 |       |   |   windows6.1-kb2545698-x64.msu
 |       |   |   windows6.1-kb2547666-x64.msu
-|       |   |   windows6.1-kb2574819-v2-x64.msu
-|       |   |   windows6.1-kb2592687-x64.msu
 |       |   |   windows6.1-kb2603229-x64.msu
 |       |   |   windows6.1-kb2639308-x64.msu
 |       |   |   windows6.1-kb2667402-v2-x64.msu
 |       |   |   windows6.1-kb2670838-x64.msu
-|       |   |   Windows6.1-KB2679255-v2-x64.msu
+|       |   |   windows6.1-kb2676562-x64.msu
 |       |   |   windows6.1-kb2685811-x64.msu
 |       |   |   windows6.1-kb2685813-x64.msu
 |       |   |   windows6.1-kb2698365-x64.msu
 |       |   |   windows6.1-kb2729094-v2-x64.msu
-|       |   |   windows6.1-kb2731771-x64.msu
+|       |   |   Windows6.1-KB2731771-x64.msu
 |       |   |   windows6.1-kb2732059-v5-x64.msu
 |       |   |   windows6.1-kb2750841-x64.msu
 |       |   |   windows6.1-kb2761217-x64.msu
 |       |   |   windows6.1-kb2773072-x64.msu
 |       |   |   windows6.1-kb2786081-x64.msu
-|       |   |   windows6.1-kb2818604-x64.msu
+|       |   |   windows6.1-kb2813347-x64.msu
 |       |   |   windows6.1-kb2830477-x64.msu
 |       |   |   windows6.1-kb2834140-v2-x64.msu
 |       |   |   windows6.1-kb2862330-v2-x64.msu
 |       |   |   windows6.1-kb2882822-x64.msu
 |       |   |   windows6.1-kb2888049-x64.msu
 |       |   |   windows6.1-kb2894844-x64.msu
-|       |   |   windows6.1-kb2898851-x64.msu
 |       |   |   windows6.1-kb2900986-x64.msu
 |       |   |   windows6.1-kb2919469-x64.msu
 |       |   |   windows6.1-kb2923545-x64.msu
+|       |   |   windows6.1-kb2952664-v25-x64.msu
 |       |   |   windows6.1-kb2970228-x64.msu
 |       |   |   windows6.1-kb2984972-x64.msu
 |       |   |   Windows6.1-KB2990941-v3-x64.msu
 |       |   |   windows6.1-kb3004375-v3-x64.msu
 |       |   |   windows6.1-kb3006137-x64.msu
-|       |   |   windows6.1-kb3020369-x64.msu
-|       |   |   windows6.1-kb3020387-x64.msu
 |       |   |   windows6.1-kb3020388-x64.msu
 |       |   |   windows6.1-kb3021917-x64.msu
-|       |   |   windows6.1-kb3031432-x64.msu
-|       |   |   windows6.1-kb3042058-x64.msu
 |       |   |   windows6.1-kb3046269-x64.msu
 |       |   |   windows6.1-kb3059317-x64.msu
 |       |   |   windows6.1-kb3068708-x64.msu
@@ -2395,6 +2409,8 @@ C:\WIMWK
 |       |   |   windows6.1-kb3080149-x64.msu
 |       |   |   Windows6.1-kb3087873-v2-x64.msu
 |       |   |   windows6.1-kb3102429-v2-x64.msu
+|       |   |   windows6.1-kb3118401-x64.msu
+|       |   |   windows6.1-kb3123479-x64.msu
 |       |   |   windows6.1-kb3125574-v4-x64.msu
 |       |   |   windows6.1-kb3138612-x64.msu
 |       |   |   windows6.1-kb3150513-x64.msu
@@ -2411,12 +2427,13 @@ C:\WIMWK
 |       |   |   windows6.1-kb4040980-x64.msu
 |       |   |   windows6.1-kb4474419-v3-x64.msu
 |       |   |   windows6.1-kb4490628-x64.msu
-|       |   |   windows6.1-kb4507004-x64.msu
 |       |   |   windows6.1-kb4532945-x64.msu
 |       |   |   windows6.1-kb4534310-x64.msu
 |       |   |   windows6.1-kb4536952-x64.msu
+|       |   |   windows6.1-kb4539601-x64.msu
 |       |   |   windows6.1-kb947821-v34-x64.msu
 |       |   |   
+|       |   +---cab
 |       |   +---IE11-Windows6.1-x64-ja-jp
 |       |   |       HARDWAREBLOCKINGLIST.XML
 |       |   |       IE-Hyphenation-en.MSU
@@ -2551,50 +2568,42 @@ C:\WIMWK
 |           |   Win7-KB3191566-x86.msu
 |           |   Win7-KB3191566-x86.zip
 |           |   windows-kb890830-x86-v5.79.exe
-|           |   windows6.1-kb2454826-v2-x86.msu
 |           |   windows6.1-kb2533552-x86.msu
-|           |   windows6.1-kb2533623-x64.msu
-|           |   Windows6.1-KB2534366-x86.msu
+|           |   Windows6.1-KB2533623-x86.msu
 |           |   windows6.1-kb2545698-x86.msu
 |           |   windows6.1-kb2547666-x86.msu
-|           |   windows6.1-kb2574819-v2-x86.msu
-|           |   windows6.1-kb2592687-x86.msu
 |           |   windows6.1-kb2639308-x86.msu
 |           |   windows6.1-kb2667402-v2-x86.msu
 |           |   windows6.1-kb2670838-x86.msu
-|           |   Windows6.1-KB2679255-v2-x86.msu
+|           |   windows6.1-kb2676562-x86.msu
 |           |   windows6.1-kb2685811-x86.msu
 |           |   windows6.1-kb2685813-x86.msu
 |           |   windows6.1-kb2698365-x86.msu
 |           |   windows6.1-kb2729094-v2-x86.msu
-|           |   windows6.1-kb2731771-x64.msu
+|           |   Windows6.1-KB2731771-x86.msu
 |           |   windows6.1-kb2732059-v5-x86.msu
 |           |   windows6.1-kb2750841-x86.msu
 |           |   windows6.1-kb2761217-x86.msu
 |           |   windows6.1-kb2773072-x86.msu
 |           |   windows6.1-kb2786081-x86.msu
-|           |   windows6.1-kb2818604-x86.msu
+|           |   windows6.1-kb2813347-x86.msu
 |           |   windows6.1-kb2830477-x86.msu
 |           |   windows6.1-kb2834140-v2-x86.msu
 |           |   windows6.1-kb2862330-v2-x86.msu
 |           |   windows6.1-kb2882822-x86.msu
 |           |   windows6.1-kb2888049-x86.msu
 |           |   windows6.1-kb2894844-x86.msu
-|           |   windows6.1-kb2898851-x86.msu
 |           |   windows6.1-kb2900986-x86.msu
 |           |   windows6.1-kb2919469-x86.msu
 |           |   windows6.1-kb2923545-x86.msu
+|           |   windows6.1-kb2952664-v25-x86.msu
 |           |   windows6.1-kb2970228-x86.msu
 |           |   windows6.1-kb2984972-x86.msu
 |           |   Windows6.1-KB2990941-v3-x86.msu
 |           |   windows6.1-kb3004375-v3-x86.msu
 |           |   windows6.1-kb3006137-x86.msu
-|           |   windows6.1-kb3020369-x86.msu
-|           |   windows6.1-kb3020387-x86.msu
 |           |   windows6.1-kb3020388-x86.msu
 |           |   windows6.1-kb3021917-x86.msu
-|           |   windows6.1-kb3031432-x86.msu
-|           |   windows6.1-kb3042058-x86.msu
 |           |   windows6.1-kb3046269-x86.msu
 |           |   windows6.1-kb3059317-x86.msu
 |           |   windows6.1-kb3068708-x86.msu
@@ -2602,6 +2611,8 @@ C:\WIMWK
 |           |   windows6.1-kb3080149-x86.msu
 |           |   Windows6.1-KB3087873-v2-x86.msu
 |           |   windows6.1-kb3102429-v2-x86.msu
+|           |   windows6.1-kb3118401-x86.msu
+|           |   windows6.1-kb3123479-x86.msu
 |           |   windows6.1-kb3125574-v4-x86.msu
 |           |   windows6.1-kb3138612-x86.msu
 |           |   windows6.1-kb3150513-x86.msu
@@ -2618,12 +2629,13 @@ C:\WIMWK
 |           |   windows6.1-kb4040980-x86.msu
 |           |   windows6.1-kb4474419-v3-x86.msu
 |           |   windows6.1-kb4490628-x86.msu
-|           |   windows6.1-kb4507004-x86.msu
 |           |   windows6.1-kb4532945-x86.msu
 |           |   windows6.1-kb4534310-x86.msu
 |           |   windows6.1-kb4536952-x86.msu
+|           |   windows6.1-kb4539601-x86.msu
 |           |   windows6.1-kb947821-v34-x86.msu
 |           |   
+|           +---cab
 |           +---IE11-Windows6.1-x86-ja-jp
 |           |       HARDWAREBLOCKINGLIST.XML
 |           |       IE-Hyphenation-en.MSU

@@ -34,16 +34,25 @@ Rem --- 環境変数設定 ----------------------------------------------------------
         Set NOW_TIM=%time:~0,2%%time:~3,2%%time:~6,2%
     )
 
-Rem *** 作業環境設定 **********************************************************
-:INP_FOLDER
-    Set WIM_TOP=C:\WimWK
-    Set /P WIM_TOP=作業環境のフォルダーを指定して下さい。（規定値[!WIM_TOP!]）
-    If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=C:\WimWK)
+    For /F "delims=\ tokens=2 usebackq" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~dI\%%~I)
 
-    Set INP_ANS=N
-    Echo "!WIM_TOP!"
-    Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
-    If /I "!INP_ANS!" NEQ "Y" (GoTo INP_FOLDER)
+:SETTING
+Rem *** 作業環境設定 **********************************************************
+    Set DEF_TOP=C:\WimWK
+
+    If /I "!WRK_TOP!" EQU "!DEF_TOP!" (
+        Set WIM_TOP=!DEF_TOP!
+    ) Else (
+:INP_FOLDER
+        Set WIM_TOP=!DEF_TOP!
+        Set /P WIM_TOP=作業環境のフォルダーを指定して下さい。（規定値[!WIM_TOP!]）
+        If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=C:\WimWK)
+
+        Set INP_ANS=N
+        Echo "!WIM_TOP!"
+        Set /P INP_ANS=上記でよろしいですか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
+        If /I "!INP_ANS!" NEQ "Y" (GoTo INP_FOLDER)
+    )
 
 Rem --- 環境変数設定 ----------------------------------------------------------
     Set WIN_VER=7 10
@@ -132,17 +141,22 @@ Rem         Robocopy /J /MIR /A-:RHS /NDL "!WIM_PKG!" "!BAK_PKG!" > Nul
         For %%J In (!ARC_TYP!) Do (
             Set WIM_DRV=!WIM_PKG!\w%%I\drv
             Set WIM_WUD=!WIM_PKG!\w%%I\%%J
+            Set WIM_CAB=!WIM_PKG!\w%%I\%%J\cab
             Set WIM_BAK=!WIM_WRK!\w%%I\%%J\bak
             Set WIM_EFI=!WIM_WRK!\w%%I\%%J\efi
             Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
             Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
             Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
 
-            If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
+            If !FLG_DEL! EQU 0 (
+                If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
+            )
+
             If     Exist "!WIM_MNT!" (RmDir /S /Q "!WIM_MNT!" || GoTo DONE)
             If     Exist "!WIM_WRE!" (RmDir /S /Q "!WIM_WRE!" || GoTo DONE)
 
             If Not Exist "!WIM_WUD!" (MkDir       "!WIM_WUD!" || GoTo DONE)
+            If Not Exist "!WIM_CAB!" (MkDir       "!WIM_CAB!" || GoTo DONE)
             If Not Exist "!WIM_BAK!" (MkDir       "!WIM_BAK!" || GoTo DONE)
             If Not Exist "!WIM_EFI!" (MkDir       "!WIM_EFI!" || GoTo DONE)
             If Not Exist "!WIM_IMG!" (MkDir       "!WIM_IMG!" || GoTo DONE)
@@ -158,7 +172,7 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
 Rem --- Oscdimg取得 -----------------------------------------------------------
     If Not Exist "!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%" (
         Echo --- Oscdimg取得 ---------------------------------------------------------------
-        Pushd "%ProgramFiles(x86)%"
+        Pushd "%ProgramFiles(x86)%" || GoTo DONE
             For /R %%I In (Oscdimg.exe*) Do (Set UTL_WRK=%%~dpI)
         Popd
         If /I "!UTL_WRK!" EQU "" (
@@ -179,6 +193,12 @@ Rem --- Oscdimgのパスを設定する -----------------------------------------------
         Echo Oscdimg がありません。
         Echo Windows ADK をインストールして下さい。
         GoTo DONE
+    )
+
+    If !FLG_DRV! EQU 0 (
+        If !FLG_IMG! EQU 1 (
+            GoTo MAKE_ISO_IMAGE
+        )
     )
 
 Rem *** ファイルダウンロード **************************************************
@@ -229,6 +249,7 @@ Rem     If Exist "*.xml" (Copy /Y "*.xml" "!WIM_CFG!" > Nul)
 Rem     If Exist "*.lst" (Copy /Y "*.lst" "!WIM_LST!" > Nul)
 Rem )
 
+:DOWNLOAD
 Rem *** リストファイル変換 ****************************************************
     Echo --- リストファイル変換 --------------------------------------------------------
     Set LST_FIL=
@@ -255,7 +276,7 @@ Rem *** リストファイル変換 ****************************************************
                             Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
                             Set LST_EXTENSION=!LST_EXTENSION:~1!
                             If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                            Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                            Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
                         )
                         Set LST_SECTION=!LST_KEY:~1,-1!
                         Set LST_TITLE=
@@ -279,6 +300,7 @@ Rem *** リストファイル変換 ****************************************************
                         Set LST_IEXPRESS_CMD=
                         Set LST_PREVIOUS_SP=
                         Set LST_COMMENT=
+                        Set LST_TYPE_NUM=
                     )
                     If /I "!LST_SECTION!" NEQ "" (
                                If /I "!LST_KEY!" EQU "TITLE"         (Set LST_TITLE=!LST_VAL!
@@ -303,6 +325,22 @@ Rem *** リストファイル変換 ****************************************************
                         ) Else If /I "!LST_KEY!" EQU "PREVIOUS_SP"   (Set LST_PREVIOUS_SP=!LST_VAL!
                         ) Else If /I "!LST_KEY!" EQU "COMMENT"       (Set LST_COMMENT=!LST_VAL!
                         )
+                        If /I "!LST_KEY!" EQU "TYPE" (
+                                   If /I "!LST_TYPE!" EQU "Service Pack"         (Set LST_TYPE_NUM=01
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(SVCPACK.INF)"  (Set LST_TYPE_NUM=02
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIXES.CMD)" (Set LST_TYPE_NUM=03
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX1.CMD)"  (Set LST_TYPE_NUM=04
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX2.CMD)"  (Set LST_TYPE_NUM=05
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX3.CMD)"  (Set LST_TYPE_NUM=06
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX4.CMD)"  (Set LST_TYPE_NUM=07
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX5.CMD)"  (Set LST_TYPE_NUM=08
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX6.CMD)"  (Set LST_TYPE_NUM=09
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX7.CMD)"  (Set LST_TYPE_NUM=10
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX8.CMD)"  (Set LST_TYPE_NUM=11
+                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX9.CMD)"  (Set LST_TYPE_NUM=12
+                            ) Else                                               (Set LST_TYPE_NUM=
+                            )
+                        )
                     )
                 )
                 If /I "!LST_SECTION!" NEQ "" (
@@ -313,7 +351,7 @@ Rem *** リストファイル変換 ****************************************************
                     Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
                     Set LST_EXTENSION=!LST_EXTENSION:~1!
                     If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                    Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                    Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
                     Set LST_SECTION=
                     Set LST_TITLE=
                     Set LST_INFO=
@@ -336,6 +374,7 @@ Rem *** リストファイル変換 ****************************************************
                     Set LST_IEXPRESS_CMD=
                     Set LST_PREVIOUS_SP=
                     Set LST_COMMENT=
+                    Set LST_TYPE_NUM=
                 )
             )
         )
@@ -346,16 +385,17 @@ Rem --- ファイルソート --------------------------------------------------------
 
 Rem *** ファイル取得 **********************************************************
     Echo --- ファイル取得 --------------------------------------------------------------
-    For /F "delims=, tokens=1-9 usebackq" %%I In (!CMD_DAT!) Do (
+    For /F "delims=, tokens=1-10 usebackq" %%I In (!CMD_DAT!) Do (
         Set LST_WINDOWS=%%~I
         Set LST_PACKAGE=%%~J
-        Set LST_TYPE=%%~K
-        Set LST_RUN_ORDER=%%~L
-        Set LST_SECTION=%%~M
-        Set LST_EXTENSION=%%~N
-        Set LST_CMD=%%~O
-        Set LST_RENAME=%%~P
-        Set LST_FILE=%%~Q
+        Set LST_TYPE_NUM=%%~K
+        Set LST_TYPE=%%~L
+        Set LST_RUN_ORDER=%%~M
+        Set LST_SECTION=%%~N
+        Set LST_EXTENSION=%%~O
+        Set LST_CMD=%%~P
+        Set LST_RENAME=%%~Q
+        Set LST_FILE=%%~R
         Set LST_WINPKG=!WIM_PKG!\!LST_WINDOWS!
         For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
         For /F "delims=: tokens=2 usebackq" %%X In ('!LST_FILE!') Do (
@@ -367,9 +407,7 @@ Rem *** ファイル取得 **********************************************************
                     Curl -L -s --dump-header "!CMD_WRK!" "!LST_FILE!"
                     Set LST_LEN=0
                     For /F "delims=: tokens=1,2* usebackq" %%Y In ("!CMD_WRK!") Do (
-                        If /I "%%~Y" EQU "Content-Length" (
-                            Set LST_LEN=%%~Z
-                        )
+                        If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
                     )
                     For /F "delims=/ usebackq" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
                     If !LST_LEN! NEQ !LST_SIZE! (
@@ -384,7 +422,7 @@ Rem *** ファイル取得 **********************************************************
                         MkDir "!LST_DIR!"
                         Tar -xzf "!LST_RENAME!" -C "!LST_DIR!"
                     )
-                    Pushd "!LST_DIR!"
+                    Pushd "!LST_DIR!" || GoTo DONE
                         For /R %%E In (*.zip) Do (
                             Set LST_ZIPFILE=%%E
                             Set LST_ZIPDIR=%%~dpnE
@@ -393,13 +431,13 @@ Rem *** ファイル取得 **********************************************************
                                 MkDir "!LST_ZIPDIR!"
                                 Tar -xzf "!LST_ZIPFILE!" -C "!LST_ZIPDIR!"
                             )
-                            Pushd "!LST_ZIPDIR!"
+                            Pushd "!LST_ZIPDIR!" || GoTo DONE
                                 For /R %%F In (*.msu) Do (
                                     For /F "delims=x tokens=2" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%G)
                                     If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!\%%~nxF" (
                                         Echo --- ファイル転送 --------------------------------------------------------------
                                         If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!" (MkDir "!LST_WINPKG!\x!LST_PACKAGE!")
-                                        Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul
+                                        Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul || GoTo DONE
                                     )
                                 )
                             Popd
@@ -409,7 +447,7 @@ Rem *** ファイル取得 **********************************************************
                             If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!\%%~nxF" (
                                 Echo --- ファイル転送 --------------------------------------------------------------
                                 If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!" (MkDir "!LST_WINPKG!\x!LST_PACKAGE!")
-                                Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul
+                                Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul || GoTo DONE
                             )
                         )
                     Popd
@@ -455,7 +493,7 @@ Rem *** ファイル取得 **********************************************************
                             )
                             Echo>>"!LST_FPATH!\update.wrk" !LST_LINE!
                         )
-                        Move "!LST_FPATH!\update.wrk" "!LST_FCAB!\update.mum"
+                        Move "!LST_FPATH!\update.wrk" "!LST_FCAB!\update.mum" || GoTo DONE
                     )
                 )
             )

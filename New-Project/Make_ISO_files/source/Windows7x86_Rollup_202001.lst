@@ -346,7 +346,7 @@ COMMENT=Internet Explorer 11 用必須更新プログラム
 TITLE=Internet Explorer 11 for Windows 7 x86
 INFO=https://www.microsoft.com/ja-jp/download/details.aspx?id=40901
 FILE=https://download.microsoft.com/download/D/5/3/D53EB67F-A614-4943-9162-E1479A6D6CB3/IE11-Windows6.1-x86-ja-jp.exe
-RENAME=IE11-Windows6.1-x86-ja-jp.exe
+RENAME=
 SIZE=30600400
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
@@ -355,7 +355,7 @@ XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2018/10/16
 RUN_ORDER=012
-CMD=/quiet /update-no /norestart
+CMD=
 DECODE=0
 DECODE_TYPE=
 DECODE_GET=
