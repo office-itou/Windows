@@ -532,8 +532,8 @@ Rem *** ファイル取得 **********************************************************
                         )
                         If Exist "!LST_FPATH!" (RmDir /S /Q "!LST_FPATH!")
                         MkDir "!LST_FCAB!"
-                        Expand -F:* "!LST_RENAME!" "!LST_FPATH!" > Nul
-                        Expand -F:* "!LST_FCAB!.cab" "!LST_FCAB!" > Nul
+                        Expand -F:* "!LST_RENAME!" "!LST_FPATH!" > Nul || GoTo DONE
+                        Expand -F:* "!LST_FCAB!.cab" "!LST_FCAB!" > Nul || GoTo DONE
                         For /F "usebackq delims=" %%E In ("!LST_FCAB!\update.mum") Do (
                             Set LST_LINE=%%~E
                             For /F "usebackq delims=" %%F In (`Echo "!LST_LINE!" ^| Find "allowedOffline"`) Do (
@@ -599,7 +599,7 @@ Rem --- options.cmd の作成 ----------------------------------------------------
     Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollInterval" /t REG_DWORD /d "0x00005460" /f ^|^| GoTo DONE
     Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollTimeRemaining" /t REG_MULTI_SZ /d "" /f   ^|^| GoTo DONE
     Echo>>"!OPT_CMD!"     Cmd /C sc config w32time start= delayed-auto                                                                                                                   ^|^| GoTo DONE
-    Echo>>"!OPT_CMD!"Rem  Cmd /C sc start w32time
+    Echo>>"!OPT_CMD!" Rem Cmd /C sc start w32time
     Echo>>"!OPT_CMD!" Rem --- Paint Desktop Version Setup -------------------------------------------
     Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v "PaintDesktopVersion" /t REG_DWORD /d "00000001" /f ^|^| GoTo DONE
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
@@ -664,7 +664,8 @@ Rem ---------------------------------------------------------------------------
     )
 Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    Echo>>"!OPT_CMD!" Rem Cmd /C RmDir /S /Q "%%configsetroot%%" ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!" Rem Cmd /C Del /F /S /Q "%%configsetroot%%" ^> Nul ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!" Rem Cmd /C For /D %%%%I In (%%configsetroot%%\*) Do (RmDir /S /Q %%%%I ^> Nul ^|^| GoTo DONE)
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!"     Cmd /C shutdown /r /t 3 ^|^| GoTo DONE
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
@@ -774,7 +775,7 @@ Rem === DVDイメージを作成する =================================================
         If !WIM_SIZ! GEQ 4294967296 (
             Echo --- ファイル分割 --------------------------------------------------------------
             Dism /Split-Image /ImageFile:"!WIM_IMG!\sources\install.wim" /SWMFile:"!WIM_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
-            Move /Y "!WIM_IMG!\sources\install.wim" "!WIM_BAK!" > Nul
+            Move /Y "!WIM_IMG!\sources\install.wim" "!WIM_BAK!" > Nul || GoTo DONE
         )
     )
     If Exist "!WIM_IMG!\efi\boot" (
@@ -787,6 +788,14 @@ Rem === DVDイメージを作成する =================================================
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
     If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
+
+    Set INP_ANS=Y
+    Echo "!WIM_IMG!"
+    Set /P INP_ANS= 上記フォルダーのファイルを削除しますか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
+    If /I "!INP_ANS!" EQU "Y" (
+        Del /F /S /Q "!WIM_IMG!" > Nul || GoTo DONE
+        For /D %%I In (!WIM_IMG!\*) Do (RmDir /S /Q %%I > Nul || GoTo DONE)
+    )
 
 Rem *** 作業終了 **************************************************************
 :DONE
