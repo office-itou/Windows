@@ -33,12 +33,6 @@ C:\WIMWK
 |       autounattend-windows7-x64.xml
 |       autounattend-windows7-x86.xml
 |       
-+---iso
-|       ja_windows_7_ultimate_with_sp1_x64_dvd_u_677372.iso
-|       ja_windows_7_ultimate_with_sp1_x86_dvd_u_677445.iso
-|       Win10_1909_Japanese_x32.iso
-|       Win10_1909_Japanese_x64.iso
-|       
 +---lst
 |       Initial-Downloader.lst
 |       Windows10adk_Rollup_202001.lst
@@ -2369,6 +2363,8 @@ C:\WIMWK
 |       |   |   windows6.1-kb2533623-x64.msu
 |       |   |   windows6.1-kb2545698-x64.msu
 |       |   |   windows6.1-kb2547666-x64.msu
+|       |   |   windows6.1-kb2574819-v2-x64.msu
+|       |   |   windows6.1-kb2592687-x64.msu
 |       |   |   windows6.1-kb2603229-x64.msu
 |       |   |   windows6.1-kb2639308-x64.msu
 |       |   |   windows6.1-kb2667402-v2-x64.msu
@@ -2572,6 +2568,8 @@ C:\WIMWK
 |           |   Windows6.1-KB2533623-x86.msu
 |           |   windows6.1-kb2545698-x86.msu
 |           |   windows6.1-kb2547666-x86.msu
+|           |   windows6.1-kb2574819-v2-x86.msu
+|           |   windows6.1-kb2592687-x86.msu
 |           |   windows6.1-kb2639308-x86.msu
 |           |   windows6.1-kb2667402-v2-x86.msu
 |           |   windows6.1-kb2670838-x86.msu
