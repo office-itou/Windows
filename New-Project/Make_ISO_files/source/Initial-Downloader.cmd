@@ -34,7 +34,7 @@ Rem --- 環境変数設定 ----------------------------------------------------------
         Set NOW_TIM=%time:~0,2%%time:~3,2%%time:~6,2%
     )
 
-    For /F "delims=\ tokens=2 usebackq" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~dI\%%~I)
+    For /F "tokens=2 usebackq delims=\" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~dI\%%~I)
 
 :SETTING
 Rem *** 作業環境設定 **********************************************************
@@ -94,9 +94,9 @@ Rem --- 作業フォルダーの作成 --------------------------------------------------
 Rem --- 破損イメージの削除 ----------------------------------------------------
     For %%I In (!WIN_VER!) Do (
         For %%J In (!ARC_TYP!) Do (
-            Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
-            Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
-            Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
+            Set WIM_IMG=!WIM_WRK!\w%%~I\%%~J\img
+            Set WIM_MNT=!WIM_WRK!\w%%~I\%%~J\mnt
+            Set WIM_WRE=!WIM_WRK!\w%%~I\%%~J\wre
             If Exist "!WIM_WRE!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_WRE!" /Discard)
             If Exist "!WIM_MNT!\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Discard)
         )
@@ -139,14 +139,14 @@ Rem         Robocopy /J /MIR /A-:RHS /NDL "!WIM_PKG!" "!BAK_PKG!" > Nul
 
     For %%I In (!WIN_VER!) Do (
         For %%J In (!ARC_TYP!) Do (
-            Set WIM_DRV=!WIM_PKG!\w%%I\drv
-            Set WIM_WUD=!WIM_PKG!\w%%I\%%J
-            Set WIM_CAB=!WIM_PKG!\w%%I\%%J\cab
-            Set WIM_BAK=!WIM_WRK!\w%%I\%%J\bak
-            Set WIM_EFI=!WIM_WRK!\w%%I\%%J\efi
-            Set WIM_IMG=!WIM_WRK!\w%%I\%%J\img
-            Set WIM_MNT=!WIM_WRK!\w%%I\%%J\mnt
-            Set WIM_WRE=!WIM_WRK!\w%%I\%%J\wre
+            Set WIM_DRV=!WIM_PKG!\w%%~I\drv
+            Set WIM_WUD=!WIM_PKG!\w%%~I\%%~J
+            Set WIM_CAB=!WIM_PKG!\w%%~I\%%~J\cab
+            Set WIM_BAK=!WIM_WRK!\w%%~I\%%~J\bak
+            Set WIM_EFI=!WIM_WRK!\w%%~I\%%~J\efi
+            Set WIM_IMG=!WIM_WRK!\w%%~I\%%~J\img
+            Set WIM_MNT=!WIM_WRK!\w%%~I\%%~J\mnt
+            Set WIM_WRE=!WIM_WRK!\w%%~I\%%~J\wre
 
             If !FLG_DEL! EQU 0 (
                 If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
@@ -236,7 +236,7 @@ Rem --- GitHub ダウンロードファイル -------------------------------------------
         )
 Rem     If Not Exist "!WIM_DIR!\!URL_FIL!" (
             Echo "!URL_FIL!"
-            Curl -L -# -R -S -f --create-dirs -o "!WIM_DIR!\!URL_FIL!" "%%I" || GoTo DONE
+            Curl -L -# -R -S -f --create-dirs -o "!WIM_DIR!\!URL_FIL!" "%%~I" || GoTo DONE
 Rem     )
     )
 
@@ -260,9 +260,9 @@ Rem *** リストファイル変換 ****************************************************
             Set LST_LFSNAME=!WIM_LST!\Windows!LST_WINVER!!LST_PACKAGE!*.lst
             Set LST_WINPACK=!WIM_PKG!\w!LST_WINVER!\!LST_PACKAGE!
             Set LST_SECTION=
-            For %%K In (!LST_LFSNAME!) Do (
+            For %%K In ("!LST_LFSNAME!") Do (
                 Set LST_LFNAME=%%~K
-                For /F "delims== tokens=1* usebackq" %%L In (!LST_LFNAME!) Do (
+                For /F "tokens=1* usebackq delims==" %%L In ("!LST_LFNAME!") Do (
                     Set LST_KEY=%%~L
                     Set LST_VAL=%%~M
                     If /I "!LST_KEY:~0,1!!LST_KEY:~-1,1!" EQU "[]" (
@@ -385,7 +385,7 @@ Rem --- ファイルソート --------------------------------------------------------
 
 Rem *** ファイル取得 **********************************************************
     Echo --- ファイル取得 --------------------------------------------------------------
-    For /F "delims=, tokens=1-10 usebackq" %%I In (!CMD_DAT!) Do (
+    For /F "tokens=1-10 usebackq delims=," %%I In ("!CMD_DAT!") Do (
         Set LST_WINDOWS=%%~I
         Set LST_PACKAGE=%%~J
         Set LST_TYPE_NUM=%%~K
@@ -398,7 +398,7 @@ Rem *** ファイル取得 **********************************************************
         Set LST_FILE=%%~R
         Set LST_WINPKG=!WIM_PKG!\!LST_WINDOWS!
         For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
-        For /F "delims=: tokens=2 usebackq" %%X In ('!LST_FILE!') Do (
+        For /F "tokens=2 usebackq delims=:" %%X In ('!LST_FILE!') Do (
             If /I "%%X" NEQ "" (
                 If Not Exist "!LST_RENAME!" (
                     Echo "!LST_FNAME!"
@@ -406,10 +406,10 @@ Rem *** ファイル取得 **********************************************************
                 ) Else (
                     Curl -L -s --dump-header "!CMD_WRK!" "!LST_FILE!"
                     Set LST_LEN=0
-                    For /F "delims=: tokens=1,2* usebackq" %%Y In ("!CMD_WRK!") Do (
+                    For /F "tokens=1,2* usebackq delims=:" %%Y In ("!CMD_WRK!") Do (
                         If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
                     )
-                    For /F "delims=/ usebackq" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
+                    For /F "usebackq delims=/" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
                     If !LST_LEN! NEQ !LST_SIZE! (
                         Echo "!LST_FNAME!" : !LST_SIZE! : !LST_LEN!
                         Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
@@ -423,8 +423,8 @@ Rem *** ファイル取得 **********************************************************
                         Tar -xzf "!LST_RENAME!" -C "!LST_DIR!"
                     )
                     Pushd "!LST_DIR!" || GoTo DONE
-                        For /R %%E In (*.zip) Do (
-                            Set LST_ZIPFILE=%%E
+                        For /R %%E In ("*.zip") Do (
+                            Set LST_ZIPFILE=%%~E
                             Set LST_ZIPDIR=%%~dpnE
                             If Not Exist "!LST_ZIPDIR!" (
                                 Echo --- ファイル展開 --------------------------------------------------------------
@@ -432,22 +432,22 @@ Rem *** ファイル取得 **********************************************************
                                 Tar -xzf "!LST_ZIPFILE!" -C "!LST_ZIPDIR!"
                             )
                             Pushd "!LST_ZIPDIR!" || GoTo DONE
-                                For /R %%F In (*.msu) Do (
-                                    For /F "delims=x tokens=2" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%G)
+                                For /R %%F In ("*.msu") Do (
+                                    For /F "tokens=2 delims=x" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%~G)
                                     If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!\%%~nxF" (
                                         Echo --- ファイル転送 --------------------------------------------------------------
                                         If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!" (MkDir "!LST_WINPKG!\x!LST_PACKAGE!")
-                                        Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul || GoTo DONE
+                                        Copy /Y "%%~F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul || GoTo DONE
                                     )
                                 )
                             Popd
                         )
-                        For /R %%F In (*.msu) Do (
-                            For /F "delims=x tokens=2" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%G)
+                        For /R %%F In ("*.msu") Do (
+                            For /F "tokens=2 delims=x" %%G In ("%%~nF") Do (Set LST_PACKAGE=%%~G)
                             If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!\%%~nxF" (
                                 Echo --- ファイル転送 --------------------------------------------------------------
                                 If Not Exist "!LST_WINPKG!\x!LST_PACKAGE!" (MkDir "!LST_WINPKG!\x!LST_PACKAGE!")
-                                Copy /Y "%%F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul || GoTo DONE
+                                Copy /Y "%%~F" "!LST_WINPKG!\x!LST_PACKAGE!" > Nul || GoTo DONE
                             )
                         )
                     Popd
@@ -484,8 +484,8 @@ Rem *** ファイル取得 **********************************************************
                         )
                         If Exist "!LST_FPATH!" (RmDir /S /Q "!LST_FPATH!")
                         MkDir "!LST_FCAB!"
-                        Expand -F:* "!LST_RENAME!" "!LST_FPATH!" > Nul
-                        Expand -F:* "!LST_FCAB!.cab" "!LST_FCAB!" > Nul
+                        Expand -F:* "!LST_RENAME!" "!LST_FPATH!" > Nul || GoTo DONE
+                        Expand -F:* "!LST_FCAB!.cab" "!LST_FCAB!" > Nul || GoTo DONE
                         For /F "usebackq delims=" %%E In ("!LST_FCAB!\update.mum") Do (
                             Set LST_LINE=%%~E
                             For /F "usebackq delims=" %%F In (`Echo "!LST_LINE!" ^| Find "allowedOffline"`) Do (
