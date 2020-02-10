@@ -156,7 +156,11 @@ Rem --- wimバージョンの取得 ---------------------------------------------------
         GoTo SET_DVD_DRIVE
     )
 
-    For /F "Usebackq Tokens=5 Delims= " %%I In (`Vol h: ^| FindStr  /C:"ボリューム ラベル"`) Do (Set DVD_VOL=%%~I)
+    If /I "!DRV_DVD:~3!" NEQ "" (
+        Set DVD_VOL=
+    ) Else (
+        For /F "Usebackq Tokens=5 Delims= " %%I In (`Vol "!DRV_DVD:~0,2!" ^| FindStr  /C:"ボリューム ラベル"`) Do (Set DVD_VOL=%%~I)
+    )
 
 Rem --- Windowsのエディション設定 ---------------------------------------------
     If !FLG_OPT! EQU 0 (
@@ -591,17 +595,17 @@ Rem --- options.cmd の作成 ----------------------------------------------------
     Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% Start
     Echo>>"!OPT_CMD!" Rem --- NTP Setup -------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem Cmd /C sc stop w32time
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "" /t REG_SZ /d "0" /f                                       ^|^| GoTo DONE
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "0" /t REG_SZ /d "ntp.nict.jp" /f                            ^|^| GoTo DONE
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Config" /v "UpdateInterval" /t REG_DWORD /d "0x00057e40" /f                       ^|^| GoTo DONE
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "Type" /t REG_SZ /d "NTP" /f                                       ^|^| GoTo DONE
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "NtpServer" /t REG_SZ /d "ntp.nict.jp,0x9" /f                      ^|^| GoTo DONE
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollInterval" /t REG_DWORD /d "0x00005460" /f ^|^| GoTo DONE
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollTimeRemaining" /t REG_MULTI_SZ /d "" /f   ^|^| GoTo DONE
-    Echo>>"!OPT_CMD!"     Cmd /C sc config w32time start= delayed-auto                                                                                                                   ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "" /t REG_SZ /d "0" /f                                       ^|^| Pause
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "0" /t REG_SZ /d "ntp.nict.jp" /f                            ^|^| Pause
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Config" /v "UpdateInterval" /t REG_DWORD /d "0x00057e40" /f                       ^|^| Pause
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "Type" /t REG_SZ /d "NTP" /f                                       ^|^| Pause
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "NtpServer" /t REG_SZ /d "ntp.nict.jp,0x9" /f                      ^|^| Pause
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollInterval" /t REG_DWORD /d "0x00005460" /f ^|^| Pause
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollTimeRemaining" /t REG_MULTI_SZ /d "" /f   ^|^| Pause
+    Echo>>"!OPT_CMD!"     Cmd /C sc config w32time start= delayed-auto                                                                                                                   ^|^| Pause
     Echo>>"!OPT_CMD!" Rem Cmd /C sc start w32time
     Echo>>"!OPT_CMD!" Rem --- Paint Desktop Version Setup -------------------------------------------
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v "PaintDesktopVersion" /t REG_DWORD /d "00000001" /f ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v "PaintDesktopVersion" /t REG_DWORD /d "00000001" /f ^|^| Pause
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
 Rem ---------------------------------------------------------------------------
     For /F "delims=, tokens=1-10 usebackq" %%I In (!CMD_DAT!) Do (
@@ -623,19 +627,19 @@ Rem ---------------------------------------------------------------------------
             If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
                 If /I "!LST_EXTENSION!" EQU "exe" (
                     If /I "!LST_SECTION!" NEQ "IE11" (
-                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| GoTo DONE
+                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| Pause
                         Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                     ) Else If /I "!LST_CMD!" NEQ "" (
-                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| GoTo DONE
+                        Echo>>"!OPT_CMD!"     Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| Pause
                         Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "wus" (
                     If /I "!LST_CMD!" NEQ "" (
-                        Echo>>"!OPT_CMD!"     Cmd /C Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| GoTo DONE
+                        Echo>>"!OPT_CMD!"     Cmd /C Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| Pause
                         Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "msi" (
-                    Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| GoTo DONE
+                    Echo>>"!OPT_CMD!"     Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD! ^|^| Pause
                     Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                 )
             ) Else If /I "!LST_PACKAGE!" EQU "drv" (
@@ -644,9 +648,9 @@ Rem ---------------------------------------------------------------------------
                         For %%E In ("!LST_RENAME!") Do (
                             Set OPT_WRK=%%~nE
                             If !WIN_VER! EQU 7 (
-                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil -i -a "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" ^|^| GoTo DONE
+                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil -i -a "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" ^|^| Pause
                             ) Else             (
-                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" /SubDirs /Install ^|^| GoTo DONE
+                                Echo>>"!OPT_CMD!"     Cmd /C PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!OPT_WRK!\*.inf" /SubDirs /Install ^|^| Pause
                             )
                             Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!LST_FDIR!" "!WIM_IMG!\!OPT_DRV!\!OPT_WRK!"
                         )
@@ -664,10 +668,10 @@ Rem ---------------------------------------------------------------------------
     )
 Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    Echo>>"!OPT_CMD!" Rem Cmd /C Del /F /S /Q "%%configsetroot%%" ^> Nul ^|^| GoTo DONE
-    Echo>>"!OPT_CMD!" Rem Cmd /C For /D %%%%I In (%%configsetroot%%\*) Do (RmDir /S /Q %%%%I ^> Nul ^|^| GoTo DONE)
+    Echo>>"!OPT_CMD!" Rem Cmd /C Del /F /S /Q "%%configsetroot%%" ^> Nul ^|^| Pause
+    Echo>>"!OPT_CMD!" Rem Cmd /C For /D %%%%I In (%%configsetroot%%\*) Do (RmDir /S /Q %%%%I ^> Nul ^|^| Pause)
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
-    Echo>>"!OPT_CMD!"     Cmd /C shutdown /r /t 3 ^|^| GoTo DONE
+    Echo>>"!OPT_CMD!"     Cmd /C shutdown /r /t 3 ^|^| Pause
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" :DONE
     Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% End
