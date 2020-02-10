@@ -73,3 +73,12 @@
 | 統合作業04                     | ![統合作業04](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/02.%E7%B5%B1%E5%90%88%E4%BD%9C%E6%A5%AD.04.jpg) |
 | 統合作業05                     | ![統合作業05](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/02.%E7%B5%B1%E5%90%88%E4%BD%9C%E6%A5%AD.05.jpg) |
   
+【インストール用USBメモリー作成作業画面】  
+  
+| 作業内容                       | スクリーンショット                          |
+| ------------------------------ | ------------------------------------------- |
+| 媒体作成01                     | ![媒体作成01](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/03.%E5%AA%92%E4%BD%93%E4%BD%9C%E6%88%90.01.jpg) |
+| 媒体作成02                     | ![媒体作成02](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/03.%E5%AA%92%E4%BD%93%E4%BD%9C%E6%88%90.02.jpg) |
+| 媒体作成03                     | ![媒体作成03](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/03.%E5%AA%92%E4%BD%93%E4%BD%9C%E6%88%90.03.jpg) |
+| 媒体作成04                     | ![媒体作成04](https://github.com/office-itou/Windows/blob/master/New-Project/Make_ISO_files/picture/03.%E5%AA%92%E4%BD%93%E4%BD%9C%E6%88%90.04.jpg) |
+  
