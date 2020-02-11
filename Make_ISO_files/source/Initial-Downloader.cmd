@@ -70,7 +70,7 @@ Rem Set WIM_TOP=C:\WimWK
     Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.dat
     Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.wrk
 
-    Set BAK_WIM=!WIM_WRK!\!NOW_DAY!!NOW_TIM!
+    Set BAK_TOP=!WIM_WRK!\!NOW_DAY!!NOW_TIM!
     Set BAK_BIN=!BAK_TOP!\bin
     Set BAK_CFG=!BAK_TOP!\cfg
     Set BAK_ISO=!BAK_TOP!\iso
@@ -112,7 +112,7 @@ Rem --- 既存フォルダーの移動 --------------------------------------------------
             Robocopy /J /MIR /A-:RHS /NDL "!WIM_CFG!" "!BAK_CFG!" > Nul
             Robocopy /J /MIR /A-:RHS /NDL "!WIM_LST!" "!BAK_LST!" > Nul
 Rem         Robocopy /J /MIR /A-:RHS /NDL "!WIM_PKG!" "!BAK_PKG!" > Nul
-            Echo !BAK_WIM! にバックアップしました。
+            Echo !BAK_TOP! にバックアップしました。
         ) Else (
             If /I "!WRK_DIR!" EQU "!WIM_BIN!" (
                 Echo 以下のフォルダーで作業中のため実行を中止します。
