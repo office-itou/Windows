@@ -217,6 +217,17 @@ Rem Set WIM_TOP=%~3
     Set DVD_DST=!WIM_TOP!\windows_!WIN_VER!_!ARC_TYP!_dvd_custom_VER_.iso
     Set DVD_DST=%DVD_DST:_VER_=_!WIM_VER!%
 
+    Pushd "!WIM_LST!" || GoTo DONE
+        For /R %%I In ("*!WIN_VER!drv*.lst") Do (
+            For /F "tokens=2 usebackq delims=_." %%J in ('%%~nxI') Do (
+                Set DVD_OPT=%%~J
+                If /I "!DVD_OPT!" NEQ "Rollup" (
+                    Set DVD_DST=%DVD_DST:_custom_=_!DVD_OPT!_%
+                )
+            )
+        )
+    Popd
+
     Set UTL_ARC=amd64 arm arm64 x86
 
 Rem --- 作業フォルダーの作成 --------------------------------------------------
