@@ -3,7 +3,7 @@
 【事前準備】  
   
 ・開発環境  
-  Microsoft Windows 10 Pro 1909 [Version 10.0.18363.628]
+　**Microsoft Windows 10 Pro 1909 [Version 10.0.18363.628]**  
   
 ・原版となるISOファイル
   
