@@ -1,12 +1,8 @@
 **Windows統合ISO作成用バッチ**  
   
 　ダウンロード可能なWindows UpdateとChrome版Edgeを統合したISOファイル作成のバッチファイルです。  
-　・[Windows 7統合用](https://github.com/office-itou/Windows/tree/master/Make%20ISO%20files)  
-　・[Windows10統合用](https://github.com/office-itou/Windows/tree/master/Make%20ISO%20files%20for%20Window%2010)  
+　・[Windows7/10統合用](https://github.com/office-itou/Windows/blob/master/Make_ISO_files)  
   
-　インストール作業後、新EdgeとUSB3.0ドライバーが確認できます。  
-![導入作業](https://github.com/office-itou/Windows/blob/master/Make%20ISO%20files/picture/04.%E5%B0%8E%E5%85%A5%E4%BD%9C%E6%A5%AD-07.png)  
-
 **VMXのカスタマイズ用バッチファイル**  
   
 　新規作成したVMwareのゲスト環境(vmx)を一括して追記するバッチファイルです。  

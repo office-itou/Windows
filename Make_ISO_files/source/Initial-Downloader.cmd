@@ -82,7 +82,7 @@ Rem Set WIM_TOP=C:\WimWK
     Set MOV_WIM=!WIM_TOP!.!NOW_DAY!!NOW_TIM!
     Set MOV_ISO=!MOV_WIM!\iso
 
-    Set GIT_TOP=https://raw.githubusercontent.com/office-itou/Windows/master/New-Project/Make_ISO_files/source
+    Set GIT_TOP=https://raw.githubusercontent.com/office-itou/Windows/master/Make_ISO_files/source
     Set GIT_URL=%GIT_TOP%/Initial-Downloader.lst
     Set GIT_FIL=!WRK_DIR!\!WRK_NAM!.lst
     Set GIT_WIM=!WIM_LST!\!WRK_NAM!.lst
