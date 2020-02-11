@@ -1,5 +1,5 @@
 Rem ---------------------------------------------------------------------------
-Rem 2020/02/11  8:33:13.43 maked
+Rem 2020/02/11 11:39:18.57 maked
 Rem ---------------------------------------------------------------------------
     Echo %DATE% %TIME% Start
 Rem --- NTP Setup -------------------------------------------------------------
@@ -28,14 +28,17 @@ Rem ---------------------------------------------------------------------------
     Cmd /C "%configsetroot%\autounattend\options\upd\ndp48-kb4515847-x64.exe" /norestart /passive || Pause
     Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\200000241_dbbd9421c7e464a2fd7a0f910946e140e52d7a88\*.inf" || Pause
     Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20299669_76d0d6efab2aad50ef9e4fca271c078cdea964ad\*.inf" || Pause
+Rem Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20299668_973f2f7d4d6c6904b66bd7f32be04756f5a9c059\*.inf" || Pause
     Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20578785_5ecba0393438142c5f043e5a9360f3e9a87fb9ba\*.inf" || Pause
-    Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20941520_c8ce8c3504ee36697164eddda18aa8740f455849\*.inf" || Pause
+Rem Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20578786_74986e9b140db6cc7968f1845e372c5b5984ecaa\*.inf" || Pause
     Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20411792_1372ed66ee58742cd0974ec85ddf67ef23dcae4d\*.inf" || Pause
+Rem Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20411791_1a1c67a7965c638485cfc25a363737ee46113db8\*.inf" || Pause
     Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20284342_6ef00f64329eb2380a7bc87a811f3da848cfba40\*.inf" || Pause
 Rem Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20284341_7b1a5fd471387b2aaa58464c9c894583f4ed9d93\*.inf" || Pause
+    Cmd /C PnpUtil -i -a "%configsetroot%\autounattend\options\drv\20941520_c8ce8c3504ee36697164eddda18aa8740f455849\*.inf" || Pause
 Rem ---------------------------------------------------------------------------
 Rem Cmd /C Del /F /S /Q "%configsetroot%" > Nul || Pause
-Rem Cmd /C For /D %%I In ("%configsetroot%\*") Do (RmDir /S /Q "%%I" > Nul || Pause)
+Rem Cmd /C For /D %%I In ("%configsetroot%\*") Do (RmDir /S /Q "%%~I" > Nul || Pause)
 Rem ---------------------------------------------------------------------------
     Cmd /C shutdown /r /t 3 || Pause
 Rem ---------------------------------------------------------------------------

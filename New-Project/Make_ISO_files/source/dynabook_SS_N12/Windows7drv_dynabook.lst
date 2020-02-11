@@ -7,14 +7,17 @@ NAME=Jun Itou
 COMMENT=RollupìùçáDVDçÏê¨óp 2020/01
 
 [LIST]
-COUNT=7
+COUNT=10
 1=AES1610
-2=AR9280
-3=82567V
-4=LOGITECH_MOUSE
-5=INTEL_4_SERIES
-6=HDD_PROTECT_X64
-7=HDD_PROTECT_X86
+2=AR9280_X64
+3=AR9280_X86
+4=82567V_X64
+5=82567V_X86
+6=INTEL4SERIES_X64
+7=INTEL4SERIES_X86
+8=HDD_PROTECT_X64
+9=HDD_PROTECT_X86
+10=LOGITECH_MOUSE
 
 [AES1610]
 TITLE=AuthenTec Inc. driver update for AuthenTec Inc. AES1610
@@ -39,8 +42,8 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=
 
-[AR9280]
-TITLE=Atheros Communications Inc. - Network - Atheros AR9280 Wireless Network Adapter
+[AR9280_X64]
+TITLE=Atheros Communications Inc. - Network - Atheros AR9280 Wireless Network Adapter x64
 INFO=http://sysdev.microsoft.com/support/default.aspx
 FILE=http://download.windowsupdate.com/msdownload/update/driver/drvs/2009/10/20299669_76d0d6efab2aad50ef9e4fca271c078cdea964ad.cab
 RENAME=dynabook\20299669_76d0d6efab2aad50ef9e4fca271c078cdea964ad.cab
@@ -62,8 +65,31 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=
 
-[82567V]
-TITLE=Intel - Network, Other hardware - Intel(R) 82567V Gigabit Network Connection
+[AR9280_X86]
+TITLE=Atheros Communications Inc. - Network - Atheros AR9280 Wireless Network Adapter x86
+INFO=http://sysdev.microsoft.com/support/default.aspx
+FILE=http://download.windowsupdate.com/msdownload/update/driver/drvs/2009/10/20299668_973f2f7d4d6c6904b66bd7f32be04756f5a9c059.cab
+RENAME=dynabook\20299668_973f2f7d4d6c6904b66bd7f32be04756f5a9c059.cab
+SIZE=1434233
+TYPE=HOTFIX(HOTFIX9.CMD)
+CATEGORY=8
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2009/10/12
+RUN_ORDER=003
+CMD=/quiet /norestart
+DECODE=1
+DECODE_TYPE=IExpress Setup
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[82567V_X64]
+TITLE=Intel - Network, Other hardware - Intel(R) 82567V Gigabit Network Connection x64
 INFO=http://sysdev.microsoft.com/support/default.aspx
 FILE=http://download.windowsupdate.com/d/msdownload/update/driver/drvs/2013/07/20578785_5ecba0393438142c5f043e5a9360f3e9a87fb9ba.cab
 RENAME=dynabook\20578785_5ecba0393438142c5f043e5a9360f3e9a87fb9ba.cab
@@ -74,7 +100,122 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2013/07/19
-RUN_ORDER=003
+RUN_ORDER=004
+CMD=/quiet /norestart
+DECODE=1
+DECODE_TYPE=IExpress Setup
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[82567V_X86]
+TITLE=Intel - Network, Other hardware - Intel(R) 82567V Gigabit Network Connection x86
+INFO=http://sysdev.microsoft.com/support/default.aspx
+FILE=http://download.windowsupdate.com/d/msdownload/update/driver/drvs/2013/07/20578786_74986e9b140db6cc7968f1845e372c5b5984ecaa.cab
+RENAME=dynabook\20578786_74986e9b140db6cc7968f1845e372c5b5984ecaa.cab
+SIZE=195390
+TYPE=HOTFIX(HOTFIX9.CMD)
+CATEGORY=8
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2013/07/19
+RUN_ORDER=005
+CMD=/quiet /norestart
+DECODE=1
+DECODE_TYPE=IExpress Setup
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[INTEL4SERIES_X64]
+TITLE=Intel Corporation - Display - Mobile Intel(R) 4 Series Express Chipset Family x64
+INFO=http://sysdev.microsoft.com/support/default.aspx
+FILE=http://download.windowsupdate.com/msdownload/update/driver/drvs/2011/06/20411792_1372ed66ee58742cd0974ec85ddf67ef23dcae4d.cab
+RENAME=dynabook\20411792_1372ed66ee58742cd0974ec85ddf67ef23dcae4d.cab
+SIZE=21059809
+TYPE=HOTFIX(HOTFIX9.CMD)
+CATEGORY=8
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2011/06/23
+RUN_ORDER=006
+CMD=/quiet /norestart
+DECODE=1
+DECODE_TYPE=IExpress Setup
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[INTEL4SERIES_X86]
+TITLE=Intel Corporation - Display - Mobile Intel(R) 4 Series Express Chipset Family x86
+INFO=http://sysdev.microsoft.com/support/default.aspx
+FILE=http://download.windowsupdate.com/msdownload/update/driver/drvs/2011/06/20411791_1a1c67a7965c638485cfc25a363737ee46113db8.cab
+RENAME=dynabook\20411791_1a1c67a7965c638485cfc25a363737ee46113db8.cab
+SIZE=20859438
+TYPE=HOTFIX(HOTFIX9.CMD)
+CATEGORY=8
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2011/06/23
+RUN_ORDER=007
+CMD=/quiet /norestart
+DECODE=1
+DECODE_TYPE=IExpress Setup
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[HDD_PROTECT_X64]
+TITLE=TOSHIBA - Other hardware - TOSHIBA HDD Protection - Shock Sensor Driver x64
+INFO=http://sysdev.microsoft.com/support/default.aspx
+FILE=http://download.windowsupdate.com/c/msdownload/update/driver/drvs/2015/07/20284342_6ef00f64329eb2380a7bc87a811f3da848cfba40.cab
+RENAME=dynabook\20284342_6ef00f64329eb2380a7bc87a811f3da848cfba40.cab
+SIZE=183367
+TYPE=HOTFIX(HOTFIX9.CMD)
+CATEGORY=8
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2015/07/06
+RUN_ORDER=008
+CMD=/quiet /norestart
+DECODE=1
+DECODE_TYPE=IExpress Setup
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[HDD_PROTECT_X86]
+TITLE=TOSHIBA - Other hardware - TOSHIBA HDD Protection - Shock Sensor Driver x86
+INFO=http://sysdev.microsoft.com/support/default.aspx
+FILE=http://download.windowsupdate.com/c/msdownload/update/driver/drvs/2015/07/20284341_7b1a5fd471387b2aaa58464c9c894583f4ed9d93.cab
+RENAME=dynabook\20284341_7b1a5fd471387b2aaa58464c9c894583f4ed9d93.cab
+SIZE=178931
+TYPE=HOTFIX(HOTFIX9.CMD)
+CATEGORY=8
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2015/07/06
+RUN_ORDER=009
 CMD=/quiet /norestart
 DECODE=1
 DECODE_TYPE=IExpress Setup
@@ -97,76 +238,7 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2016/10/14
-RUN_ORDER=004
-CMD=/quiet /norestart
-DECODE=1
-DECODE_TYPE=IExpress Setup
-DECODE_GET=
-IEXPRESS=0
-IEXPRESS_LIST=
-IEXPRESS_CMD=
-PREVIOUS_SP=
-COMMENT=
-
-[INTEL_4_SERIES]
-TITLE=Intel Corporation - Display - Mobile Intel(R) 4 Series Express Chipset Family
-INFO=http://sysdev.microsoft.com/support/default.aspx
-FILE=http://download.windowsupdate.com/msdownload/update/driver/drvs/2011/06/20411792_1372ed66ee58742cd0974ec85ddf67ef23dcae4d.cab
-RENAME=dynabook\20411792_1372ed66ee58742cd0974ec85ddf67ef23dcae4d.cab
-SIZE=21059809
-TYPE=HOTFIX(HOTFIX9.CMD)
-CATEGORY=8
-TIE_UP=
-XOR_KEY=
-SYNCHRO_KEY=
-RELEASE=2011/06/23
-RUN_ORDER=005
-CMD=/quiet /norestart
-DECODE=1
-DECODE_TYPE=IExpress Setup
-DECODE_GET=
-IEXPRESS=0
-IEXPRESS_LIST=
-IEXPRESS_CMD=
-PREVIOUS_SP=
-COMMENT=
-
-[HDD_PROTECT_X64]
-TITLE=TOSHIBA - Other hardware - TOSHIBA HDD Protection - Shock Sensor Driver  x64
-INFO=http://sysdev.microsoft.com/support/default.aspx
-FILE=http://download.windowsupdate.com/c/msdownload/update/driver/drvs/2015/07/20284342_6ef00f64329eb2380a7bc87a811f3da848cfba40.cab
-RENAME=dynabook\20284342_6ef00f64329eb2380a7bc87a811f3da848cfba40.cab
-SIZE=183367
-TYPE=HOTFIX(HOTFIX9.CMD)
-CATEGORY=8
-TIE_UP=
-XOR_KEY=
-SYNCHRO_KEY=
-RELEASE=2015/07/06
-RUN_ORDER=006
-CMD=/quiet /norestart
-DECODE=1
-DECODE_TYPE=IExpress Setup
-DECODE_GET=
-IEXPRESS=0
-IEXPRESS_LIST=
-IEXPRESS_CMD=
-PREVIOUS_SP=
-COMMENT=
-
-[HDD_PROTECT_X86]
-TITLE=TOSHIBA - Other hardware - TOSHIBA HDD Protection - Shock Sensor Driver  x86
-INFO=http://sysdev.microsoft.com/support/default.aspx
-FILE=http://download.windowsupdate.com/c/msdownload/update/driver/drvs/2015/07/20284341_7b1a5fd471387b2aaa58464c9c894583f4ed9d93.cab
-RENAME=dynabook\20284341_7b1a5fd471387b2aaa58464c9c894583f4ed9d93.cab
-SIZE=178931
-TYPE=HOTFIX(HOTFIX9.CMD)
-CATEGORY=8
-TIE_UP=
-XOR_KEY=
-SYNCHRO_KEY=
-RELEASE=2015/07/06
-RUN_ORDER=007
+RUN_ORDER=010
 CMD=/quiet /norestart
 DECODE=1
 DECODE_TYPE=IExpress Setup
