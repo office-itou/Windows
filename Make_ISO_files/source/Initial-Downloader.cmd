@@ -452,7 +452,7 @@ Rem *** ファイル取得 **********************************************************
                         )
                     Popd
                 ) Else If /I "!LST_EXTENSION!" EQU "msi" (
-                   	If /I "!LST_CMD!" EQU "" (
+                   If /I "!LST_CMD!" EQU "" (
                         For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
                         If Not Exist "!LST_DIR!" (
                             Echo --- ファイル展開 --------------------------------------------------------------
