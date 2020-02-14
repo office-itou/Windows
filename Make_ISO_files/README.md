@@ -63,20 +63,20 @@
 | [Windows10x86_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10x86_Rollup_202002.lst) | Windows Update 32bit                        |
 | [Windows10x64_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10x64_Rollup_202002.lst) | Windows Update 64bit                        |
   
-【ダウンロードリストファイル：dynabook SS N12用】  
+【ダウンロードリストファイル：dynabook SS N12シリーズ用ドライバー】  
   
 | ファイル名                     | 機能                                        |
 | ------------------------------ | ------------------------------------------- |
-| [Windows7drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows7drv_dynabook.lst)       | dynabook SS N12シリーズ ドライバー Win7版   |
-| [Windows10drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows10drv_dynabook.lst)       | dynabook SS N12シリーズ ドライバー Win10版  |
-| [options.cmd](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/options.cmd)                    | dynabook SS N12シリーズ 用 サンプルファイル |
+| [Windows7drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows7drv_dynabook.lst)       | Win7版           |
+| [Windows10drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows10drv_dynabook.lst)       |  Win10版         |
+| [options.cmd](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/options.cmd)                    | サンプルファイル |
   
-【ダウンロードリストファイル：skylake用】  
+【ダウンロードリストファイル：Intel 製マイクロコードの更新プログラム】  
   
 | ファイル名                     | 機能                                        |
 | ------------------------------ | ------------------------------------------- |
-| [Windows10x86_skylake_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/skylake/Windows10x86_skylake_202001.lst)       | dynabook SS N12シリーズ ドライバー Win7版   |
-| [Windows10x64_skylake_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/skylake/Windows10x64_skylake_202001.lst)       | dynabook SS N12シリーズ ドライバー Win10版  |
+| [Windows10x86_skylake_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/skylake/Windows10x86_skylake_202001.lst)       | Win7版   |
+| [Windows10x64_skylake_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/skylake/Windows10x64_skylake_202001.lst)       | Win10版  |
   
 【初期導入作業画面】  
   
