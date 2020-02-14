@@ -18,13 +18,13 @@
 |              | Windows7x64_Rollup_202002.lst  | Win 7版 Windows Update 64bit |
 |              | Windows7drv_dynabook.lst       | Win 7版 dynabook SS N12      |
   
-【ダウンロードリストファイル：dynabook SS N12用】  
+【ダウンロードリストファイル：dynabook SS N12シリーズ用ドライバー】  
   
 | ファイル名                     | 機能                                        |
 | ------------------------------ | ------------------------------------------- |
-| [Windows7drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows7drv_dynabook.lst)       | dynabook SS N12シリーズ ドライバー          |
-| [Windows10drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows10drv_dynabook.lst)       | dynabook SS N12シリーズ ドライバー Win10版  |
-| [options.cmd](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/options.cmd)                    | dynabook SS N12シリーズ 用 サンプルファイル |
+| [Windows7drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows7drv_dynabook.lst)       | Win7版           |
+| [Windows10drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows10drv_dynabook.lst)       |  Win10版         |
+| [options.cmd](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/options.cmd)                    | サンプルファイル |
   
 【統合作業後確認画面】  
   
