@@ -1,0 +1,34 @@
+[INFO]
+VERSION=0.103.0
+SOFTWARE=Windows 10 x64
+TARGET=None
+LANGUAGE=Japanese
+NAME=Jun Itou
+COMMENT=統合DVD作成用 2020/01
+
+[LIST]
+COUNT=1
+1=KB4497165
+
+[KB4497165]
+TITLE=2020-01 Update for Windows 10 Version 1909 for x64-based Systems (KB4497165)
+INFO=https://support.microsoft.com/help/4497165
+FILE=http://download.windowsupdate.com/c/msdownload/update/software/updt/2020/01/windows10.0-kb4497165-v4-x64_56bf6498dd6757ab61790f40b464c1349c195c11.msu
+RENAME=windows10.0-kb4497165-v4-x64.msu
+SIZE=2484936
+TYPE=HOTFIX(HOTFIXES.CMD)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2020/01/22
+RUN_ORDER=001
+CMD=/quiet /norestart
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=Intel 製マイクロコードの更新プログラム
