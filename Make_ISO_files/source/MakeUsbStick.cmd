@@ -34,6 +34,28 @@ Rem --- 環境変数設定 ----------------------------------------------------------
         Set NOW_TIM=%time:~0,2%%time:~3,2%%time:~6,2%
     )
 
+    For /F "tokens=2 usebackq delims=\" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~dI\%%~I)
+
+    Set ARG_LST=%*
+    Set FLG_OPT=0
+    Set FLG_FMT=0
+
+    For %%I In (!ARG_LST!) Do (
+        Set ARG_PRM=%%~I
+               If /I "!ARG_PRM!" EQU ""            (GoTo SETTING
+        ) Else If /I "!ARG_PRM!" EQU "Help"        (GoTo HELP
+        ) Else If /I "!ARG_PRM!" EQU "No-Format"   (Set FLG_OPT=1&Set FLG_FMT=1
+        ) Else                                     (GoTo HELP
+        )
+    )
+
+    GoTo SETTING
+
+:HELP
+    Echo !WRK_FIL! [Help] [No-Format]
+    GoTo DONE
+
+:SETTING
 Rem *** 作業環境設定 **********************************************************
 Rem --- DVDとUSBのドライブ名設定 ----------------------------------------------
 :CHK_DVD_DRIVE
@@ -103,35 +125,38 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
 
 :MAKE
 Rem *** USBメモリーを作成する *************************************************
-    Echo> "!CMD_WK1!" Rem DiskPart1
-    Echo>>"!CMD_WK1!" List Vol
-    Echo>>"!CMD_WK1!" List Disk
-    Echo>>"!CMD_WK1!" Exit
+    If !FLG_FMT! EQU 0 (
+        Echo> "!CMD_WK1!" Rem DiskPart1
+        Echo>>"!CMD_WK1!" List Vol
+        Echo>>"!CMD_WK1!" List Disk
+        Echo>>"!CMD_WK1!" Exit
 
-    DiskPart /S "!CMD_WK1!" || GoTo DONE
+        DiskPart /S "!CMD_WK1!" || GoTo DONE
 
-    Set /P IDX_DRV=USBメモリーのディスク・インデックス番号を入力して下さい。
+        Set /P IDX_DRV=USBメモリーのディスク・インデックス番号を入力して下さい。
 
-    Echo> "!CMD_WK2!" Rem DiskPart2
-    Echo>>"!CMD_WK2!" Select Disk !IDX_DRV!
-    Echo>>"!CMD_WK2!" Clean
-    Echo>>"!CMD_WK2!" Create Partition Primary
-    Echo>>"!CMD_WK2!" Select Partition 1
-    Echo>>"!CMD_WK2!" Format FS=!FMT_USB! Quick
-    Echo>>"!CMD_WK2!" Active
-    Echo>>"!CMD_WK2!" Assign Letter=!DRV_USB:~0,1!
-    Echo>>"!CMD_WK2!" Exit
+        Echo> "!CMD_WK2!" Rem DiskPart2
+        Echo>>"!CMD_WK2!" Select Disk !IDX_DRV!
+        Echo>>"!CMD_WK2!" Clean
+        Echo>>"!CMD_WK2!" Create Partition Primary
+        Echo>>"!CMD_WK2!" Select Partition 1
+        Echo>>"!CMD_WK2!" Format FS=!FMT_USB! Quick
+        Echo>>"!CMD_WK2!" Active
+        Echo>>"!CMD_WK2!" Assign Letter=!DRV_USB:~0,1!
+        Echo>>"!CMD_WK2!" Exit
 
-    Echo -------------------------------------------------------------------------------
-    Type "!CMD_WK2!"
-    Echo -------------------------------------------------------------------------------
-    Echo 以上のパラメーターでUSBメモリーを作成します。
-    Set /P INP_ANS=実行してよろしいでしょうか？ [Y/N/E] ^(Yes/No/Exit^)
-    If /I "!INP_ANS!" EQU "E" (GoTo DONE)
-    If /I "!INP_ANS!" NEQ "Y" (GoTo MAKE)
+        Echo -------------------------------------------------------------------------------
+        Type "!CMD_WK2!"
+        Echo -------------------------------------------------------------------------------
+        Echo 以上のパラメーターでUSBメモリーを作成します。
+        Set /P INP_ANS=実行してよろしいでしょうか？ [Y/N/E] ^(Yes/No/Exit^)
+        If /I "!INP_ANS!" EQU "E" (GoTo DONE)
+        If /I "!INP_ANS!" NEQ "Y" (GoTo MAKE)
 
-    DiskPart /S "!CMD_WK2!" || GoTo DONE
+        DiskPart /S "!CMD_WK2!" || GoTo DONE
+    )
 
+:TRANSFER
     Echo --- ファイル転送 --------------------------------------------------------------
     If Exist "!DVD_SRC!\sources\install.swm" (
         Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XF install.wim /XD "System Volume Information" "$Recycle.Bin"

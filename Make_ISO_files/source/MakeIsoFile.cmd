@@ -119,13 +119,6 @@ Rem --- DVDのドライブ名設定 ---------------------------------------------------
         Set DRV_DVD=!DRV_DVD!:\)
     )
 
-    For %%I in (!DRV_DVD!\) Do (
-        Set DVD_SRC=%%~dpI
-        If /I "!DVD_SRC:~-1!" EQU "\" (
-            Set DVD_SRC=!DVD_SRC:~0,-1!
-        )
-    )
-
 :SET_DVD_DRIVE
     If Not Exist "!DRV_DVD!\sources\install.wim" If Not Exist "!DRV_DVD!\sources\install.swm" (
         Echo 統合する!ARC_TYP!版のDVDを"!DRV_DVD!"にセットして下さい。
@@ -213,7 +206,8 @@ Rem Set WIM_TOP=%~3
     Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
     Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
 
-    Set DVD_SRC=!DRV_DVD!
+    Set DVD_SRC=!DRV_DVD!\
+    Set DVD_SRC=!DVD_SRC:\\=\!
     Set DVD_DST=!WIM_TOP!\windows_!WIN_VER!_!ARC_TYP!_dvd_custom_VER_.iso
     Set DVD_DST=%DVD_DST:_VER_=_!WIM_VER!%
 
@@ -260,6 +254,14 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_IMG=!WIM_WRK!\w%%~I\%%~J\img
             Set WIM_MNT=!WIM_WRK!\w%%~I\%%~J\mnt
             Set WIM_WRE=!WIM_WRK!\w%%~I\%%~J\wre
+
+            If /I "!DRV_DVD!" EQU "!WIM_IMG!" (
+                Echo イメージフォルダーの統合元と作業用が同じです。
+                Echo 統合元："!DRV_DVD!"
+                Echo 作業用："!WIM_IMG!"
+                Echo 別のフォルダーを指定して下さい。
+                GoTo CHK_DVD_DRIVE
+            )
 
             If !FLG_DEL! EQU 0 (
                 If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
