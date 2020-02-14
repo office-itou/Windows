@@ -1,6 +1,24 @@
 **Windows Update統合ISO作成用バッチ**  
   
-【ダウンロードリストファイル：dynabook SS N12 Windows 7用】  
+　lstフォルダーに入れて下さい。
+  
+| フォルダー名 | ファイル名                     | 機能                         |
+| ------------ | ------------------------------ | ---------------------------- |
+| C:\WimWK\lst | Initial-Downloader.lst         | 初期導入用                   |
+|              | Windows10adk_Rollup_202001.lst | Win10版 ADK                  |
+|              | Windows10bin_Rollup_202001.lst | Win10版 バイナリーファイル   |
+|              | Windows10drv_Rollup_202001.lst | Win10版 ドライバー           |
+|              | Windows10x86_Rollup_202002.lst | Win10版 Windows Update 32bit |
+|              | Windows10x64_Rollup_202002.lst | Win10版 Windows Update 64bit |
+|              | Windows10drv_dynabook.lst      | Win10版 dynabook SS N12      |
+|              | Windows7adk_Rollup_202001.lst  | Win 7版 ADK                  |
+|              | Windows7bin_Rollup_202001.lst  | Win 7版 バイナリーファイル   |
+|              | Windows7drv_Rollup_202001.lst  | Win 7版 ドライバー           |
+|              | Windows7x86_Rollup_202002.lst  | Win 7版 Windows Update 32bit |
+|              | Windows7x64_Rollup_202002.lst  | Win 7版 Windows Update 64bit |
+|              | Windows7drv_dynabook.lst       | Win 7版 dynabook SS N12      |
+  
+【ダウンロードリストファイル：dynabook SS N12用】  
   
 | ファイル名                     | 機能                                        |
 | ------------------------------ | ------------------------------------------- |
