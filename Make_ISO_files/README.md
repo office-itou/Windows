@@ -85,7 +85,7 @@
 | 導入作業01                     | ![導入作業01](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/picture/01.Initial-Downloader.01.jpg) |
 | 導入作業02                     | ![導入作業02](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/picture/01.Initial-Downloader.02.jpg) |
   
-【統合作業画面】  
+【統合作業画面：Windows 10の場合】  
   
 | 作業内容                       | スクリーンショット                          |
 | ------------------------------ | ------------------------------------------- |
