@@ -86,8 +86,8 @@
   
 | ファイル名                     | 機能                                        |
 | ------------------------------ | ------------------------------------------- |
-| [Windows10x86_skylake_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/skylake/Windows10x86_skylake_202001.lst)       | Win7版   |
-| [Windows10x64_skylake_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/skylake/Windows10x64_skylake_202001.lst)       | Win10版  |
+| [Windows10x86_skylake_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/skylake/Windows10x86_skylake_202001.lst)       | Win10 32bit版  |
+| [Windows10x64_skylake_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/skylake/Windows10x64_skylake_202001.lst)       | Win10 64bit版  |
   
 【初期導入作業画面】  
   
