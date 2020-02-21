@@ -83,18 +83,21 @@ Rem --- Windowsのバージョン設定 -----------------------------------------------
 :INPUT_WIN_TYPE
     Echo --- Windowsのバージョン設定 ---------------------------------------------------
     Echo 1: Windows 7
-    Echo 2: Windows 10
-    Set IDX_WIN=2
-    Set /P IDX_WIN=Windowsのバージョンを1～2の数字から選んで下さい。（規定値[!IDX_WIN!]）
+    Echo 2: Windows 8.1
+    Echo 3: Windows 10
+    Set IDX_WIN=3
+    Set /P IDX_WIN=Windowsのバージョンを1～3の数字から選んで下さい。（規定値[!IDX_WIN!]）
 
            If /I "!IDX_WIN!" EQU "1" (Set WIN_VER=7
-    ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_VER=10
+    ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_VER=8.1
+    ) Else If /I "!IDX_WIN!" EQU "3" (Set WIN_VER=10
     ) Else                           (GoTo INPUT_WIN_TYPE
     )
 
-           If !WIN_VER! EQU  7 (Set WIN_PNM=Windows6.1
-    ) Else If !WIN_VER! EQU 10 (Set WIN_PNM=Windows10.0
-    ) Else                     (GoTo INPUT_WIN_TYPE
+           If !WIN_VER! EQU  7  (Set WIN_PNM=Windows6.1
+    ) Else If !WIN_VER! EQU 8.1 (Set WIN_PNM=windows8.1
+    ) Else If !WIN_VER! EQU 10  (Set WIN_PNM=Windows10.0
+    ) Else                      (GoTo INPUT_WIN_TYPE
     )
 
 Rem --- Windowsのアーキテクチャー設定 -----------------------------------------
@@ -175,6 +178,16 @@ Rem --- Windowsのエディション設定 ---------------------------------------------
             ) Else If /I "!IDX_WIN!" EQU "4" (Set WIN_TYP=Windows 7 Professional
             ) Else If /I "!IDX_WIN!" EQU "5" (Set WIN_TYP=Windows 7 Ultimate
             )
+        ) Else If !WIN_VER! EQU 8.1 (
+            Echo --- Windowsのエディション設定 -------------------------------------------------
+            Echo 1: Windows 8.1 Pro
+            Echo 2: Windows 8.1
+            Set IDX_WIN=1
+            Set /P IDX_WIN=Windowsのエディションを1～2の数字から選んで下さい。（規定値[!IDX_WIN!]）
+
+                   If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 8.1 Pro
+            ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 8.1
+            )
         ) Else If !WIN_VER! EQU 10 (
             Echo --- Windowsのエディション設定 -------------------------------------------------
             Echo 1: Windows 10 Home
@@ -218,10 +231,10 @@ Rem Set WIM_TOP=%~3
     Set LST_CNT=0
     Pushd "!WIM_LST!" || GoTo DONE
         For /R %%I In ("Windows!WIN_VER!*.lst") Do (
-            For /F "tokens=1,2 usebackq delims=_." %%J in ('%%~nxI') Do (
+            For /F "tokens=1,2 usebackq delims=_" %%J in ('%%~nxI') Do (
                 Set DVD_PKG=%%~J
                 Set DVD_PKG=!DVD_PKG:~-3!
-                Set DVD_OPT=%%~K
+                Set DVD_OPT=%%~nK
                 For %%P In (!LST_PKG!) Do (
                     If /I "%%~P" EQU "!DVD_PKG!" (
                         If /I "!DVD_OPT!" NEQ "Rollup" (
@@ -279,6 +292,7 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
 
     For %%I In (!WIN_VER!) Do (
         For %%J In (!ARC_TYP!) Do (
+            Set WIM_PKB=!WIM_PKG!\w%%~I\bin
             Set WIM_DRV=!WIM_PKG!\w%%~I\drv
             Set WIM_WUD=!WIM_PKG!\w%%~I\%%~J
             Set WIM_CAB=!WIM_PKG!\w%%~I\%%~J\cab
@@ -364,9 +378,9 @@ Rem *** リストファイル変換 ****************************************************
             Set LST_SECTION=
             For %%K In ("!LST_LFSNAME!") Do (
                 Set LST_LFNAME=
-                For /F "tokens=2 usebackq delims=_." %%E in ('%%~nxK') Do (
-                           If /I "%%~E" EQU "Rollup"    (If !FLG_DRV! EQU 0 (Set LST_LFNAME=%%~K)
-                    ) Else If /I "%%~E" EQU "!LST_OPT!" (Set LST_LFNAME=%%~K
+                For /F "tokens=2 usebackq delims=_" %%E in ('%%~nxK') Do (
+                           If /I "%%~E"  EQU "Rollup"    (If !FLG_DRV! EQU 0 (Set LST_LFNAME=%%~K)
+                    ) Else If /I "%%~nE" EQU "!LST_OPT!" (Set LST_LFNAME=%%~K
                     )
                 )
                 If /I "!LST_LFNAME!" NEQ "" (
@@ -511,9 +525,9 @@ Rem *** ファイル取得 **********************************************************
             If /I "%%X" NEQ "" (
                 If Not Exist "!LST_RENAME!" (
                     Echo "!LST_FNAME!"
-                    Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                    Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                 ) Else (
-                    Curl -L -s --dump-header "!CMD_WRK!" "!LST_FILE!"
+                    Curl -L -s --connect-timeout 60 --dump-header "!CMD_WRK!" "!LST_FILE!"
                     Set LST_LEN=0
                     For /F "tokens=1,2* usebackq delims=:" %%Y In ("!CMD_WRK!") Do (
                         If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
@@ -521,7 +535,7 @@ Rem *** ファイル取得 **********************************************************
                     For /F "usebackq delims=/" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
                     If !LST_LEN! NEQ !LST_SIZE! (
                         Echo "!LST_FNAME!" : !LST_SIZE! : !LST_LEN!
-                        Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                        Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                     )
                 )
                 If /I "!LST_EXTENSION!" EQU "zip" (
@@ -646,6 +660,7 @@ Rem === options.cmd の作成 ====================================================
     Set OPT_DIR=autounattend\options
     Set OPT_PKG=!OPT_DIR!\upd
     Set OPT_DRV=!OPT_DIR!\drv
+    Set OPT_BIN=!OPT_DIR!\bin
     Set OPT_CMD=!WIM_IMG!\!OPT_DIR!\options.cmd
     Set OPT_BAK=!OPT_CMD!.!NOW_DAY!!NOW_TIM!
     Set OPT_TMP=!OPT_CMD!.tmp
@@ -660,17 +675,19 @@ Rem --- options.cmd の作成 ----------------------------------------------------
     Echo>>"!OPT_CMD!" Rem %DATE% %TIME% maked
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% Start
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!"     Set Path=%%configsetroot%%\!OPT_BIN!;%%Path%%
     Echo>>"!OPT_CMD!" Rem --- NTP Setup -------------------------------------------------------------
-    Echo>>"!OPT_CMD!" Rem Cmd /C sc stop w32time
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "" /t REG_SZ /d "0" /f
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "0" /t REG_SZ /d "ntp.nict.jp" /f
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Config" /v "UpdateInterval" /t REG_DWORD /d "0x00057e40" /f
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "Type" /t REG_SZ /d "NTP" /f
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "NtpServer" /t REG_SZ /d "ntp.nict.jp,0x9" /f
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollInterval" /t REG_DWORD /d "0x00005460" /f
-    Echo>>"!OPT_CMD!"     Cmd /C reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollTimeRemaining" /t REG_MULTI_SZ /d "" /f
-    Echo>>"!OPT_CMD!"     Cmd /C sc config w32time start= delayed-auto
-    Echo>>"!OPT_CMD!" Rem Cmd /C sc start w32time
+    Echo>>"!OPT_CMD!" Rem sc stop w32time
+    Echo>>"!OPT_CMD!"     reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "" /t REG_SZ /d "0" /f
+    Echo>>"!OPT_CMD!"     reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers" /v "0" /t REG_SZ /d "ntp.nict.jp" /f
+    Echo>>"!OPT_CMD!"     reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Config" /v "UpdateInterval" /t REG_DWORD /d "0x00057e40" /f
+    Echo>>"!OPT_CMD!"     reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "Type" /t REG_SZ /d "NTP" /f
+    Echo>>"!OPT_CMD!"     reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters" /v "NtpServer" /t REG_SZ /d "ntp.nict.jp,0x9" /f
+    Echo>>"!OPT_CMD!"     reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollInterval" /t REG_DWORD /d "0x00005460" /f
+    Echo>>"!OPT_CMD!"     reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v "SpecialPollTimeRemaining" /t REG_MULTI_SZ /d "" /f
+    Echo>>"!OPT_CMD!"     sc config w32time start= delayed-auto
+    Echo>>"!OPT_CMD!" Rem sc start w32time
 Rem ---------------------------------------------------------------------------
     If !FLG_DRV! EQU 0 (
         Echo>>"!OPT_CMD!" Rem --- Package ---------------------------------------------------------------
@@ -712,13 +729,8 @@ Rem ---------------------------------------------------------------------------
             Set LST_FNDST=%%~nE
         )
         If /I "!LST_WINDOWS!" EQU "w!WIN_VER!" (
-                   If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (Rem
-            ) Else If /I "!LST_PACKAGE!" EQU "drv"       (Rem
-            ) Else                                       (Set LST_CMD=
-            )
-            If /I "!LST_CMD!" EQU "" (
-                If /I "!LST_EXTENSION!" EQU "msu" (Set OPT_MSU=1)
-            ) Else (
+            If /I "!LST_CMD!" EQU "" (If /I "!LST_EXTENSION!" EQU "msu" (Set OPT_MSU=1)
+            ) Else                   (
                 Set LST_REM=   
                 Set LST_SECTION_LST=!LST_SECTION:_= !
                 For %%A In (!LST_SECTION_LST!) Do (
@@ -729,20 +741,20 @@ Rem ---------------------------------------------------------------------------
                     )
                 )
                 If /I "!LST_EXTENSION!" EQU "exe" (
-                    Echo>>"!OPT_CMD!" !LST_REM! Cmd /C "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
+                    If /I "!LST_FNAME!" EQU "mpam-fe-!ARC_TYP!.exe" (Echo>>"!OPT_CMD!"     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "!LST_FILE!" ^&^& Attrib -R "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" ^&^& Move "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!")
+                    If /I "!LST_FNAME!" EQU "mpas-fe-!ARC_TYP!.exe" (Echo>>"!OPT_CMD!"     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "!LST_FILE!" ^&^& Attrib -R "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" ^&^& Move "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!")
+                    Echo>>"!OPT_CMD!" !LST_REM! "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                     Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                 ) Else If /I "!LST_EXTENSION!" EQU "wus" (
-                    Echo>>"!OPT_CMD!" !LST_REM! Cmd /C Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
+                    Echo>>"!OPT_CMD!" !LST_REM! Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                     Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                 ) Else If /I "!LST_EXTENSION!" EQU "msi" (
-                    Echo>>"!OPT_CMD!" !LST_REM! Cmd /C msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
+                    Echo>>"!OPT_CMD!" !LST_REM! msiexec /i "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                     Set OPT_LST=!OPT_LST! "!LST_FNAME!"
                 ) Else If /I "!LST_EXTENSION!" EQU "cab" (
                     Robocopy /J /MIR /A-:RHS /NDL /NFL /NC /NJH /NJS "!LST_FNSRC!" "!WIM_IMG!\!OPT_DRV!\!LST_FNDST!" > Nul
-                    If !WIN_VER! LEQ 7 (
-                        Echo>>"!OPT_TMP!" !LST_REM! Cmd /C PnpUtil -i -a "%%configsetroot%%\!OPT_DRV!\!LST_FNDST!\*.inf"
-                    ) Else             (
-                        Echo>>"!OPT_TMP!" !LST_REM! Cmd /C PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!LST_FNDST!\*.inf" /SubDirs /Install
+                    If !WIN_VER! LEQ 7 (Echo>>"!OPT_TMP!" !LST_REM! PnpUtil -i -a "%%configsetroot%%\!OPT_DRV!\!LST_FNDST!\*.inf"
+                    ) Else             (Echo>>"!OPT_TMP!" !LST_REM! PnpUtil /Add-Driver "%%configsetroot%%\!OPT_DRV!\!LST_FNDST!\*.inf" /SubDirs /Install
                     )
                 )
             )
@@ -754,10 +766,10 @@ Rem ---------------------------------------------------------------------------
     )
 Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem --- Cleaning --------------------------------------------------------------
-    Echo>>"!OPT_CMD!" Rem Cmd /C Del /F /S /Q "%%configsetroot%%" ^> Nul
-    Echo>>"!OPT_CMD!" Rem Cmd /C For /D %%%%I In ("%%configsetroot%%\*") Do (RmDir /S /Q "%%%%~I" ^> Nul )
+    Echo>>"!OPT_CMD!" Rem Del /F /S /Q "%%configsetroot%%" ^> Nul
+    Echo>>"!OPT_CMD!" Rem For /D %%%%I In ("%%configsetroot%%\*") Do (RmDir /S /Q "%%%%~I" ^> Nul )
     Echo>>"!OPT_CMD!" Rem --- Reboot-----------------------------------------------------------------
-    Echo>>"!OPT_CMD!" Rem Cmd /C shutdown /r /t 3
+    Echo>>"!OPT_CMD!" Rem shutdown /r /t 3
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" :DONE
     Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% End
@@ -766,6 +778,16 @@ Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
 Rem ---------------------------------------------------------------------------
     If Exist "!OPT_BAK!" (Del /F "!OPT_BAK!")
+
+    For /D %%I In ("!WIM_PKB!\curl-*-win!CPU_BIT!-mingw") Do (
+        Pushd "%%~I" || GoTo DONE
+            For /R %%E In ("curl.exe*") Do (
+                Set CUR_DIR=%%~dpE
+                If /I "!CUR_DIR:~-1!" EQU "\" (Set CUR_DIR=!CUR_DIR:~0,-1!)
+                Robocopy /J /MIR /A-:RHS /NDL /NFL /NC /NJH /NJS "!CUR_DIR!" "!WIM_IMG!\!OPT_BIN!"
+            )
+        Popd
+    )
 
     If /I "!OPT_LST!" NEQ "" (
         Robocopy /J /A-:RHS /NDL /NFL /NC /NJH /NJS "!WIM_WUD!" "!WIM_IMG!\!OPT_PKG!" !OPT_LST! > Nul
