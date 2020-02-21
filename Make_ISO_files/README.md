@@ -139,8 +139,8 @@
 | 媒体作成03                     | ![媒体作成03](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/picture/03.%E5%AA%92%E4%BD%93%E4%BD%9C%E6%88%90.03.jpg) |
 | 媒体作成04                     | ![媒体作成04](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/picture/03.%E5%AA%92%E4%BD%93%E4%BD%9C%E6%88%90.04.jpg) |
   
-・Windows Update統合ISOでインストール後の注意
+・Windows Update統合ISOでインストール後の注意  
   
-　以下のフォルダーに使用したメディアのコピーがありますので管理者権限で削除願います。
-　　C:\Windows\ConfigSetRoot　（環境変数 %configsetroot% と同等）
+　以下のフォルダーに使用したメディアのコピーがありますので管理者権限で削除願います。  
+　　**C:\Windows\ConfigSetRoot**　（環境変数 %configsetroot% と同等）  
   
