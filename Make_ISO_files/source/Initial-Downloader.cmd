@@ -213,7 +213,7 @@ Rem --- GitHub ダウンロードファイル -------------------------------------------
     If /I "!INP_ANS!" EQU "Y" (
         Copy /Y "!GIT_FIL!" "!GIT_WIM!" > Nul
     ) Else (
-        Curl -L -# -R -S -f --create-dirs -o "!GIT_WIM!" "%GIT_URL%" || GoTo DONE
+        Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!GIT_WIM!" "%GIT_URL%" || GoTo DONE
     )
     If Not Exist "!GIT_WIM!" (
         Echo 以下のファイルが無いため実行を中止します。
@@ -236,7 +236,7 @@ Rem --- GitHub ダウンロードファイル -------------------------------------------
         )
 Rem     If Not Exist "!WIM_DIR!\!URL_FIL!" (
             Echo "!URL_FIL!"
-            Curl -L -# -R -S -f --create-dirs -o "!WIM_DIR!\!URL_FIL!" "%%~I" || GoTo DONE
+            Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!WIM_DIR!\!URL_FIL!" "%%~I" || GoTo DONE
 Rem     )
     )
 
@@ -402,9 +402,9 @@ Rem *** ファイル取得 **********************************************************
             If /I "%%X" NEQ "" (
                 If Not Exist "!LST_RENAME!" (
                     Echo "!LST_FNAME!"
-                    Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                    Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                 ) Else (
-                    Curl -L -s --dump-header "!CMD_WRK!" "!LST_FILE!"
+                    Curl -L -s --connect-timeout 60 --dump-header "!CMD_WRK!" "!LST_FILE!"
                     Set LST_LEN=0
                     For /F "tokens=1,2* usebackq delims=:" %%Y In ("!CMD_WRK!") Do (
                         If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
@@ -412,7 +412,7 @@ Rem *** ファイル取得 **********************************************************
                     For /F "usebackq delims=/" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
                     If !LST_LEN! NEQ !LST_SIZE! (
                         Echo "!LST_FNAME!" : !LST_SIZE! : !LST_LEN!
-                        Curl -L -# -R -S -f --create-dirs -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                        Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                     )
                 )
                 If /I "!LST_EXTENSION!" EQU "zip" (

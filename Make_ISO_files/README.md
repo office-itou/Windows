@@ -30,12 +30,14 @@
   
 【Unattendファイル】  
   
-| ファイル名                     | 機能                                        |
-| ------------------------------ | ------------------------------------------- |
-| [autounattend-windows7-x86.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows7-x86.xml)  | Windows  7 32bit用                          |
-| [autounattend-windows7-x64.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows7-x64.xml)  | Windows  7 64bit用                          |
-| [autounattend-windows10-x86.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows10-x86.xml) | Windows 10 32bit用                          |
-| [autounattend-windows10-x64.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows10-x64.xml) | Windows 10 64bit用                          |
+| ファイル名                      | 機能                                        |
+| ------------------------------- | ------------------------------------------- |
+| [autounattend-windows7-x86.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows7-x86.xml)   | Windows  7 32bit用                          |
+| [autounattend-windows7-x64.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows7-x64.xml)   | Windows  7 64bit用                          |
+| [autounattend-windows8.1-x86.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows8.1-x86.xml) | Windows  8.1 32bit用                        |
+| [autounattend-windows8.1-x64.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows8.1-x64.xml) | Windows  8.1 64bit用                        |
+| [autounattend-windows10-x86.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows10-x86.xml)  | Windows 10 32bit用                          |
+| [autounattend-windows10-x64.xml](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/autounattend-windows10-x64.xml)  | Windows 10 64bit用                          |
   
 【ショートカット】  
   
@@ -45,23 +47,32 @@
   
 【ダウンロードリストファイル：Windows 7用】  
   
-| ファイル名                     | 機能                                        |
-| ------------------------------ | ------------------------------------------- |
-| [Windows7adk_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7adk_Rollup_202001.lst)  | ADK                                         |
-| [Windows7bin_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7bin_Rollup_202001.lst)  | バイナリーファイル                          |
-| [Windows7drv_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7drv_Rollup_202001.lst)  | ドライバー                                  |
-| [Windows7x86_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7x86_Rollup_202002.lst)  | Windows Update 32bit                        |
-| [Windows7x64_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7x64_Rollup_202002.lst)  | Windows Update 64bit                        |
+| ファイル名                      | 機能                                        |
+| ------------------------------- | ------------------------------------------- |
+| [Windows7adk_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7adk_Rollup_202001.lst)   | ADK                                         |
+| [Windows7bin_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7bin_Rollup_202001.lst)   | バイナリーファイル                          |
+| [Windows7drv_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7drv_Rollup_202001.lst)   | ドライバー                                  |
+| [Windows7x86_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7x86_Rollup_202002.lst)   | Windows Update 32bit                        |
+| [Windows7x64_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows7x64_Rollup_202002.lst)   | Windows Update 64bit                        |
+  
+【ダウンロードリストファイル：Windows 8.1用】  
+  
+| ファイル名                       | 機能                                        |
+| -------------------------------- | ------------------------------------------- |
+| [Windows8.1adk_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows8.1adk_Rollup_202002.lst)  | ADK                                         |
+| [Windows8.1bin_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows8.1bin_Rollup_202002.lst)  | バイナリーファイル                          |
+| [Windows8.1x86_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows8.1x86_Rollup_202002.lst)  | Windows Update 32bit                        |
+| [Windows8.1x64_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows8.1x64_Rollup_202002.lst)  | Windows Update 64bit                        |
   
 【ダウンロードリストファイル：Windows 10用】  
   
-| ファイル名                     | 機能                                        |
-| ------------------------------ | ------------------------------------------- |
-| [Windows10adk_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10adk_Rollup_202001.lst) | ADK                                         |
-| [Windows10bin_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10bin_Rollup_202001.lst) | バイナリーファイル                          |
-| [Windows10drv_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10drv_Rollup_202001.lst) | ドライバー                                  |
-| [Windows10x86_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10x86_Rollup_202002.lst) | Windows Update 32bit                        |
-| [Windows10x64_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10x64_Rollup_202002.lst) | Windows Update 64bit                        |
+| ファイル名                      | 機能                                        |
+| ------------------------------- | ------------------------------------------- |
+| [Windows10adk_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10adk_Rollup_202001.lst)  | ADK                                         |
+| [Windows10bin_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10bin_Rollup_202001.lst)  | バイナリーファイル                          |
+| [Windows10drv_Rollup_202001.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10drv_Rollup_202001.lst)  | ドライバー                                  |
+| [Windows10x86_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10x86_Rollup_202002.lst)  | Windows Update 32bit                        |
+| [Windows10x64_Rollup_202002.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Windows10x64_Rollup_202002.lst)  | Windows Update 64bit                        |
   
 【ダウンロードリストファイル：dynabook SS N12シリーズ用ドライバー】  
   

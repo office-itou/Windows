@@ -106,8 +106,8 @@
                 <LogonCount>1</LogonCount>
                 <Username>Administrator</Username>
                 <Password>
-                    <Value>UABhAHMAcwB3AG8AcgBkAA==</Value>
-                    <PlainText>false</PlainText>
+                    <Value></Value>
+                    <PlainText>true</PlainText>
                 </Password>
             </AutoLogon>
             <OOBE>
@@ -118,11 +118,10 @@
             </OOBE>
             <UserAccounts>
                 <AdministratorPassword>
-                    <Value>QQBkAG0AaQBuAGkAcwB0AHIAYQB0AG8AcgBQAGEAcwBzAHcAbwByAGQA</Value>
-                    <PlainText>false</PlainText>
+                    <Value></Value>
+                    <PlainText>true</PlainText>
                 </AdministratorPassword>
             </UserAccounts>
         </component>
     </settings>
-    <cpi:offlineImage cpi:source="wim:c:/wimwk/wrk/install.wim#Windows 10 Pro" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
 </unattend>
