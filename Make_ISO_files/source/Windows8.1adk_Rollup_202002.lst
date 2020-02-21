@@ -1,0 +1,58 @@
+[INFO]
+VERSION=0.103.0
+SOFTWARE=Windows 8.1 x64
+TARGET=None
+LANGUAGE=Japanese
+NAME=Jun Itou
+COMMENT=統合DVD作成用 2020/02
+
+[LIST]
+COUNT=2
+1=ADK_W10
+2=WSIM1903
+
+[ADK_W10]
+TITLE=Windows ADK のダウンロードとインストール
+INFO=https://docs.microsoft.com/ja-jp/windows-hardware/get-started/adk-install
+FILE=https://download.microsoft.com/download/B/E/6/BE63E3A5-5D1C-43E7-9875-DFA2B301EC70/adk/adksetup.exe
+RENAME=
+SIZE=1929008
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2019/04/18
+RUN_ORDER=001
+CMD=
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[WSIM1903]
+TITLE=Download the Windows System Image Manager (WSIM) 1903 update
+INFO=https://docs.microsoft.com/ja-jp/windows-hardware/get-started/adk-install
+FILE=https://go.microsoft.com/fwlink/?linkid=2095334
+RENAME=WSIM1903.zip
+SIZE=186206
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2019/06/14
+RUN_ORDER=002
+CMD=
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
