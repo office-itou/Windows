@@ -1,7 +1,7 @@
 **Windows統合ISO作成用バッチ**  
   
 　ダウンロード可能なWindows UpdateとChrome版Edgeを統合したISOファイル作成のバッチファイルです。  
-　・[Windows7/10統合用](https://github.com/office-itou/Windows/blob/master/Make_ISO_files)  
+　・[Windows7/8.1/10統合用](https://github.com/office-itou/Windows/blob/master/Make_ISO_files)  
   
 **VMXのカスタマイズ用バッチファイル**  
   
