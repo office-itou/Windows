@@ -16,6 +16,28 @@
 | 2019/10/09 04:34 |  3,874,082,816 | Win10_1909_Japanese_x32.iso                         |  
 | 2019/10/09 06:13 |  5,376,456,704 | Win10_1909_Japanese_x64.iso                         |  
   
+・必要となるサイズの参考値
+  
+| フォルダー または ファイル                 |  サイズ  |  
+|:------------------------------------------ | --------:|  
+| 導入直後のC:\WimWKフォルダー               |  12.8GB  |  
+| 原版 ISO ファイル合計                      |  21.2GB  |  
+| windows_7_x64_dvd_custom_6.1.7601.iso      |   5.29GB |  
+| windows_7_x86_dvd_custom_6.1.7601.iso      |   3.83GB |  
+| windows_8.1_x64_dvd_custom_6.3.9600.iso    |   6.43GB |  
+| windows_8.1_x86_dvd_custom_6.3.9600.iso    |   4.51GB |  
+| windows_10_x64_dvd_custom_10.0.18362.iso   |   6.06GB |  
+| windows_10_x86_dvd_custom_10.0.18362.iso   |   4.30GB |  
+| windows_7_x64_dvd_dynabook_6.1.7601.iso    |   5.41GB |  
+| windows_10_x64_dvd_dynabook_10.0.18362.iso |   6.16GB |  
+| windows_10_x64_dvd_skylake_10.0.18362.iso  |   6.10GB |  
+  
+　install.wimの展開に1作業あたり20GB程度必要
+  
+　＜参考＞
+　　Windows 7/8.1/10 x86/x64 の統合作業を同時に行った時のOS込みの使用量は130GB程度。
+　　これに出力されるISOファイル分を加算した容量が最低限必要となる。
+  
 【初期導入作業用】  
   
 | ファイル名                     | 機能                                        |
