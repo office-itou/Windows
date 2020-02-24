@@ -38,6 +38,17 @@
 　　Windows 7/8.1/10 x86/x64 の統合作業を同時に行った時のOS込みの使用量は130GB程度。  
 　　これに出力されるISOファイル分を加算した容量が最低限必要となる。  
   
+【Windows Update統合ISOでインストール後の注意】  
+  
+　以下のフォルダーに使用したメディアのコピーがありますので管理者権限で削除願います。  
+　　**C:\Windows\ConfigSetRoot**　（環境変数 %configsetroot% と同等）  
+  
+【ダウンロード用コピペ】  
+  
+```text
+curl -L -# -R -S -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make_ISO_files/source/Initial-Downloader.cmd"
+```
+  
 【初期導入作業用】  
   
 | ファイル名                     | 機能                                        |
@@ -143,15 +154,4 @@
 | 媒体作成02                     | ![媒体作成02](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/picture/03.%E5%AA%92%E4%BD%93%E4%BD%9C%E6%88%90.02.jpg) |
 | 媒体作成03                     | ![媒体作成03](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/picture/03.%E5%AA%92%E4%BD%93%E4%BD%9C%E6%88%90.03.jpg) |
 | 媒体作成04                     | ![媒体作成04](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/picture/03.%E5%AA%92%E4%BD%93%E4%BD%9C%E6%88%90.04.jpg) |
-  
-・Windows Update統合ISOでインストール後の注意  
-  
-　以下のフォルダーに使用したメディアのコピーがありますので管理者権限で削除願います。  
-　　**C:\Windows\ConfigSetRoot**　（環境変数 %configsetroot% と同等）  
-  
-【ダウンロード用コピペ】  
-  
-```text
-curl -L -# -R -S -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make_ISO_files/source/Initial-Downloader.cmd"
-```
   
