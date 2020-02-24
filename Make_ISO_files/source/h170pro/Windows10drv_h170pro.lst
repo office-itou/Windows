@@ -421,8 +421,8 @@ COMMENT=
 [VGA]
 TITLE=
 INFO=
-FILE=igxpin.exe
-RENAME=h170pro\vga\igfx_win10_100.7870\igxpin.exe
+FILE=GfxDownloadWrapper.exe"
+RENAME=h170pro\vga\igfx_win10_100.7870\Graphics\GfxDownloadWrapper.exe
 SIZE=
 TYPE=HOTFIX(HOTFIX9.CMD)
 CATEGORY=
