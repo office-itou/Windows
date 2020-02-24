@@ -753,7 +753,7 @@ Rem ---------------------------------------------------------------------------
                     If /I "!LST_PACKAGE!" EQU "drv" (
                         For %%E In ("!LST_FDSRC!") Do (Set LST_FNDST=%%~nE)
                         Robocopy /J /MIR /A-:RHS /NDL /NFL /NC /NJH /NJS "!LST_FDSRC!" "!WIM_IMG!\!OPT_DRV!\!LST_SECTION!" > Nul
-                        Echo>>"!OPT_CMD!" !LST_REM! "%%configsetroot%%\!OPT_DRV!\!LST_SECTION!\!LST_FNAME!" !LST_CMD!
+                        Echo>>"!OPT_TMP!" !LST_REM! "%%configsetroot%%\!OPT_DRV!\!LST_SECTION!\!LST_FNAME!" !LST_CMD!
                     ) Else (
                         If /I "!LST_FNAME!" EQU "mpam-fe-!ARC_TYP!.exe" (Echo>>"!OPT_CMD!"     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "!LST_FILE!" ^&^& Attrib -R "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" ^&^& Move "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!")
                         If /I "!LST_FNAME!" EQU "mpas-fe-!ARC_TYP!.exe" (Echo>>"!OPT_CMD!"     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "!LST_FILE!" ^&^& Attrib -R "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" ^&^& Move "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!")
