@@ -108,7 +108,7 @@
   
 | ファイル名                     | 機能                                        |
 | ------------------------------ | ------------------------------------------- |
-| [Windows7drv_h170pro.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/h170pto/Windows7drv_h170pro.lst)       | Win7版           |
+| [Windows7drv_h170pro.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/h170pro/Windows7drv_h170pro.lst)       | Win7版           |
 | [Windows10drv_h170pro.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/h170pro/Windows10drv_h170pro.lst)       |  Win10版         |
   
 【ダウンロードリストファイル：Intel 製マイクロコードの更新プログラム】  
