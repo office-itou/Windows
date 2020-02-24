@@ -799,7 +799,7 @@ Rem ---------------------------------------------------------------------------
             For /R %%E In ("curl.exe*") Do (
                 Set CUR_DIR=%%~dpE
                 If /I "!CUR_DIR:~-1!" EQU "\" (Set CUR_DIR=!CUR_DIR:~0,-1!)
-                Robocopy /J /MIR /A-:RHS /NDL /NFL /NC /NJH /NJS "!CUR_DIR!" "!WIM_IMG!\!OPT_BIN!"
+                Robocopy /J /MIR /A-:RHS /NDL /NFL /NC /NJH /NJS "!CUR_DIR!" "!WIM_IMG!\!OPT_BIN!" > Nul
             )
         Popd
     )
@@ -820,50 +820,85 @@ Rem === Windows Update ファイル と ドライバー の統合 ==========================
 
     If !WIN_VER! EQU 7 (
         Echo --- ドライバーの統合 -----------------------------------------------------------
-        Pushd "!WIM_DRV!\USB" &For /R %%I In ("Win7\!ARC_TYP!\iusb3hub.inf*")  Do (Set DRV_USB=%%~dpI&Set DRV_USB=!DRV_USB:~0,-1!)&Popd
-        Pushd "!WIM_DRV!\RST" &For /R %%I In ("f6flpy-!ARC_TYP!\iaAHCIC.inf*") Do (Set DRV_RST=%%~dpI&Set DRV_RST=!DRV_RST:~0,-1!)&Popd
-        Pushd "!WIM_DRV!\NVMe"&For /R %%I In ("Client-!ARC_TYP!\IaNVMe.inf*")  Do (Set DRV_NVM=%%~dpI&Set DRV_NVM=!DRV_NVM:~0,-1!)&Popd
+        If Not Exist "!WIM_DRV!\USB"  (Set DRV_USB=) Else (Pushd "!WIM_DRV!\USB" &For /R %%I In ("Win7\!ARC_TYP!\iusb3hub.inf*")  Do (Set DRV_USB=%%~dpI&Set DRV_USB=!DRV_USB:~0,-1!)&Popd)
+        If Not Exist "!WIM_DRV!\RST"  (Set DRV_RST=) Else (Pushd "!WIM_DRV!\RST" &For /R %%I In ("f6flpy-!ARC_TYP!\iaAHCIC.inf*") Do (Set DRV_RST=%%~dpI&Set DRV_RST=!DRV_RST:~0,-1!)&Popd)
+        If Not Exist "!WIM_DRV!\NVMe" (Set DRV_NVM=) Else (Pushd "!WIM_DRV!\NVMe"&For /R %%I In ("Client-!ARC_TYP!\IaNVMe.inf*")  Do (Set DRV_NVM=%%~dpI&Set DRV_NVM=!DRV_NVM:~0,-1!)&Popd)
+
+               If /I "!DRV_USB!" NEQ "" (Set ADD_FLG=1
+        ) Else If /I "!DRV_RST!" NEQ "" (Set ADD_FLG=1
+        ) Else If /I "!DRV_NVM!" NEQ "" (Set ADD_FLG=1
+        ) Else                          (Set ADD_FLG=0
+        )
 
 Rem --- boot.wimを更新する ----------------------------------------------------
-        Echo --- boot.wimを更新する [1] ----------------------------------------------------
-        Dism /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:1 /MountDir:"!WIM_MNT!"    || GoTo :DONE
-Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"           || GoTo :DONE
-Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"           || GoTo :DONE
-        Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
-        Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
-Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
-        Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
+        If !ADD_FLG! EQU 1 (
+            Echo --- boot.wimを更新する [1] ----------------------------------------------------
+            Dism /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:1 /MountDir:"!WIM_MNT!"    || GoTo :DONE
+            If /I "!DRV_NVM!" NEQ "" (
+Rem             Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"       || GoTo :DONE
+Rem             Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"       || GoTo :DONE
+Rem             Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                  || GoTo :DONE
+            )
+            If /I "!DRV_USB!" NEQ "" (
+                Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                  || GoTo :DONE
+            )
+            If /I "!DRV_RST!" NEQ "" (
+                Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                  || GoTo :DONE
+            )
+            Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
 
-        Echo --- boot.wimを更新する [2] ----------------------------------------------------
-        Dism /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:2 /MountDir:"!WIM_MNT!"    || GoTo :DONE
-Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"           || GoTo :DONE
-Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"           || GoTo :DONE
-        Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
-        Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
-Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
-        Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
+            Echo --- boot.wimを更新する [2] ----------------------------------------------------
+            Dism /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:2 /MountDir:"!WIM_MNT!"    || GoTo :DONE
+            If /I "!DRV_NVM!" NEQ "" (
+Rem             Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"       || GoTo :DONE
+Rem             Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"       || GoTo :DONE
+Rem             Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                  || GoTo :DONE
+            )
+            If /I "!DRV_USB!" NEQ "" (
+                Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                  || GoTo :DONE
+            )
+            If /I "!DRV_RST!" NEQ "" (
+                Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                  || GoTo :DONE
+            )
+            Dism /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
+        )
 
 Rem --- install.wimを更新する -------------------------------------------------
         Dism /Mount-WIM /WimFile:"!WIM_IMG!\sources\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
-        Echo --- winRE.wimを更新する -------------------------------------------------------
-        Dism /Mount-WIM /WimFile:"!WIM_MNT!\Windows\System32\Recovery\winRE.wim" /Index:1 /MountDir:"!WIM_WRE!"    || GoTo :DONE
-Rem     Dism !WRE_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"           || GoTo :DONE
-Rem     Dism !WRE_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"           || GoTo :DONE
-        Dism !WRE_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
-        Dism !WRE_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
-Rem     Dism !WRE_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
-        Dism /UnMount-Wim /MountDir:"!WIM_WRE!" /Commit                                         || GoTo :DONE
-        Echo --- install.wimを更新する -----------------------------------------------------
-Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"           || GoTo :DONE
-Rem     Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"           || GoTo :DONE
-        Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                      || GoTo :DONE
-        Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                      || GoTo :DONE
-Rem     Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                      || GoTo :DONE
+        If !ADD_FLG! EQU 1 (
+            Echo --- winRE.wimを更新する -------------------------------------------------------
+            Dism /Mount-WIM /WimFile:"!WIM_MNT!\Windows\System32\Recovery\winRE.wim" /Index:1 /MountDir:"!WIM_WRE!"    || GoTo :DONE
+            If /I "!DRV_NVM!" NEQ "" (
+Rem             Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"       || GoTo :DONE
+Rem             Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"       || GoTo :DONE
+Rem             Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                  || GoTo :DONE
+            )
+            If /I "!DRV_USB!" NEQ "" (
+                Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                  || GoTo :DONE
+            )
+            If /I "!DRV_RST!" NEQ "" (
+                Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                  || GoTo :DONE
+            )
+            Dism /UnMount-Wim /MountDir:"!WIM_WRE!" /Commit                                         || GoTo :DONE
+            Echo --- install.wimを更新する -----------------------------------------------------
+            If /I "!DRV_NVM!" NEQ "" (
+Rem             Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"       || GoTo :DONE
+Rem             Dism !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"       || GoTo :DONE
+Rem             Dism !ADD_DRV! /Driver:"!DRV_NVM!"                                                  || GoTo :DONE
+            )
+            If /I "!DRV_USB!" NEQ "" (
+                Dism !ADD_DRV! /Driver:"!DRV_USB!"                                                  || GoTo :DONE
+            )
+            If /I "!DRV_RST!" NEQ "" (
+                Dism !ADD_DRV! /Driver:"!DRV_RST!"                                                  || GoTo :DONE
+            )
+        )
     ) Else (
 Rem --- install.wimを更新する -------------------------------------------------
         Dism /Mount-WIM /WimFile:"!WIM_IMG!\sources\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
     )
 Rem --- Windows Update ファイルの統合 -----------------------------------------
+    Echo --- Windows Update ファイルの統合 ---------------------------------------------
     For /F "tokens=1-10 usebackq delims=," %%I In ("!CMD_DAT!") Do (
         Set LST_WINDOWS=%%~I
         Set LST_PACKAGE=%%~J
