@@ -5,7 +5,7 @@
 【作業用ファイル一覧】  
   
 | フォルダー名 | ファイル名                     | Windows | 機能                               |
-| :----------: | :----------------------------- | :-----: | :--------------------------------- |
+| :----------: | ------------------------------ | :-----: | ---------------------------------- |
 | 任意         | [Initial-Downloader.cmd](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/Initial-Downloader.cmd)                           | 共通 | 初期導入用バッチファイル                    |
 | C:\WimWK\bin | [MakeIsoFile.cmd](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/MakeIsoFile.cmd)                                         |      | 統合作業用バッチファイル                    |
 |              | [MakeUsbStick.cmd](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/MakeUsbStick.cmd)                                       |      | インストール用USBメモリー作成バッチファイル |
