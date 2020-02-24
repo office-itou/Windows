@@ -149,3 +149,9 @@
 　以下のフォルダーに使用したメディアのコピーがありますので管理者権限で削除願います。  
 　　**C:\Windows\ConfigSetRoot**　（環境変数 %configsetroot% と同等）  
   
+【ダウンロード用コピペ】  
+  
+```text
+curl -L -# -R -S -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make_ISO_files/source/Initial-Downloader.cmd"
+```
+  
