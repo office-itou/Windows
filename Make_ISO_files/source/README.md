@@ -42,19 +42,3 @@ curl -L -# -R -S -O "https://raw.githubusercontent.com/office-itou/Windows/maste
 |              | [Windows7drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows7drv_dynabook.lst)       |   7  | dynabook SS N12ドライバー                   |  
 |              | [Windows10drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows10drv_dynabook.lst)     |  10  |   〃                                        |  
   
-【作業した統合ファイル例一覧】  
-  
-| ファイルサイズ | ファイル名                                          | Windows | 機能                             |  
-|:--------------:| --------------------------------------------------- | :-----: | -------------------------------- |  
-|  3,950,579,712 | windows_7_x86_dvd_custom_6.1.7601.iso               |    7    | 32bit版 Windows Updateのみ適用   |  
-|  5,489,448,960 | windows_7_x64_dvd_custom_6.1.7601.iso               |         | 64bit版 〃                       |  
-|  5,623,959,552 | windows_7_x64_dvd_dynabook_6.1.7601.iso             |         | 64bit版 dynabook用ドライバー適用 |  
-|  5,489,448,960 | windows_7_x64_dvd_h170pro_6.1.7601.iso              |         | 64bit版 H170-PRO用ドライバー適用 |  
-|  6,917,240,832 | windows_8.1_x64_dvd_custom_6.3.9600.iso             |   8.1   | 32bit版 Windows Updateのみ適用   |  
-|  4,858,468,352 | windows_8.1_x86_dvd_custom_6.3.9600.iso             |         | 64bit版 〃                       |  
-|  4,628,713,472 | windows_10_x86_dvd_custom_10.0.18362.iso            |   10    | 32bit版 Windows Updateのみ適用   |  
-|  6,522,306,560 | windows_10_x64_dvd_custom_10.0.18362.iso            |         | 64bit版 〃                       |  
-|  6,634,926,080 | windows_10_x64_dvd_dynabook_10.0.18362.iso          |         | 64bit版 dynabook用ドライバー適用 |  
-|  8,947,822,592 | windows_10_x64_dvd_h170pro_10.0.18362.iso           |         | 64bit版 H170-PRO用ドライバー適用 |  
-|  6,568,263,680 | windows_10_x64_dvd_skylake_10.0.18362.iso           |         | 64bit版 マイクロコードパッチ適用 |  
-  
