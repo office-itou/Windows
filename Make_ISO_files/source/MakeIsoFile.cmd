@@ -521,8 +521,12 @@ Rem *** ファイル取得 **********************************************************
         Set LST_FILE=%%~R
         Set LST_WINPKG=!WIM_PKG!\!LST_WINDOWS!
         For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
-        For /F "tokens=2 usebackq delims=:" %%X In ('!LST_FILE!') Do (
-            If /I "%%X" NEQ "" (
+        For /F "tokens=1 usebackq delims=:" %%X In ('!LST_FILE!') Do (
+                   If /I "%%~X" EQU "http"  (Set FLG_URL=1
+            ) Else If /I "%%~X" EQU "https" (Set FLG_URL=1
+            ) Else                          (Set FLG_URL=0
+            )
+            If !FLG_URL! EQU 1 (
                 If Not Exist "!LST_RENAME!" (
                     Echo "!LST_FNAME!"
                     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
@@ -538,6 +542,10 @@ Rem *** ファイル取得 **********************************************************
                         Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                     )
                 )
+            )
+            If Not Exist "!LST_RENAME!" (
+                Echo File not exist: "!LST_RENAME!"
+            ) Else (
                 If /I "!LST_EXTENSION!" EQU "zip" (
                     For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
                     If Not Exist "!LST_DIR!" (
@@ -725,6 +733,7 @@ Rem ---------------------------------------------------------------------------
         For %%E In ("!LST_RENAME!") Do (
             Set LST_FNAME=%%~nxE
             Set LST_FDSRC=%%~dpE
+            Set LST_FDSRC=!LST_FDSRC:~0,-1!
             Set LST_FNSRC=%%~dpnE
             Set LST_FNDST=%%~nE
         )
@@ -741,10 +750,16 @@ Rem ---------------------------------------------------------------------------
                     )
                 )
                 If /I "!LST_EXTENSION!" EQU "exe" (
-                    If /I "!LST_FNAME!" EQU "mpam-fe-!ARC_TYP!.exe" (Echo>>"!OPT_CMD!"     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "!LST_FILE!" ^&^& Attrib -R "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" ^&^& Move "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!")
-                    If /I "!LST_FNAME!" EQU "mpas-fe-!ARC_TYP!.exe" (Echo>>"!OPT_CMD!"     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "!LST_FILE!" ^&^& Attrib -R "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" ^&^& Move "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!")
-                    Echo>>"!OPT_CMD!" !LST_REM! "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
-                    Set OPT_LST=!OPT_LST! "!LST_FNAME!"
+                    If /I "!LST_PACKAGE!" EQU "drv" (
+                        For %%E In ("!LST_FDSRC!") Do (Set LST_FNDST=%%~nE)
+                        Robocopy /J /MIR /A-:RHS /NDL /NFL /NC /NJH /NJS "!LST_FDSRC!" "!WIM_IMG!\!OPT_DRV!\!LST_SECTION!" > Nul
+                        Echo>>"!OPT_CMD!" !LST_REM! "%%configsetroot%%\!OPT_DRV!\!LST_SECTION!\!LST_FNAME!" !LST_CMD!
+                    ) Else (
+                        If /I "!LST_FNAME!" EQU "mpam-fe-!ARC_TYP!.exe" (Echo>>"!OPT_CMD!"     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "!LST_FILE!" ^&^& Attrib -R "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" ^&^& Move "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!")
+                        If /I "!LST_FNAME!" EQU "mpas-fe-!ARC_TYP!.exe" (Echo>>"!OPT_CMD!"     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "!LST_FILE!" ^&^& Attrib -R "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" ^&^& Move "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!.tmp" "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!")
+                        Echo>>"!OPT_CMD!" !LST_REM! "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
+                        Set OPT_LST=!OPT_LST! "!LST_FNAME!"
+                    )
                 ) Else If /I "!LST_EXTENSION!" EQU "wus" (
                     Echo>>"!OPT_CMD!" !LST_REM! Wusa "%%configsetroot%%\!OPT_PKG!\!LST_FNAME!" !LST_CMD!
                     Set OPT_LST=!OPT_LST! "!LST_FNAME!"

@@ -213,7 +213,7 @@ Rem --- GitHub ダウンロードファイル -------------------------------------------
     If /I "!INP_ANS!" EQU "Y" (
         Copy /Y "!GIT_FIL!" "!GIT_WIM!" > Nul
     ) Else (
-        Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!GIT_WIM!" "%GIT_URL%" || GoTo DONE
+        Curl -L -# -R -S -f --create-dirs --connect-timeout 60 --max-time 7200 --retry 5 -o "!GIT_WIM!" "%GIT_URL%" || GoTo DONE
     )
     If Not Exist "!GIT_WIM!" (
         Echo 以下のファイルが無いため実行を中止します。
@@ -236,7 +236,7 @@ Rem --- GitHub ダウンロードファイル -------------------------------------------
         )
 Rem     If Not Exist "!WIM_DIR!\!URL_FIL!" (
             Echo "!URL_FIL!"
-            Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!WIM_DIR!\!URL_FIL!" "%%~I" || GoTo DONE
+            Curl -L -# -R -S -f --create-dirs --connect-timeout 60 --max-time 7200 --retry 5 -o "!WIM_DIR!\!URL_FIL!" "%%~I" || GoTo DONE
 Rem     )
     )
 
@@ -261,24 +261,104 @@ Rem *** リストファイル変換 ****************************************************
             Set LST_WINPACK=!WIM_PKG!\w!LST_WINVER!\!LST_PACKAGE!
             Set LST_SECTION=
             For %%K In ("!LST_LFSNAME!") Do (
-                Set LST_LFNAME=%%~K
-                For /F "tokens=1* usebackq delims==" %%L In ("!LST_LFNAME!") Do (
-                    Set LST_KEY=%%~L
-                    Set LST_VAL=%%~M
-                    If /I "!LST_KEY:~0,1!!LST_KEY:~-1,1!" EQU "[]" (
-                        If /I "!LST_SECTION!" EQU "INFO" (Set LST_SECTION=)
-                        If /I "!LST_SECTION!" EQU "LIST" (Set LST_SECTION=)
-                        If /I "!LST_SECTION!" NEQ "" (
-                            If /I "!LST_RENAME!" EQU "" (For %%E In ("!LST_FILE!")   Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE&Set LST_RENAME=%%~nxE)
-                            ) Else                      (For %%E In ("!LST_RENAME!") Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE)
+                Set LST_LFNAME=
+                For /F "tokens=2 usebackq delims=_" %%E in ('%%~nxK') Do (
+                           If /I "%%~E"  EQU "Rollup"    (If !FLG_DRV! EQU 0 (Set LST_LFNAME=%%~K)
+                    ) Else If /I "%%~nE" EQU "!LST_OPT!" (Set LST_LFNAME=%%~K
+                    )
+                )
+                If /I "!LST_LFNAME!" NEQ "" (
+                    For /F "tokens=1* usebackq delims==" %%L In ("!LST_LFNAME!") Do (
+                        Set LST_KEY=%%~L
+                        Set LST_VAL=%%~M
+                        If /I "!LST_KEY:~0,1!!LST_KEY:~-1,1!" EQU "[]" (
+                            If /I "!LST_SECTION!" EQU "INFO" (Set LST_SECTION=)
+                            If /I "!LST_SECTION!" EQU "LIST" (Set LST_SECTION=)
+                            If /I "!LST_SECTION!" NEQ "" (
+                                If /I "!LST_RENAME!" EQU "" (For %%E In ("!LST_FILE!")   Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE&Set LST_RENAME=%%~nxE)
+                                ) Else                      (For %%E In ("!LST_RENAME!") Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE)
+                                )
+                                If /I "!LST_RUN_ORDER!" EQU "" (Set LST_RUN_ORDER=000)
+                                Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
+                                Set LST_EXTENSION=!LST_EXTENSION:~1!
+                                If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
+                                Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
                             )
-                            If /I "!LST_RUN_ORDER!" EQU "" (Set LST_RUN_ORDER=000)
-                            Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
-                            Set LST_EXTENSION=!LST_EXTENSION:~1!
-                            If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                            Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                            Set LST_SECTION=!LST_KEY:~1,-1!
+                            Set LST_TITLE=
+                            Set LST_INFO=
+                            Set LST_FILE=
+                            Set LST_RENAME=
+                            Set LST_SIZE=
+                            Set LST_TYPE=
+                            Set LST_CATEGORY=
+                            Set LST_TIE_UP=
+                            Set LST_XOR_KEY=
+                            Set LST_SYNCHRO_KEY=
+                            Set LST_RELEASE=
+                            Set LST_RUN_ORDER=
+                            Set LST_CMD=
+                            Set LST_DECODE=
+                            Set LST_DECODE_TYPE=
+                            Set LST_DECODE_GET=
+                            Set LST_IEXPRESS=
+                            Set LST_IEXPRESS_LIST=
+                            Set LST_IEXPRESS_CMD=
+                            Set LST_PREVIOUS_SP=
+                            Set LST_COMMENT=
+                            Set LST_TYPE_NUM=
                         )
-                        Set LST_SECTION=!LST_KEY:~1,-1!
+                        If /I "!LST_SECTION!" NEQ "" (
+                                   If /I "!LST_KEY!" EQU "TITLE"         (Set LST_TITLE=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "INFO"          (Set LST_INFO=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "FILE"          (Set LST_FILE=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "RENAME"        (Set LST_RENAME=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "SIZE"          (Set LST_SIZE=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "TYPE"          (Set LST_TYPE=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "CATEGORY"      (Set LST_CATEGORY=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "TIE_UP"        (Set LST_TIE_UP=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "XOR_KEY"       (Set LST_XOR_KEY=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "SYNCHRO_KEY"   (Set LST_SYNCHRO_KEY=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "RELEASE"       (Set LST_RELEASE=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "RUN_ORDER"     (Set LST_RUN_ORDER=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "CMD"           (Set LST_CMD=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "DECODE"        (Set LST_DECODE=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "DECODE_TYPE"   (Set LST_DECODE_TYPE=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "DECODE_GET"    (Set LST_DECODE_GET=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "IEXPRESS"      (Set LST_IEXPRESS=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "IEXPRESS_LIST" (Set LST_IEXPRESS_LIST=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "IEXPRESS_CMD"  (Set LST_IEXPRESS_CMD=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "PREVIOUS_SP"   (Set LST_PREVIOUS_SP=!LST_VAL!
+                            ) Else If /I "!LST_KEY!" EQU "COMMENT"       (Set LST_COMMENT=!LST_VAL!
+                            )
+                            If /I "!LST_KEY!" EQU "TYPE" (
+                                       If /I "!LST_TYPE!" EQU "Service Pack"         (Set LST_TYPE_NUM=01
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(SVCPACK.INF)"  (Set LST_TYPE_NUM=02
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIXES.CMD)" (Set LST_TYPE_NUM=03
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX1.CMD)"  (Set LST_TYPE_NUM=04
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX2.CMD)"  (Set LST_TYPE_NUM=05
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX3.CMD)"  (Set LST_TYPE_NUM=06
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX4.CMD)"  (Set LST_TYPE_NUM=07
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX5.CMD)"  (Set LST_TYPE_NUM=08
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX6.CMD)"  (Set LST_TYPE_NUM=09
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX7.CMD)"  (Set LST_TYPE_NUM=10
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX8.CMD)"  (Set LST_TYPE_NUM=11
+                                ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX9.CMD)"  (Set LST_TYPE_NUM=12
+                                ) Else                                               (Set LST_TYPE_NUM=
+                                )
+                            )
+                        )
+                    )
+                    If /I "!LST_SECTION!" NEQ "" (
+                        If /I "!LST_RENAME!" EQU "" (For %%E In ("!LST_FILE!")   Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE&Set LST_RENAME=%%~nxE)
+                        ) Else                      (For %%E In ("!LST_RENAME!") Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE)
+                        )
+                        If /I "!LST_RUN_ORDER!" EQU "" (Set LST_RUN_ORDER=000)
+                        Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
+                        Set LST_EXTENSION=!LST_EXTENSION:~1!
+                        If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
+                        Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                        Set LST_SECTION=
                         Set LST_TITLE=
                         Set LST_INFO=
                         Set LST_FILE=
@@ -302,79 +382,6 @@ Rem *** リストファイル変換 ****************************************************
                         Set LST_COMMENT=
                         Set LST_TYPE_NUM=
                     )
-                    If /I "!LST_SECTION!" NEQ "" (
-                               If /I "!LST_KEY!" EQU "TITLE"         (Set LST_TITLE=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "INFO"          (Set LST_INFO=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "FILE"          (Set LST_FILE=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "RENAME"        (Set LST_RENAME=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "SIZE"          (Set LST_SIZE=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "TYPE"          (Set LST_TYPE=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "CATEGORY"      (Set LST_CATEGORY=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "TIE_UP"        (Set LST_TIE_UP=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "XOR_KEY"       (Set LST_XOR_KEY=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "SYNCHRO_KEY"   (Set LST_SYNCHRO_KEY=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "RELEASE"       (Set LST_RELEASE=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "RUN_ORDER"     (Set LST_RUN_ORDER=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "CMD"           (Set LST_CMD=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "DECODE"        (Set LST_DECODE=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "DECODE_TYPE"   (Set LST_DECODE_TYPE=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "DECODE_GET"    (Set LST_DECODE_GET=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "IEXPRESS"      (Set LST_IEXPRESS=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "IEXPRESS_LIST" (Set LST_IEXPRESS_LIST=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "IEXPRESS_CMD"  (Set LST_IEXPRESS_CMD=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "PREVIOUS_SP"   (Set LST_PREVIOUS_SP=!LST_VAL!
-                        ) Else If /I "!LST_KEY!" EQU "COMMENT"       (Set LST_COMMENT=!LST_VAL!
-                        )
-                        If /I "!LST_KEY!" EQU "TYPE" (
-                                   If /I "!LST_TYPE!" EQU "Service Pack"         (Set LST_TYPE_NUM=01
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(SVCPACK.INF)"  (Set LST_TYPE_NUM=02
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIXES.CMD)" (Set LST_TYPE_NUM=03
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX1.CMD)"  (Set LST_TYPE_NUM=04
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX2.CMD)"  (Set LST_TYPE_NUM=05
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX3.CMD)"  (Set LST_TYPE_NUM=06
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX4.CMD)"  (Set LST_TYPE_NUM=07
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX5.CMD)"  (Set LST_TYPE_NUM=08
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX6.CMD)"  (Set LST_TYPE_NUM=09
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX7.CMD)"  (Set LST_TYPE_NUM=10
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX8.CMD)"  (Set LST_TYPE_NUM=11
-                            ) Else If /I "!LST_TYPE!" EQU "HOTFIX(HOTFIX9.CMD)"  (Set LST_TYPE_NUM=12
-                            ) Else                                               (Set LST_TYPE_NUM=
-                            )
-                        )
-                    )
-                )
-                If /I "!LST_SECTION!" NEQ "" (
-                    If /I "!LST_RENAME!" EQU "" (For %%E In ("!LST_FILE!")   Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE&Set LST_RENAME=%%~nxE)
-                    ) Else                      (For %%E In ("!LST_RENAME!") Do (Set LST_EXTENSION=%%~xE&Set LST_FNAME=%%~nxE)
-                    )
-                    If /I "!LST_RUN_ORDER!" EQU "" (Set LST_RUN_ORDER=000)
-                    Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
-                    Set LST_EXTENSION=!LST_EXTENSION:~1!
-                    If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                    Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
-                    Set LST_SECTION=
-                    Set LST_TITLE=
-                    Set LST_INFO=
-                    Set LST_FILE=
-                    Set LST_RENAME=
-                    Set LST_SIZE=
-                    Set LST_TYPE=
-                    Set LST_CATEGORY=
-                    Set LST_TIE_UP=
-                    Set LST_XOR_KEY=
-                    Set LST_SYNCHRO_KEY=
-                    Set LST_RELEASE=
-                    Set LST_RUN_ORDER=
-                    Set LST_CMD=
-                    Set LST_DECODE=
-                    Set LST_DECODE_TYPE=
-                    Set LST_DECODE_GET=
-                    Set LST_IEXPRESS=
-                    Set LST_IEXPRESS_LIST=
-                    Set LST_IEXPRESS_CMD=
-                    Set LST_PREVIOUS_SP=
-                    Set LST_COMMENT=
-                    Set LST_TYPE_NUM=
                 )
             )
         )
@@ -398,8 +405,12 @@ Rem *** ファイル取得 **********************************************************
         Set LST_FILE=%%~R
         Set LST_WINPKG=!WIM_PKG!\!LST_WINDOWS!
         For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
-        For /F "tokens=2 usebackq delims=:" %%X In ('!LST_FILE!') Do (
-            If /I "%%X" NEQ "" (
+        For /F "tokens=1 usebackq delims=:" %%X In ('!LST_FILE!') Do (
+                   If /I "%%~X" EQU "http"  (Set FLG_URL=1
+            ) Else If /I "%%~X" EQU "https" (Set FLG_URL=1
+            ) Else                          (Set FLG_URL=0
+            )
+            If !FLG_URL! EQU 1 (
                 If Not Exist "!LST_RENAME!" (
                     Echo "!LST_FNAME!"
                     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
@@ -415,6 +426,10 @@ Rem *** ファイル取得 **********************************************************
                         Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                     )
                 )
+            )
+            If Not Exist "!LST_RENAME!" (
+                Echo File not exist: "!LST_RENAME!"
+            ) Else (
                 If /I "!LST_EXTENSION!" EQU "zip" (
                     For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
                     If Not Exist "!LST_DIR!" (
@@ -493,7 +508,7 @@ Rem *** ファイル取得 **********************************************************
                             )
                             Echo>>"!LST_FPATH!\update.wrk" !LST_LINE!
                         )
-                        Move "!LST_FPATH!\update.wrk" "!LST_FCAB!\update.mum" || GoTo DONE
+                        Move "!LST_FPATH!\update.wrk" "!LST_FCAB!\update.mum" > Nul || GoTo DONE
                     )
                 )
             )
