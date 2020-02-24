@@ -2,6 +2,12 @@
   
 　各フォルダーに入れて下さい。
   
+【ダウンロード用コピペ】  
+  
+```text
+curl -L -# -R -S -O "https://raw.githubusercontent.com/office-itou/Windows/master/Make_ISO_files/source/Initial-Downloader.cmd"
+```
+  
 【作業用ファイル一覧】  
   
 | フォルダー名 | ファイル名                     | Windows | 機能                               |
