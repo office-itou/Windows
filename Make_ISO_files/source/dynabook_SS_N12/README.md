@@ -9,13 +9,11 @@
 | C:\WimWK\lst | Initial-Downloader.lst         | 初期導入用                         |
 |              | Windows10adk_Rollup_202001.lst | Win10版 ADK                        |
 |              | Windows10bin_Rollup_202001.lst | Win10版 バイナリーファイル         |
-|              | Windows10drv_Rollup_202001.lst | Win10版 ドライバー                 |
 |              | Windows10x86_Rollup_202002.lst | Win10版 Windows Update 32bit       |
 |              | Windows10x64_Rollup_202002.lst | Win10版 Windows Update 64bit       |
 |              | [Windows10drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows10drv_dynabook.lst)      | Win10版 dynabook SS N12 ドライバー |
 |              | Windows7adk_Rollup_202001.lst  | Win 7版 ADK                        |
 |              | Windows7bin_Rollup_202001.lst  | Win 7版 バイナリーファイル         |
-|              | Windows7drv_Rollup_202001.lst  | Win 7版 ドライバー                 |
 |              | Windows7x86_Rollup_202002.lst  | Win 7版 Windows Update 32bit       |
 |              | Windows7x64_Rollup_202002.lst  | Win 7版 Windows Update 64bit       |
 |              | [Windows7drv_dynabook.lst](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/Windows7drv_dynabook.lst)       | Win 7版 dynabook SS N12 ドライバー |
