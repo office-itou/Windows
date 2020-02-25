@@ -1655,7 +1655,7 @@ COMMENT=
 [EDGE]
 TITLE=Download and deploy the new Microsoft Edge for business
 INFO=https://www.microsoft.com/en-us/edge/business/download
-FILE=http://go.microsoft.com/fwlink/?LinkID=2093437
+FILE=http://go.microsoft.com/fwlink/?LinkID=2093505
 RENAME=MicrosoftEdgeEnterprise-x86.msi
 SIZE=1
 TYPE=HOTFIX(SVCPACK.INF)
