@@ -834,7 +834,7 @@ Rem === Windows Update ファイル と ドライバー の統合 ==========================
             Echo --- ドライバーの統合 ----------------------------------------------------------
             If Not Exist "!WIM_DRV!\USB"  (Set DRV_USB=) Else (Pushd "!WIM_DRV!\USB" &For /R %%I In ("Win7\!ARC_TYP!\iusb3hub.inf*")  Do (Set DRV_USB=%%~dpI&Set DRV_USB=!DRV_USB:~0,-1!)&Popd)
             If Not Exist "!WIM_DRV!\RST"  (Set DRV_RST=) Else (Pushd "!WIM_DRV!\RST" &For /R %%I In ("f6flpy-!ARC_TYP!\iaAHCIC.inf*") Do (Set DRV_RST=%%~dpI&Set DRV_RST=!DRV_RST:~0,-1!)&Popd)
-            If Not Exist "!WIM_DRV!\NVMe" (Set DRV_NVM=) Else (Pushd "!WIM_DRV!\NVMe"&For /R %%I In ("Client-!ARC_TYP!\IaNVMe.inf*")  Do (Set DRV_NVM=%%~dpI&Set DRV_NVM=!DRV_NVM:~0,-1!)&Popd)
+Rem         If Not Exist "!WIM_DRV!\NVMe" (Set DRV_NVM=) Else (Pushd "!WIM_DRV!\NVMe"&For /R %%I In ("Client-!ARC_TYP!\IaNVMe.inf*")  Do (Set DRV_NVM=%%~dpI&Set DRV_NVM=!DRV_NVM:~0,-1!)&Popd)
 
                    If /I "!DRV_USB!" NEQ "" (Set ADD_FLG=1
             ) Else If /I "!DRV_RST!" NEQ "" (Set ADD_FLG=1
