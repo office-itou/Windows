@@ -580,6 +580,13 @@ Rem *** ファイル取得 **********************************************************
                     )
                 )
             )
+:SET_INSTALL_FILE_CHECK
+            If Not Exist "!LST_RENAME!" (
+                Echo 統合する!LST_RENAME!をセットして下さい。
+                Echo 準備ができたら[Enter]を押下して下さい。
+                Pause > Nul 2>&1
+                GoTo SET_INSTALL_FILE_CHECK
+            )
             If Not Exist "!LST_RENAME!" (
                 Echo File not exist: "!LST_RENAME!"
             ) Else (
@@ -588,7 +595,7 @@ Rem *** ファイル取得 **********************************************************
                     If Not Exist "!LST_DIR!" (
                         Echo --- ファイル展開 --------------------------------------------------------------
                         MkDir "!LST_DIR!"
-                        Tar -xzf "!LST_RENAME!" -C "!LST_DIR!"
+                        Tar -xzf "!LST_RENAME!" -C "!LST_DIR!" || GoTo DONE
                     )
                     Pushd "!LST_DIR!" || GoTo DONE
                         For /R %%E In ("*.zip") Do (
@@ -597,7 +604,7 @@ Rem *** ファイル取得 **********************************************************
                             If Not Exist "!LST_ZIPDIR!" (
                                 Echo --- ファイル展開 --------------------------------------------------------------
                                 MkDir "!LST_ZIPDIR!"
-                                Tar -xzf "!LST_ZIPFILE!" -C "!LST_ZIPDIR!"
+                                Tar -xzf "!LST_ZIPFILE!" -C "!LST_ZIPDIR!" || GoTo DONE
                             )
                             Pushd "!LST_ZIPDIR!" || GoTo DONE
                                 For /R %%F In ("*.msu") Do (
