@@ -14,7 +14,7 @@ C:\WimWK
 |   |   MakeUsbStick.cmd
 |   |   MicrosoftUpdateCatalog.url
 |   |
-|   \---Oscdimg
+|   \---Oscdimg ← Windows ADK よりコピーされます。
 |       +---amd64
 |       |       efisys.bin
 |       |       efisys_noprompt.bin
@@ -47,24 +47,30 @@ C:\WimWK
 |
 +---lst
 |       Initial-Downloader.lst
+|
 |       Windows10adk_Rollup_202001.lst
 |       Windows10bin_Rollup_202001.lst
-|       Windows10drv_dynabook.lst
-|       Windows10drv_h170pro.lst
 |       Windows10x64_Rollup_202002.lst
-|       Windows10x64_skylake_202001.lst
 |       Windows10x86_Rollup_202002.lst
-|       Windows10x86_skylake_202001.lst
+|
 |       Windows7adk_Rollup_202001.lst
 |       Windows7bin_Rollup_202001.lst
-|       Windows7drv_dynabook.lst
-|       Windows7drv_h170pro.lst
 |       Windows7x64_Rollup_202002.lst
 |       Windows7x86_Rollup_202002.lst
+|
 |       Windows8.1adk_Rollup_202002.lst
 |       Windows8.1bin_Rollup_202002.lst
 |       Windows8.1x64_Rollup_202002.lst
 |       Windows8.1x86_Rollup_202002.lst
+|
+|       Windows10x86_skylake_202001.lst
+|       Windows10x64_skylake_202001.lst
+|
+|       Windows10drv_h170pro.lst
+|       Windows7drv_h170pro.lst
+|
+|       Windows10drv_dynabook.lst
+|       Windows7drv_dynabook.lst
 |
 +---pkg
 |   +---w10
