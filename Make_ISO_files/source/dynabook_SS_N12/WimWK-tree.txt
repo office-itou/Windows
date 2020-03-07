@@ -31,32 +31,17 @@ C:\WimWK
 |   |   +---adk
 |   |   +---bin
 |   |   +---drv
-|   |   |   +---dynabook
-|   |   |   |   |   200000241_dbbd9421c7e464a2fd7a0f910946e140e52d7a88.cab
-|   |   |   |   |   20284341_7b1a5fd471387b2aaa58464c9c894583f4ed9d93.cab
-|   |   |   |   |   20284342_6ef00f64329eb2380a7bc87a811f3da848cfba40.cab
-|   |   |   |   |   20299668_973f2f7d4d6c6904b66bd7f32be04756f5a9c059.cab
-|   |   |   |   |   20299669_76d0d6efab2aad50ef9e4fca271c078cdea964ad.cab
-|   |   |   |   |   20411791_1a1c67a7965c638485cfc25a363737ee46113db8.cab
-|   |   |   |   |   20411792_1372ed66ee58742cd0974ec85ddf67ef23dcae4d.cab
-|   |   |   |   |   20578785_5ecba0393438142c5f043e5a9360f3e9a87fb9ba.cab
-|   |   |   |   |   20578786_74986e9b140db6cc7968f1845e372c5b5984ecaa.cab
-|   |   |   |   |   20941520_c8ce8c3504ee36697164eddda18aa8740f455849.cab
-|   |   |   |   :
-|   |   |   |
-|   |   |   +---NVMe
-|   |   |   |   |   ASUS_EZInstaller_V10306.zip
-|   |   |   |   |   Client-x64.zip
-|   |   |   |   |   Client-x86.zip
-|   |   |   |   :
-|   |   |   |
-|   |   |   +---RST
-|   |   |   |   |   f6flpy-x64.zip
-|   |   |   |   |   f6flpy-x86.zip
-|   |   |   |   :
-|   |   |   |
-|   |   |   \---USB
-|   |   |       |   Intel(R)_USB_3.0_eXtensible_Host_Controller_Driver_5.0.4.43_v2.zip
+|   |   |   \---dynabook
+|   |   |       |   200000241_dbbd9421c7e464a2fd7a0f910946e140e52d7a88.cab
+|   |   |       |   20284341_7b1a5fd471387b2aaa58464c9c894583f4ed9d93.cab
+|   |   |       |   20284342_6ef00f64329eb2380a7bc87a811f3da848cfba40.cab
+|   |   |       |   20299668_973f2f7d4d6c6904b66bd7f32be04756f5a9c059.cab
+|   |   |       |   20299669_76d0d6efab2aad50ef9e4fca271c078cdea964ad.cab
+|   |   |       |   20411791_1a1c67a7965c638485cfc25a363737ee46113db8.cab
+|   |   |       |   20411792_1372ed66ee58742cd0974ec85ddf67ef23dcae4d.cab
+|   |   |       |   20578785_5ecba0393438142c5f043e5a9360f3e9a87fb9ba.cab
+|   |   |       |   20578786_74986e9b140db6cc7968f1845e372c5b5984ecaa.cab
+|   |   |       |   20941520_c8ce8c3504ee36697164eddda18aa8740f455849.cab
 |   |   |       :
 |   |   |
 |   |   +---x64
