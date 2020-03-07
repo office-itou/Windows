@@ -1,0 +1,25 @@
+C:\WimWK
++---bin
++---cfg
++---lst
+|       Windows10x64_skylake_202001.lst
+|       Windows10x86_skylake_202001.lst
+|
++---pkg
+|   +---w10
+|   |   +---adk
+|   |   +---bin
+|   |   +---drv
+|   |   +---x64
+|   |   |   |   windows10.0-kb4497165-v4-x64.msu
+|   |   |   :
+|   |   |
+|   |   \---x86
+|   |       |   windows10.0-kb4497165-v4-x86.msu
+|   |       :
+|   |
+|   +---w7
+|   \---w8.1
+|
++---usr
+\---wrk

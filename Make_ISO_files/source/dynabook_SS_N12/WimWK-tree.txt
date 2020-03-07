@@ -1,0 +1,72 @@
+C:\WimWK
++---bin
++---cfg
++---lst
+|       Windows10drv_dynabook.lst
+|       Windows7drv_dynabook.lst
+|
++---pkg
+|   +---w10
+|   |   +---adk
+|   |   +---bin
+|   |   +---drv
+|   |   |   \---dynabook
+|   |   |       |   200000241_dbbd9421c7e464a2fd7a0f910946e140e52d7a88.cab
+|   |   |       |   200000265_b70e6e89dc0f24433f6fcc6b33d5f160f30a33cd.cab
+|   |   |       |   200000268_69e51a687acc555a97b220bb0facacfc2060c7dc.cab
+|   |   |       |   200026402_da628d5b257f2999cf21bef0359de0b7507730d3.cab
+|   |   |       |   20578785_5ecba0393438142c5f043e5a9360f3e9a87fb9ba.cab
+|   |   |       |   20578786_74986e9b140db6cc7968f1845e372c5b5984ecaa.cab
+|   |   |       |   20911004_12dbd373b76ea8d33377be7aad5f833fe998bea2.cab
+|   |   |       |   20911005_5d21f1aff9b12d523c4390d4fe75e6972c897f84.cab
+|   |   |       |   20941481_e482b2dc5d83e8992c871a94c382653fd148214f.cab
+|   |   |       |   4acaeda0-acfe-4e89-b585-b7c4820cb17b_d4b7bfc08151df371e01226fdb288c12e096ce80.cab
+|   |   |       |   907dc64e-e09d-4dfa-8d13-fd94e0e3e895_a2ec207d0b9ad312ac9857ed1ccbb93f671df890.cab
+|   |   |       :
+|   |   |
+|   |   +---x64
+|   |   \---x86
+|   |
+|   +---w7
+|   |   +---adk
+|   |   +---bin
+|   |   +---drv
+|   |   |   +---dynabook
+|   |   |   |   |   200000241_dbbd9421c7e464a2fd7a0f910946e140e52d7a88.cab
+|   |   |   |   |   20284341_7b1a5fd471387b2aaa58464c9c894583f4ed9d93.cab
+|   |   |   |   |   20284342_6ef00f64329eb2380a7bc87a811f3da848cfba40.cab
+|   |   |   |   |   20299668_973f2f7d4d6c6904b66bd7f32be04756f5a9c059.cab
+|   |   |   |   |   20299669_76d0d6efab2aad50ef9e4fca271c078cdea964ad.cab
+|   |   |   |   |   20411791_1a1c67a7965c638485cfc25a363737ee46113db8.cab
+|   |   |   |   |   20411792_1372ed66ee58742cd0974ec85ddf67ef23dcae4d.cab
+|   |   |   |   |   20578785_5ecba0393438142c5f043e5a9360f3e9a87fb9ba.cab
+|   |   |   |   |   20578786_74986e9b140db6cc7968f1845e372c5b5984ecaa.cab
+|   |   |   |   |   20941520_c8ce8c3504ee36697164eddda18aa8740f455849.cab
+|   |   |   |   :
+|   |   |   |
+|   |   |   +---NVMe
+|   |   |   |   |   ASUS_EZInstaller_V10306.zip
+|   |   |   |   |   Client-x64.zip
+|   |   |   |   |   Client-x86.zip
+|   |   |   |   :
+|   |   |   |
+|   |   |   +---RST
+|   |   |   |   |   f6flpy-x64.zip
+|   |   |   |   |   f6flpy-x86.zip
+|   |   |   |   :
+|   |   |   |
+|   |   |   \---USB
+|   |   |       |   Intel(R)_USB_3.0_eXtensible_Host_Controller_Driver_5.0.4.43_v2.zip
+|   |   |       :
+|   |   |
+|   |   +---x64
+|   |   \---x86
+|   |
+|   \---w8.1
+|       +---adk
+|       +---bin
+|       +---x64
+|       \---x86
+|
++---usr
+\---wrk

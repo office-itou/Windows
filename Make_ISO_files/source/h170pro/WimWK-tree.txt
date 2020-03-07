@@ -1,0 +1,76 @@
+C:\WimWK
++---bin
++---cfg
++---lst
+|       Windows10drv_h170pro.lst
+|       Windows7drv_h170pro.lst
+|
++---pkg
+|   +---w10
+|   |   +---adk
+|   |   +---bin
+|   |   +---drv
+|   |   |   \---h170pro
+|   |   |       +---chp
+|   |   |       |   |   chipset-10.1.18228.8176-public-mup.zip
+|   |   |       |   :
+|   |   |       |
+|   |   |       +---ime
+|   |   |       |   |   ME_SW_1909.12.0.1236.zip
+|   |   |       |   :
+|   |   |       |
+|   |   |       +---nic
+|   |   |       |   |   Install_Win10_10038_02202020.zip ← 手動コピーして下さい。
+|   |   |       |   |   PROWin32.exe
+|   |   |       |   |   PROWinx64.exe
+|   |   |       |   |   WiFi_21.70.0_Driver32_Win10.zip
+|   |   |       |   |   WiFi_21.70.0_Driver64_Win10.zip
+|   |   |       |   :
+|   |   |       |
+|   |   |       +---rst
+|   |   |       |   |   f6flpy-x64.zip
+|   |   |       |   |   SetupOptaneMemory.exe
+|   |   |       |   |   SetupRST.exe
+|   |   |       |   :
+|   |   |       |
+|   |   |       +---snd
+|   |   |       |   |   0009-Win7_Win8_Win81_Win10_R282.zip ← 手動コピーして下さい。
+|   |   |       |   :
+|   |   |       |
+|   |   |       \---vga
+|   |   |           |   igfx_win10_100.7870.zip
+|   |   |           :
+|   |   |
+|   |   +---x64
+|   |   \---x86
+|   |
+|   +---w7
+|   |   +---adk
+|   |   +---bin
+|   |   +---drv
+|   |   |   +---NVMe
+|   |   |   |   |   ASUS_EZInstaller_V10306.zip
+|   |   |   |   |   Client-x64.zip
+|   |   |   |   |   Client-x86.zip
+|   |   |   |   :
+|   |   |   |
+|   |   |   +---RST
+|   |   |   |   |   f6flpy-x64.zip
+|   |   |   |   |   f6flpy-x86.zip
+|   |   |   |   :
+|   |   |   |
+|   |   |   \---USB
+|   |   |       |   Intel(R)_USB_3.0_eXtensible_Host_Controller_Driver_5.0.4.43_v2.zip
+|   |   |       :
+|   |   |
+|   |   +---x64
+|   |   \---x86
+|   |
+|   \---w8.1
+|       +---adk
+|       +---bin
+|       +---x64
+|       \---x86
+|
++---usr
+\---wrk
