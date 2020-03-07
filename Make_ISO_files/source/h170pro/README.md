@@ -1,7 +1,7 @@
 **Windows Update統合ISO作成用バッチ**  
   
-　lstフォルダーに入れて下さい。
-　[フォルダー構成](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/h170pro/WimWK-tree.txt)
+　lstフォルダーに入れて下さい。  
+　[フォルダー構成](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/h170pro/WimWK-tree.txt)  
   
 【ダウンロードリストファイル：H170-PRO用ドライバー】  
   

@@ -1,7 +1,7 @@
 **Windows Update統合ISO作成用バッチ**  
   
-　各フォルダーに入れて下さい。
-　[フォルダー構成](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/WimWK-tree.txt)
+　各フォルダーに入れて下さい。  
+　[フォルダー構成](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/WimWK-tree.txt)  
   
 【ダウンロード用コピペ】  
   

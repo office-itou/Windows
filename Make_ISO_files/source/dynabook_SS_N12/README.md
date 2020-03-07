@@ -1,7 +1,7 @@
 **Windows Update統合ISO作成用バッチ**  
   
-　lstフォルダーに入れて下さい。
-　[フォルダー構成](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/WimWK-tree.txt)
+　lstフォルダーに入れて下さい。  
+　[フォルダー構成](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/dynabook_SS_N12/WimWK-tree.txt)  
   
 【ダウンロードリストファイル：dynabook SS N12シリーズ用ドライバー】  
   
