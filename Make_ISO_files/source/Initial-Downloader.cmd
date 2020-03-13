@@ -55,7 +55,7 @@ Rem *** 作業環境設定 **********************************************************
     )
 
     Set CUR_DIR=%CD%
-    CD "!WIM_TOP!"
+Rem CD "!WIM_TOP!"
 
 Rem --- 環境変数設定 ----------------------------------------------------------
     Set WIN_VER=7 8.1 10
@@ -458,11 +458,12 @@ Rem *** ファイル取得 **********************************************************
             If !FLG_URL! EQU 1 (
                 If Not Exist "!LST_RENAME!" (
                     If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
-                    Curl -L -# -R -S -f --create-dirs --connect-timeout 60    -o "!LST_RENAME!" "!LST_FILE!" || ^^
-                    Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                       Curl -L -# -R -S -f --create-dirs --connect-timeout 60    -o "!LST_RENAME!" "!LST_FILE!" ^
+                    || Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" ^
+                    || GoTo DONE
                 ) Else (
-                    Curl -L -s -f --connect-timeout 60    --dump-header "!CMD_WRK!" "!LST_FILE!" || ^^
-                    Curl -L -s -f --connect-timeout 60 -k --dump-header "!CMD_WRK!" "!LST_FILE!"
+                       Curl -L -s -S -f --connect-timeout 60    --dump-header "!CMD_WRK!" "!LST_FILE!" ^
+                    || Curl -L -s -S -f --connect-timeout 60 -k --dump-header "!CMD_WRK!" "!LST_FILE!"
                     Set LST_LEN=0
                     For /F "tokens=1,2* usebackq delims=:" %%Y In ("!CMD_WRK!") Do (
                         If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
@@ -470,8 +471,9 @@ Rem *** ファイル取得 **********************************************************
                     For /F "usebackq delims=/" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
                     If !LST_LEN! NEQ !LST_SIZE! (
                         If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
-                        Curl -L -# -R -S -f --create-dirs --connect-timeout 60    -o "!LST_RENAME!" "!LST_FILE!" || ^^
-                        Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
+                           Curl -L -# -R -S -f --create-dirs --connect-timeout 60    -o "!LST_RENAME!" "!LST_FILE!" ^
+                        || Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" ^
+                        || GoTo DONE
                     )
                 )
             )
@@ -577,7 +579,7 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
 
 Rem *** 作業終了 **************************************************************
 :DONE
-    CD "!CUR_DIR!"
+Rem CD "!CUR_DIR!"
     EndLocal
     Echo *** 作業終了 ******************************************************************
     Echo %DATE% %TIME%
