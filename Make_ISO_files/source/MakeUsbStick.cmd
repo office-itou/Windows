@@ -117,11 +117,13 @@ Rem --- DVDとUSBのドライブ名設定 ----------------------------------------------
 Rem --- 環境変数設定 ----------------------------------------------------------
     Set CMD_WK1=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.DiskPart1.txt
     Set CMD_WK2=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.DiskPart2.txt
+    Set CMD_EXC=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.Exclude.txt
     Set CMD_IMG=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_WK1!" (Del /F "!CMD_WK1!" || GoTo DONE)
     If Exist "!CMD_WK2!" (Del /F "!CMD_WK2!" || GoTo DONE)
+    If Exist "!CMD_EXC!" (Del /F "!CMD_EXC!" || GoTo DONE)
 
 :MAKE
 Rem *** USBメモリーを作成する *************************************************
@@ -157,23 +159,37 @@ Rem *** USBメモリーを作成する *************************************************
     )
 
 :TRANSFER
-    Echo --- ファイル転送 --------------------------------------------------------------
-    If Exist "!DVD_SRC!\sources\install.swm" (
-        Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XF install.wim /XD "System Volume Information" "$Recycle.Bin"
+    If /I "!FMT_USB!" EQU "NTFS" (
+        Echo --- ファイル転送 [DVD → USB] -------------------------------------------------
+        If Exist "!CMD_IMG!\sources\install.swm" (Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin" /XF install.wim
+        ) Else                                   (Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin"
+        )
+    ) Else If /I "!FMT_USB!" EQU "exFAT" (
+        Echo --- ファイル転送 [DVD → USB] -------------------------------------------------
+        Echo>>"!CMD_EXC!" System Volume Information
+        Echo>>"!CMD_EXC!" $Recycle.Bin
+        If Exist "!CMD_IMG!\sources\install.swm" (Echo>>"!CMD_EXC!" install.wim)
+        Xcopy /J /E /H /R /Y "!CMD_IMG!\*.*" "!USB_DST!\\" /EXCLUDE:!CMD_EXC!
     ) Else (
-        If /I "!FMT_USB!" NEQ "FAT32" (
-            Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin"
+        For %%I In ("!DVD_SRC!\sources\install.wim") Do (Set WIM_SIZ=%%~zI)
+        Set WIM_SIZ=!WIM_SIZ:~0,-6!
+        Set /A WIM_SIZ=!WIM_SIZ!+1
+        If !WIM_SIZ! LSS 4095 (
+            Echo --- ファイル転送 [DVD → USB] -------------------------------------------------
+            Echo>>"!CMD_EXC!" System Volume Information
+            Echo>>"!CMD_EXC!" $Recycle.Bin
+            Xcopy /J /E /H /R /Y "!DVD_SRC!\*.*" "!USB_DST!\\" /EXCLUDE:!CMD_EXC!
         ) Else (
-            For %%I In ("!DVD_SRC!\sources\install.wim") Do (Set WIM_SIZ=%%~zI)
-            If !WIM_SIZ! LSS 4294967296 (
-                Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin"
-            ) Else (
-                Echo --- ファイル分割 --------------------------------------------------------------
-                Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!CMD_IMG!" install.wim
-                Dism /Split-Image /ImageFile:"!CMD_IMG!\sources\install.wim" /SWMFile:"!CMD_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
-                Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XF install.wim /XD "System Volume Information" "$Recycle.Bin"
-                Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!CMD_IMG!" "!USB_DST!" install*.swm /XD "System Volume Information" "$Recycle.Bin"
-            )
+            Echo --- ファイル転送 [DVD → HDD] -------------------------------------------------
+            Robocopy /J /S /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!CMD_IMG!" install.wim
+            Echo --- ファイル分割 --------------------------------------------------------------
+            Dism /Split-Image /ImageFile:"!CMD_IMG!\sources\install.wim" /SWMFile:"!CMD_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
+            Echo --- ファイル転送 [HDD → USB] -------------------------------------------------
+            Echo>>"!CMD_EXC!" System Volume Information
+            Echo>>"!CMD_EXC!" $Recycle.Bin
+            Echo>>"!CMD_EXC!" install.wim
+            Xcopy /J /E /H /R /Y "!DVD_SRC!\*.*" "!USB_DST!\\" /EXCLUDE:!CMD_EXC!
+            Xcopy /J /E /H /R /Y "!CMD_IMG!\*.*" "!USB_DST!\\" /EXCLUDE:!CMD_EXC!
         )
     )
 
@@ -183,6 +199,7 @@ Rem CD /D "!DRV_DVD!\boot"
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_WK1!" (Del /F "!CMD_WK1!" || GoTo DONE)
     If Exist "!CMD_WK2!" (Del /F "!CMD_WK2!" || GoTo DONE)
+    If Exist "!CMD_EXC!" (Del /F "!CMD_EXC!" || GoTo DONE)
     If Exist "!CMD_IMG!" (RmDir /S /Q "!CMD_IMG!" || GoTo DONE)
 
 Rem *** 作業終了 **************************************************************

@@ -79,6 +79,9 @@ Rem *** 作業環境設定 **********************************************************
         If /I "!INP_ANS!" NEQ "Y" (GoTo INP_FOLDER)
     )
 
+    Set CUR_DIR=%CD%
+    CD "!WIM_TOP!"
+
 Rem --- Windowsのバージョン設定 -----------------------------------------------
 :INPUT_WIN_TYPE
     Echo --- Windowsのバージョン設定 ---------------------------------------------------
@@ -357,7 +360,7 @@ Rem --- Oscdimg取得 -----------------------------------------------------------
     )
 
 Rem --- Oscdimgのパスを設定する -----------------------------------------------
-    Set Path=!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%;%Path%
+    Set Path=!WIM_BIN!;!WIM_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%;%Path%
     Oscdimg > NUL 2>&1
     If "%ErrorLevel%" EQU "9009" (
         Echo Oscdimg がありません。
@@ -384,12 +387,23 @@ Rem *** リストファイル変換 ****************************************************
             Set LST_SECTION=
             For %%K In ("!LST_LFSNAME!") Do (
                 Set LST_LFNAME=
-                For /F "tokens=2 usebackq delims=_" %%E in ('%%~nxK') Do (
-                           If /I "%%~E"  EQU "Rollup"    (If !FLG_DRV! EQU 0 (Set LST_LFNAME=%%~K)
-                    ) Else If /I "%%~nE" EQU "!LST_OPT!" (Set LST_LFNAME=%%~K
+                For /F "tokens=1-3 usebackq delims=_" %%E in ('%%~nK') Do (
+                           If /I "%%~F"  EQU "Rollup"    (If !FLG_DRV! EQU 0 (Set LST_LFNAME=%%~K)
+                    ) Else If /I "%%~nF" EQU "!LST_OPT!" (Set LST_LFNAME=%%~K
                     )
+                    Set LST_PACK=%%~E
+                    Set LST_TYPE=%%~F
+                    Set LST_DATE=%%~G
                 )
+                Pushd "!WIM_LST!" || GoTo DONE
+                    For /R %%L In ("!LST_PACK!_!LST_TYPE!*.lst") Do (
+                        For /F "tokens=1-3 usebackq delims=_" %%E in ('%%~nL') Do (
+                            If !LST_DATE! LSS %%~G (Set LST_LFNAME=)
+                        )
+                    )
+                Popd
                 If /I "!LST_LFNAME!" NEQ "" (
+                    If /I "!LST_LFNAME:~0,77!" EQU "!LST_LFNAME!" (Echo "!LST_LFNAME!") Else (Echo "!LST_LFNAME:~0,59!...!LST_LFNAME:~-15!")
                     Set LST_LIST=
                     Set LST_SECTION=
                     Set LST_TITLE=
@@ -565,17 +579,17 @@ Rem *** ファイル取得 **********************************************************
             )
             If !FLG_URL! EQU 1 (
                 If Not Exist "!LST_RENAME!" (
-                    Echo "!LST_FNAME!"
+                    If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
                     Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                 ) Else (
-                    Curl -L -s --connect-timeout 60 --dump-header "!CMD_WRK!" "!LST_FILE!"
+                    Curl -L -s -f --connect-timeout 60 --dump-header "!CMD_WRK!" "!LST_FILE!"
                     Set LST_LEN=0
                     For /F "tokens=1,2* usebackq delims=:" %%Y In ("!CMD_WRK!") Do (
                         If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
                     )
                     For /F "usebackq delims=/" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
                     If !LST_LEN! NEQ !LST_SIZE! (
-                        Echo "!LST_FNAME!" : !LST_SIZE! : !LST_LEN!
+                        If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
                         Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -o "!LST_RENAME!" "!LST_FILE!" || GoTo DONE
                     )
                 )
@@ -589,6 +603,7 @@ Rem *** ファイル取得 **********************************************************
             )
             If Not Exist "!LST_RENAME!" (
                 Echo File not exist: "!LST_RENAME!"
+                GoTo SET_INSTALL_FILE_CHECK
             ) Else (
                 If /I "!LST_EXTENSION!" EQU "zip" (
                     For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
@@ -870,9 +885,9 @@ Rem === Windows Update ファイル と ドライバー の統合 ==========================
 
         If !IDX_LST! NEQ 0 (
             Echo --- ドライバーの統合 ----------------------------------------------------------
-            If Not Exist "!WIM_DRV!\USB"  (Set DRV_USB=) Else (Pushd "!WIM_DRV!\USB" &For /R %%I In ("Win7\!ARC_TYP!\iusb3hub.inf*")  Do (Set DRV_USB=%%~dpI&Set DRV_USB=!DRV_USB:~0,-1!)&Popd)
-            If Not Exist "!WIM_DRV!\RST"  (Set DRV_RST=) Else (Pushd "!WIM_DRV!\RST" &For /R %%I In ("f6flpy-!ARC_TYP!\iaAHCIC.inf*") Do (Set DRV_RST=%%~dpI&Set DRV_RST=!DRV_RST:~0,-1!)&Popd)
-Rem         If Not Exist "!WIM_DRV!\NVMe" (Set DRV_NVM=) Else (Pushd "!WIM_DRV!\NVMe"&For /R %%I In ("Client-!ARC_TYP!\IaNVMe.inf*")  Do (Set DRV_NVM=%%~dpI&Set DRV_NVM=!DRV_NVM:~0,-1!)&Popd)
+            If Not Exist "!WIM_DRV!\USB"  (Set DRV_USB=) Else (Pushd "!WIM_DRV!\USB" &For /R %%I In ("Win7\!ARC_TYP!\iusb3hub.inf*")           Do (Set DRV_USB=%%~dpI&Set DRV_USB=!DRV_USB:~0,-1!)&Popd)
+            If Not Exist "!WIM_DRV!\RST"  (Set DRV_RST=) Else (Pushd "!WIM_DRV!\RST" &For /R %%I In ("f6flpy-!ARC_TYP!\iaAHCIC.inf*")          Do (Set DRV_RST=%%~dpI&Set DRV_RST=!DRV_RST:~0,-1!)&Popd)
+Rem         If Not Exist "!WIM_DRV!\NVMe" (Set DRV_NVM=) Else (Pushd "!WIM_DRV!\NVMe"&For /R %%I In ("Client-!CPU_BIT!bit_f6flpy\IaNVMe.inf*") Do (Set DRV_NVM=%%~dpI&Set DRV_NVM=!DRV_NVM:~0,-1!)&Popd)
 
                    If /I "!DRV_USB!" NEQ "" (Set ADD_FLG=1
             ) Else If /I "!DRV_RST!" NEQ "" (Set ADD_FLG=1
@@ -1037,6 +1052,7 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
 
 Rem *** 作業終了 **************************************************************
 :DONE
+    CD "!CUR_DIR!"
     EndLocal
     Echo *** 作業終了 ******************************************************************
     Echo %DATE% %TIME%

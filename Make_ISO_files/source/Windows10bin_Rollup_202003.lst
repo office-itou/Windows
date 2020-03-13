@@ -62,7 +62,7 @@ COMMENT=
 [CURL_X86]
 TITLE=curl for Windows 32 bit
 INFO=https://curl.haxx.se/
-FILE=https://curl.haxx.se/windows/dl-7.69.0/curl-7.69.0-win32-mingw.zip
+FILE=https://curl.haxx.se/windows/dl-7.69.1/curl-7.69.1-win32-mingw.zip
 RENAME=
 SIZE=3069657
 TYPE=HOTFIX(SVCPACK.INF)
@@ -85,7 +85,7 @@ COMMENT=
 [CURL_X64]
 TITLE=curl for Windows 64 bit
 INFO=https://curl.haxx.se/
-FILE=https://curl.haxx.se/windows/dl-7.69.0/curl-7.69.0-win64-mingw.zip
+FILE=https://curl.haxx.se/windows/dl-7.69.1/curl-7.69.1-win64-mingw.zip
 RENAME=
 SIZE=3290545
 TYPE=HOTFIX(SVCPACK.INF)
