@@ -22,6 +22,19 @@
 　6.画面に従い操作をし終了したら”ユーザーアカウント制御設定”の変更を元に戻す。  
 　7.オンラインのWindows Updateで不足分を取り込む。  
   
+【作業過程】  
+  
+| スクリーンショット |  
+| --- |  
+|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss010.jpg)|  
+|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss011.jpg)|  
+|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss012.jpg)|  
+|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss013.jpg)|  
+|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss014.jpg)|  
+|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss015.jpg)|  
+  
+【リストファイルの複製方法】
+  
 | スクリーンショット |  
 | --- |  
 |![リストファイル編集](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss001.jpg)|  
@@ -33,10 +46,4 @@
 |![リストファイル編集](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss007.jpg)|  
 |![リストファイル編集](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss008.jpg)|  
 |![リストファイル編集](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss009.jpg)|  
-|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss010.jpg)|  
-|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss011.jpg)|  
-|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss012.jpg)|  
-|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss013.jpg)|  
-|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss014.jpg)|  
-|![ＳＰ＋メーカー設定](https://github.com/office-itou/Windows/blob/master/Make_ISO_files/source/SP%2B%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/picture/ss015.jpg)|  
   
