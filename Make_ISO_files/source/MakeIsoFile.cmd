@@ -34,7 +34,7 @@ Rem --- 環境変数設定 ----------------------------------------------------------
         Set NOW_TIM=%time:~0,2%%time:~3,2%%time:~6,2%
     )
 
-    For /F "tokens=2 usebackq delims=\" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~dI\%%~I)
+    For /F "tokens=1-2 usebackq delims=\" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~I\%%~J)
 
     Set ARG_LST=%*
     Set FLG_OPT=0
@@ -65,13 +65,13 @@ Rem --- 環境変数設定 ----------------------------------------------------------
 Rem *** 作業環境設定 **********************************************************
     Set DEF_TOP=C:\WimWK
 
-    If /I "!WRK_TOP!" EQU "!DEF_TOP!" (
-        Set WIM_TOP=!DEF_TOP!
+    If /I "!WRK_TOP!" EQU "%DEF_TOP%" (
+        Set WIM_TOP=%DEF_TOP%
     ) Else (
 :INP_FOLDER
-        Set WIM_TOP=!DEF_TOP!
+        Set WIM_TOP=!WRK_TOP!
         Set /P WIM_TOP=作業環境のフォルダーを指定して下さい。（規定値[!WIM_TOP!]）
-        If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=C:\WimWK)
+        If /I "!WIM_TOP!" EQU "" (Set WIM_TOP=!WRK_TOP!)
 
         Echo "!WIM_TOP!"
         Set INP_ANS=N
