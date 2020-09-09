@@ -1,0 +1,58 @@
+[INFO]
+VERSION=0.103.0
+SOFTWARE=Windows 10 x64
+TARGET=None
+LANGUAGE=Japanese
+NAME=Jun Itou
+COMMENT=統合DVD作成用 2020/05
+
+[LIST]
+COUNT=2
+1=ADK_W10
+2=ADK_W10_PE
+
+[ADK_W10]
+TITLE=Windows ADK for Windows 10、バージョン 2004 のダウンロード
+INFO=https://docs.microsoft.com/ja-jp/windows-hardware/get-started/adk-install
+FILE=https://download.microsoft.com/download/8/6/c/86c218f3-4349-4aa5-beba-d05e48bbc286/adk/adksetup.exe
+RENAME=
+SIZE=1934336
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2020/05/12
+RUN_ORDER=001
+CMD=
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
+
+[ADK_W10_PE]
+TITLE=Windows PE アドオン (ADK 用)、バージョン 2004 のダウンロード
+INFO=https://docs.microsoft.com/ja-jp/windows-hardware/get-started/adk-install
+FILE=https://download.microsoft.com/download/3/c/2/3c2b23b2-96a0-452c-b9fd-6df72266e335/adkwinpeaddons/adkwinpesetup.exe
+RENAME=
+SIZE=1359048
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2020/05/12
+RUN_ORDER=002
+CMD=
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=

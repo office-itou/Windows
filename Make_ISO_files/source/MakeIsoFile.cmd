@@ -90,6 +90,7 @@ Rem --- Windowsのバージョン設定 -----------------------------------------------
     Echo 3: Windows 10
     Set IDX_WIN=3
     Set /P IDX_WIN=Windowsのバージョンを1～3の数字から選んで下さい。（規定値[!IDX_WIN!]）
+    Set IDX_WIN=!IDX_WIN:~0,1!
 
            If /I "!IDX_WIN!" EQU "1" (Set WIN_VER=7
     ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_VER=8.1
@@ -110,6 +111,7 @@ Rem --- Windowsのアーキテクチャー設定 -----------------------------------------
     Echo 2: 64bit版
     Set IDX_CPU=2
     Set /P IDX_CPU=Windowsのアーキテクチャーを1～2の数字から選んで下さい。（規定値[!IDX_CPU!]）
+    Set IDX_CPU=!IDX_CPU:~0,1!
 
            If /I "!IDX_CPU!" EQU "1" (Set ARC_TYP=x86&Set CPU_BIT=32
     ) Else If /I "!IDX_CPU!" EQU "2" (Set ARC_TYP=x64&Set CPU_BIT=64
@@ -174,6 +176,7 @@ Rem --- Windowsのエディション設定 ---------------------------------------------
             Echo 5: Windows 7 Ultimate
             Set IDX_WIN=4
             Set /P IDX_WIN=Windowsのエディションを1～5の数字から選んで下さい。（規定値[!IDX_WIN!]）
+            Set IDX_WIN=!IDX_WIN:~0,1!
 
                    If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 7 Starter
             ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 7 HomeBasic
@@ -187,6 +190,7 @@ Rem --- Windowsのエディション設定 ---------------------------------------------
             Echo 2: Windows 8.1
             Set IDX_WIN=1
             Set /P IDX_WIN=Windowsのエディションを1～2の数字から選んで下さい。（規定値[!IDX_WIN!]）
+            Set IDX_WIN=!IDX_WIN:~0,1!
 
                    If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 8.1 Pro
             ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 8.1
@@ -200,6 +204,7 @@ Rem --- Windowsのエディション設定 ---------------------------------------------
             Echo 5: Windows 10 Pro for Workstations
             Set IDX_WIN=3
             Set /P IDX_WIN=Windowsのエディションを1～5の数字から選んで下さい。（規定値[!IDX_WIN!]）
+            Set IDX_WIN=!IDX_WIN:~0,1!
 
                    If /I "!IDX_WIN!" EQU "1" (Set WIN_TYP=Windows 10 Home
             ) Else If /I "!IDX_WIN!" EQU "2" (Set WIN_TYP=Windows 10 Education
@@ -263,6 +268,7 @@ Rem Set WIM_TOP=%~3
         )
         Set IDX_LST=0
         Set /P IDX_LST=追加リストファイルを0～!WRK_CNT!の数字から選んで下さい。（規定値[!IDX_LST!]）
+        Set IDX_LST=!IDX_LST:~0,1!
         If !IDX_LST! LSS 0         (GoTo INPUT_ADD_LIST_FILE)
         If !IDX_LST! GTR !WRK_CNT! (GoTo INPUT_ADD_LIST_FILE)
         If !IDX_LST! GTR 0 (
@@ -278,9 +284,9 @@ Rem --- 作業フォルダーの作成 --------------------------------------------------
 Rem --- 破損イメージの削除 ----------------------------------------------------
     For %%I In (!WIN_VER!) Do (
         For %%J In (!ARC_TYP!) Do (
-            Set WIM_IMG=!WIM_WRK!\w%%~I\%%~J\img
-            Set WIM_MNT=!WIM_WRK!\w%%~I\%%~J\mnt
-            Set WIM_WRE=!WIM_WRK!\w%%~I\%%~J\wre
+            Set WIM_IMG=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\img
+            Set WIM_MNT=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\mnt
+            Set WIM_WRE=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\wre
             If Exist "!WIM_WRE!\Windows" (
                 Echo --- 破損イメージの削除 --------------------------------------------------------
                 Dism /Quiet /UnMount-Wim /MountDir:"!WIM_WRE!" /Discard
@@ -305,11 +311,11 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_DRV=!WIM_PKG!\w%%~I\drv
             Set WIM_WUD=!WIM_PKG!\w%%~I\%%~J
             Set WIM_CAB=!WIM_PKG!\w%%~I\%%~J\cab
-            Set WIM_BAK=!WIM_WRK!\w%%~I\%%~J\bak
-            Set WIM_EFI=!WIM_WRK!\w%%~I\%%~J\efi
-            Set WIM_IMG=!WIM_WRK!\w%%~I\%%~J\img
-            Set WIM_MNT=!WIM_WRK!\w%%~I\%%~J\mnt
-            Set WIM_WRE=!WIM_WRK!\w%%~I\%%~J\wre
+            Set WIM_BAK=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\bak
+            Set WIM_EFI=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\efi
+            Set WIM_IMG=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\img
+            Set WIM_MNT=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\mnt
+            Set WIM_WRE=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\wre
 
             If /I "!DRV_DVD!" EQU "!WIM_IMG!" (
                 Echo イメージフォルダーの統合元と作業用が同じです。
