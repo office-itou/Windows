@@ -140,33 +140,33 @@ Rem         Robocopy /J /MIR /A-:RHS /NDL "!WIM_PKG!" "!BAK_PKG!" > Nul
     If Not Exist "!WIM_USR!" (MkDIr "!WIM_USR!" || GoTo DONE)
     If Not Exist "!WIM_WRK!" (MkDIr "!WIM_WRK!" || GoTo DONE)
 
-    For %%I In (!WIN_VER!) Do (
-        For %%J In (!ARC_TYP!) Do (
-            Set WIM_DRV=!WIM_PKG!\w%%~I\drv
-            Set WIM_WUD=!WIM_PKG!\w%%~I\%%~J
-            Set WIM_CAB=!WIM_PKG!\w%%~I\%%~J\cab
-            Set WIM_BAK=!WIM_WRK!\w%%~I\%%~J\bak
-            Set WIM_EFI=!WIM_WRK!\w%%~I\%%~J\efi
-            Set WIM_IMG=!WIM_WRK!\w%%~I\%%~J\img
-            Set WIM_MNT=!WIM_WRK!\w%%~I\%%~J\mnt
-            Set WIM_WRE=!WIM_WRK!\w%%~I\%%~J\wre
-
-            If !FLG_DEL! EQU 0 (
-                If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
-            )
-
-            If     Exist "!WIM_MNT!" (RmDir /S /Q "!WIM_MNT!" || GoTo DONE)
-            If     Exist "!WIM_WRE!" (RmDir /S /Q "!WIM_WRE!" || GoTo DONE)
-
-            If Not Exist "!WIM_WUD!" (MkDir       "!WIM_WUD!" || GoTo DONE)
-            If Not Exist "!WIM_CAB!" (MkDir       "!WIM_CAB!" || GoTo DONE)
-            If Not Exist "!WIM_BAK!" (MkDir       "!WIM_BAK!" || GoTo DONE)
-            If Not Exist "!WIM_EFI!" (MkDir       "!WIM_EFI!" || GoTo DONE)
-            If Not Exist "!WIM_IMG!" (MkDir       "!WIM_IMG!" || GoTo DONE)
-            If Not Exist "!WIM_MNT!" (MkDir       "!WIM_MNT!" || GoTo DONE)
-            If Not Exist "!WIM_WRE!" (MkDir       "!WIM_WRE!" || GoTo DONE)
-        )
-    )
+Rem For %%I In (!WIN_VER!) Do (
+Rem     For %%J In (!ARC_TYP!) Do (
+Rem         Set WIM_DRV=!WIM_PKG!\w%%~I\drv
+Rem         Set WIM_WUD=!WIM_PKG!\w%%~I\%%~J
+Rem         Set WIM_CAB=!WIM_PKG!\w%%~I\%%~J\cab
+Rem         Set WIM_BAK=!WIM_WRK!\w%%~I\%%~J\bak
+Rem         Set WIM_EFI=!WIM_WRK!\w%%~I\%%~J\efi
+Rem         Set WIM_IMG=!WIM_WRK!\w%%~I\%%~J\img
+Rem         Set WIM_MNT=!WIM_WRK!\w%%~I\%%~J\mnt
+Rem         Set WIM_WRE=!WIM_WRK!\w%%~I\%%~J\wre
+Rem
+Rem         If !FLG_DEL! EQU 0 (
+Rem             If     Exist "!WIM_IMG!" (RmDir /S /Q "!WIM_IMG!" || GoTo DONE)
+Rem         )
+Rem
+Rem         If     Exist "!WIM_MNT!" (RmDir /S /Q "!WIM_MNT!" || GoTo DONE)
+Rem         If     Exist "!WIM_WRE!" (RmDir /S /Q "!WIM_WRE!" || GoTo DONE)
+Rem
+Rem         If Not Exist "!WIM_WUD!" (MkDir       "!WIM_WUD!" || GoTo DONE)
+Rem         If Not Exist "!WIM_CAB!" (MkDir       "!WIM_CAB!" || GoTo DONE)
+Rem         If Not Exist "!WIM_BAK!" (MkDir       "!WIM_BAK!" || GoTo DONE)
+Rem         If Not Exist "!WIM_EFI!" (MkDir       "!WIM_EFI!" || GoTo DONE)
+Rem         If Not Exist "!WIM_IMG!" (MkDir       "!WIM_IMG!" || GoTo DONE)
+Rem         If Not Exist "!WIM_MNT!" (MkDir       "!WIM_MNT!" || GoTo DONE)
+Rem         If Not Exist "!WIM_WRE!" (MkDir       "!WIM_WRE!" || GoTo DONE)
+Rem     )
+Rem )
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
@@ -462,18 +462,21 @@ Rem *** ファイル取得 **********************************************************
                     || Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" ^
                     || GoTo DONE
                 ) Else (
+                    If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
                        Curl -L -s -S -f --connect-timeout 60    --dump-header "!CMD_WRK!" "!LST_FILE!" ^
                     || Curl -L -s -S -f --connect-timeout 60 -k --dump-header "!CMD_WRK!" "!LST_FILE!"
-                    Set LST_LEN=0
-                    For /F "tokens=1,2* usebackq delims=:" %%Y In ("!CMD_WRK!") Do (
-                        If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
-                    )
-                    For /F "usebackq delims=/" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
-                    If !LST_LEN! NEQ !LST_SIZE! (
-                        If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
-                           Curl -L -# -R -S -f --create-dirs --connect-timeout 60    -o "!LST_RENAME!" "!LST_FILE!" ^
-                        || Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" ^
-                        || GoTo DONE
+                    If !ErrorLevel! NEQ 22 (
+                        Set LST_LEN=0
+                        For /F "tokens=1,2* usebackq delims=:" %%Y In ("!CMD_WRK!") Do (
+                            If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
+                        )
+                        For /F "usebackq delims=/" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
+                        If !LST_LEN! NEQ !LST_SIZE! (
+Rem                         If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
+                               Curl -L -# -R -S -f --create-dirs --connect-timeout 60    -o "!LST_RENAME!" "!LST_FILE!" ^
+                            || Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" ^
+                            || GoTo DONE
+                        )
                     )
                 )
             )

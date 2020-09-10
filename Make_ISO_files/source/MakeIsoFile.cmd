@@ -590,18 +590,21 @@ Rem *** ƒtƒ@ƒCƒ‹Žæ“¾ **********************************************************
                     || Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" ^
                     || GoTo DONE
                 ) Else (
+                    If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
                        Curl -L -s -S -f --connect-timeout 60    --dump-header "!CMD_WRK!" "!LST_FILE!" ^
                     || Curl -L -s -S -f --connect-timeout 60 -k --dump-header "!CMD_WRK!" "!LST_FILE!"
-                    Set LST_LEN=0
-                    For /F "tokens=1,2* usebackq delims=:" %%Y In ("!CMD_WRK!") Do (
-                        If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
-                    )
-                    For /F "usebackq delims=/" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
-                    If !LST_LEN! NEQ !LST_SIZE! (
-                        If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
-                           Curl -L -# -R -S -f --create-dirs --connect-timeout 60    -o "!LST_RENAME!" "!LST_FILE!" ^
-                        || Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" ^
-                        || GoTo DONE
+                    If !ErrorLevel! NEQ 22 (
+                        Set LST_LEN=0
+                        For /F "tokens=1,2* usebackq delims=:" %%Y In ("!CMD_WRK!") Do (
+                            If /I "%%~Y" EQU "Content-Length" (Set LST_LEN=%%~Z)
+                        )
+                        For /F "usebackq delims=/" %%Z In ('!LST_RENAME!') Do (Set LST_SIZE=%%~zZ)
+                        If !LST_LEN! NEQ !LST_SIZE! (
+Rem                         If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!LST_FNAME!") Else (Echo "!LST_FNAME:~0,59!...!LST_FNAME:~-15!")
+                               Curl -L -# -R -S -f --create-dirs --connect-timeout 60    -o "!LST_RENAME!" "!LST_FILE!" ^
+                            || Curl -L -# -R -S -f --create-dirs --connect-timeout 60 -k -o "!LST_RENAME!" "!LST_FILE!" ^
+                            || GoTo DONE
+                        )
                     )
                 )
             )
