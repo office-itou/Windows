@@ -24,8 +24,8 @@
 |  5,489,448,960 | windows_7_x64_dvd_custom_6.1.7601.iso               |         | 64bit版 〃                       |  
 |  5,623,959,552 | windows_7_x64_dvd_dynabook_6.1.7601.iso             |         | 64bit版 dynabook用ドライバー適用 |  
 |  5,489,448,960 | windows_7_x64_dvd_h170pro_6.1.7601.iso              |         | 64bit版 H170-PRO用ドライバー適用 |  
-|  6,917,240,832 | windows_8.1_x64_dvd_custom_6.3.9600.iso             |   8.1   | 32bit版 Windows Updateのみ適用   |  
-|  4,858,468,352 | windows_8.1_x86_dvd_custom_6.3.9600.iso             |         | 64bit版 〃                       |  
+|  4,858,468,352 | windows_8.1_x86_dvd_custom_6.3.9600.iso             |   8.1   | 32bit版 Windows Updateのみ適用   |  
+|  6,917,240,832 | windows_8.1_x64_dvd_custom_6.3.9600.iso             |         | 64bit版 〃                       |  
 |  5,059,889,152 | windows_10_x86_dvd_custom_10.0.19041.iso            |   10    | 32bit版 Windows Updateのみ適用   |  
 |  7,099,236,352 | windows_10_x64_dvd_custom_10.0.19041.iso            |         | 64bit版 〃                       |  
 |  7,231,662,080 | windows_10_x64_dvd_dynabook_10.0.19041.iso          |         | 64bit版 dynabook用ドライバー適用 |  
