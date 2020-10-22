@@ -1,5 +1,5 @@
 **Windows Update統合ISO作成用バッチ**  
-  
+|  
 【事前準備】  
   
 ・開発環境  
@@ -13,8 +13,8 @@
 | 2011/05/12 00:00 |  2,554,019,840 | ja_windows_7_ultimate_with_sp1_x86_dvd_u_677445.iso |  
 | 2015/04/07 19:33 |  3,257,376,768 | Win8.1_Japanese_x32.iso                             |  
 | 2016/07/09 00:50 |  4,392,620,032 | Win8.1_Japanese_x64.iso                             |  
-| 2019/10/09 04:34 |  3,874,082,816 | Win10_1909_Japanese_x32.iso                         |  
-| 2019/10/09 06:13 |  5,376,456,704 | Win10_1909_Japanese_x64.iso                         |  
+| 2020/09/28 12:18 |  4,412,211,200 | Win10_20H2_Japanese_x32.iso                         |  
+| 2020/09/28 12:36 |  5,983,848,448 | Win10_20H2_Japanese_x64.iso                         |  
   
 ・作業した統合ファイル例一覧  
   
@@ -26,10 +26,10 @@
 |  5,489,448,960 | windows_7_x64_dvd_h170pro_6.1.7601.iso              |         | 64bit版 H170-PRO用ドライバー適用 |  
 |  6,917,240,832 | windows_8.1_x64_dvd_custom_6.3.9600.iso             |   8.1   | 32bit版 Windows Updateのみ適用   |  
 |  4,858,468,352 | windows_8.1_x86_dvd_custom_6.3.9600.iso             |         | 64bit版 〃                       |  
-|  4,628,713,472 | windows_10_x86_dvd_custom_10.0.18362.iso            |   10    | 32bit版 Windows Updateのみ適用   |  
-|  6,522,306,560 | windows_10_x64_dvd_custom_10.0.18362.iso            |         | 64bit版 〃                       |  
-|  6,634,926,080 | windows_10_x64_dvd_dynabook_10.0.18362.iso          |         | 64bit版 dynabook用ドライバー適用 |  
-|  8,947,822,592 | windows_10_x64_dvd_h170pro_10.0.18362.iso           |         | 64bit版 H170-PRO用ドライバー適用 |  
+|  5,059,889,152 | windows_10_x86_dvd_custom_10.0.19041.iso            |   10    | 32bit版 Windows Updateのみ適用   |  
+|  7,099,236,352 | windows_10_x64_dvd_custom_10.0.19041.iso            |         | 64bit版 〃                       |  
+|  7,231,662,080 | windows_10_x64_dvd_dynabook_10.0.19041.iso          |         | 64bit版 dynabook用ドライバー適用 |  
+|  9,610,385,408 | windows_10_x64_dvd_h170pro_10.0.19041.iso           |         | 64bit版 H170-PRO用ドライバー適用 |  
 |  6,568,263,680 | windows_10_x64_dvd_skylake_10.0.18362.iso           |         | 64bit版 マイクロコードパッチ適用 |  
   
 　＜参考＞  
