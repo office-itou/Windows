@@ -556,7 +556,9 @@ Rem                         If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!
                         For %%E In ("!LST_RENAME!") Do (
                             Set LST_FPATH=%%~dpnE
                             Set LST_FNAME=%%~nE
-                            Set LST_FCAB=!LST_FPATH!\!LST_FNAME!
+                            For /F "usebackq delims=_" %%F In (`Echo "!LST_FNAME!"`) Do (
+                                Set LST_FCAB=!LST_FPATH!\%%~F
+                            )
                         )
                         If Exist "!LST_FPATH!" (RmDir /S /Q "!LST_FPATH!")
                         MkDir "!LST_FCAB!"
