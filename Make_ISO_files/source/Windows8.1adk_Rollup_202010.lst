@@ -1,0 +1,34 @@
+[INFO]
+VERSION=0.103.0
+SOFTWARE=Windows 8.1 x64
+TARGET=None
+LANGUAGE=Japanese
+NAME=Jun Itou
+COMMENT=統合DVD作成用 2020/10
+
+[LIST]
+COUNT=1
+1=ADK_W81
+
+[ADK_W81]
+TITLE=Windows 8.1 Update 用 Windows アセスメント & デプロイメント キット (Windows ADK)
+INFO=https://www.microsoft.com/ja-jp/download/details.aspx?id=39982
+FILE=https://download.microsoft.com/download/6/A/E/6AEA92B0-A412-4622-983E-5B305D2EBE56/adk/adksetup.exe
+RENAME=
+SIZE=1435680
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2018/10/13
+RUN_ORDER=001
+CMD=
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=

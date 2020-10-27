@@ -4,7 +4,7 @@ SOFTWARE=Windows 8.1 x64
 TARGET=None
 LANGUAGE=Japanese
 NAME=Jun Itou
-COMMENT=ìùçáDVDçÏê¨óp 2020/05
+COMMENT=ìùçáDVDçÏê¨óp 2020/10
 
 [LIST]
 COUNT=4
@@ -62,15 +62,15 @@ COMMENT=
 [CURL_X86]
 TITLE=curl for Windows 32 bit
 INFO=https://curl.haxx.se/
-FILE=https://curl.haxx.se/windows/dl-7.70.0/curl-7.70.0-win32-mingw.zip
+FILE=https://curl.haxx.se/windows/dl-7.73.0/curl-7.73.0-win32-mingw.zip
 RENAME=
-SIZE=3096937
+SIZE=3231862
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
 TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
-RELEASE=2020/03/04
+RELEASE=2020/10/14
 RUN_ORDER=003
 CMD=
 DECODE=
@@ -85,15 +85,15 @@ COMMENT=
 [CURL_X64]
 TITLE=curl for Windows 64 bit
 INFO=https://curl.haxx.se/
-FILE=https://curl.haxx.se/windows/dl-7.70.0/curl-7.70.0-win64-mingw.zip
+FILE=https://curl.haxx.se/windows/dl-7.73.0/curl-7.73.0-win64-mingw.zip
 RENAME=
-SIZE=3367826
+SIZE=3529249
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
 TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
-RELEASE=2020/03/04
+RELEASE=2020/10/14
 RUN_ORDER=004
 CMD=
 DECODE=

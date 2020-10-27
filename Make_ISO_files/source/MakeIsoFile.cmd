@@ -284,9 +284,10 @@ Rem --- 作業フォルダーの作成 --------------------------------------------------
 Rem --- 破損イメージの削除 ----------------------------------------------------
     For %%I In (!WIN_VER!) Do (
         For %%J In (!ARC_TYP!) Do (
-            Set WIM_IMG=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\img
-            Set WIM_MNT=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\mnt
-            Set WIM_WRE=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\wre
+            Set WIM_NOW=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J
+            Set WIM_IMG=!WIM_NOW!\img
+            Set WIM_MNT=!WIM_NOW!\mnt
+            Set WIM_WRE=!WIM_NOW!\wre
             If Exist "!WIM_WRE!\Windows" (
                 Echo --- 破損イメージの削除 --------------------------------------------------------
                 Dism /Quiet /UnMount-Wim /MountDir:"!WIM_WRE!" /Discard
@@ -311,11 +312,12 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_DRV=!WIM_PKG!\w%%~I\drv
             Set WIM_WUD=!WIM_PKG!\w%%~I\%%~J
             Set WIM_CAB=!WIM_PKG!\w%%~I\%%~J\cab
-            Set WIM_BAK=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\bak
-            Set WIM_EFI=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\efi
-            Set WIM_IMG=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\img
-            Set WIM_MNT=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\mnt
-            Set WIM_WRE=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J\wre
+            Set WIM_NOW=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J
+            Set WIM_BAK=!WIM_NOW!\bak
+            Set WIM_EFI=!WIM_NOW!\efi
+            Set WIM_IMG=!WIM_NOW!\img
+            Set WIM_MNT=!WIM_NOW!\mnt
+            Set WIM_WRE=!WIM_NOW!\wre
 
             If /I "!DRV_DVD!" EQU "!WIM_IMG!" (
                 Echo イメージフォルダーの統合元と作業用が同じです。
@@ -684,7 +686,9 @@ Rem                         If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!
                         For %%E In ("!LST_RENAME!") Do (
                             Set LST_FPATH=%%~dpnE
                             Set LST_FNAME=%%~nE
-                            Set LST_FCAB=!LST_FPATH!\!LST_FNAME!
+                            For /F "usebackq delims=_" %%F In (`Echo "!LST_FNAME!"`) Do (
+                                Set LST_FCAB=!LST_FPATH!\%%~F
+                            )
                         )
                         If Exist "!LST_FPATH!" (RmDir /S /Q "!LST_FPATH!")
                         MkDir "!LST_FCAB!"
@@ -1011,7 +1015,13 @@ Rem --- Windows Update ファイルの統合 -----------------------------------------
                 If /I "!LST_EXTENSION!" EQU "msu" (
                     If /I "!LST_RENAME:~0,77!" EQU "!LST_RENAME!" (Echo "!LST_RENAME!") Else (Echo "!LST_RENAME:~0,59!...!LST_RENAME:~-15!")
                     If /I "!LST_SECTION!" EQU "KB2533552" (
-                        For %%E In ("!LST_RENAME!") Do (Set LST_FCAB=%%~dpnE\%%~nE)
+                        For %%E In ("!LST_RENAME!") Do (
+                            Set LST_FPATH=%%~dpnE
+                            Set LST_FNAME=%%~nE
+                            For /F "usebackq delims=_" %%F In (`Echo "!LST_FNAME!"`) Do (
+                                Set LST_FCAB=!LST_FPATH!\%%~F
+                            )
+                        )
                         Dism /Quiet !ADD_PAC! /PackagePath:"!LST_FCAB!"                                || GoTo :DONE
                     ) Else (
                         Dism /Quiet !ADD_PAC! /PackagePath:"!LST_RENAME!"                              || GoTo :DONE
@@ -1060,8 +1070,8 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
     Set INP_ANS=Y
     Set /P INP_ANS= 上記フォルダーのファイルを削除しますか？ [Y/N] ^(Yes/No^)（規定値[!INP_ANS!]）
     If /I "!INP_ANS!" EQU "Y" (
-        Del /F /S /Q "!WIM_IMG!" > Nul || GoTo DONE
-        For /D %%I In (!WIM_IMG!\*) Do (RmDir /S /Q "%%~I" > Nul || GoTo DONE)
+        For /D %%I In (!WIM_NOW!\*) Do (RmDir /S /Q "%%~I" > Nul)
+        RmDir /S /Q "!WIM_NOW!" > Nul
     )
 
 Rem *** 作業終了 **************************************************************
