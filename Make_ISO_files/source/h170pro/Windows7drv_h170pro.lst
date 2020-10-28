@@ -40,16 +40,16 @@ COMMENT=
 
 [INTEL_RST_X64]
 TITLE=インテル ラピッド・ストレージ・テクノロジー (インテル RST) ユーザー・インターフェイスとドライバー (x64)
-INFO=https://downloadcenter.intel.com/ja/download/28997/
-FILE=https://downloadmirror.intel.com/28997/eng/f6flpy-x64.zip
+INFO=https://downloadcenter.intel.com/ja/download/26759/
+FILE=https://downloadmirror.intel.com/26759/eng/f6flpy-x64.zip
 RENAME=RST\f6flpy-x64.zip
-SIZE=1769923
+SIZE=601821
 TYPE=HOTFIX(HOTFIX8.CMD)
 CATEGORY=8
 TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
-RELEASE=2019/12/24
+RELEASE=2020/09/02
 RUN_ORDER=002
 CMD=
 DECODE=
@@ -63,16 +63,16 @@ COMMENT=
 
 [INTEL_RST_X86]
 TITLE=インテル ラピッド・ストレージ・テクノロジー (インテル RST) ユーザー・インターフェイスとドライバー (x86)
-INFO=https://downloadcenter.intel.com/ja/download/28997/
-FILE=https://downloadmirror.intel.com/28997/eng/f6flpy-x86.zip
+INFO=https://downloadcenter.intel.com/ja/download/26759/
+FILE=https://downloadmirror.intel.com/26759/eng/f6flpy-x86.zip
 RENAME=RST\f6flpy-x86.zip
-SIZE=457937
+SIZE=561421
 TYPE=HOTFIX(HOTFIX8.CMD)
 CATEGORY=8
 TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
-RELEASE=2019/12/24
+RELEASE=2020/09/02
 RUN_ORDER=003
 CMD=
 DECODE=
