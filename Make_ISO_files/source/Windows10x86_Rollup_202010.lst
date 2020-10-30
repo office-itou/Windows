@@ -9,9 +9,9 @@ COMMENT=統合DVD作成用 2020/10 Version 20H2用
 [LIST]
 COUNT=8
 1=KB4577266
-2=KB4578968
-3=KB4580325
-4=KB4579311
+2=KB4580325
+3=KB4580364
+4=KB4580419
 5=KB4052623_200907
 6=KB4052623_200110
 7=KB890830
@@ -40,29 +40,6 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=サービススタック更新プログラム
 
-[KB4578968]
-TITLE=2020-10 .NET Framework 3.5 および 4.8 の累積的な更新プログラム (x86 向け Windows 10 Version 2009 用)
-INFO=http://support.microsoft.com/help/4578968
-FILE=http://download.windowsupdate.com/d/msdownload/update/software/secu/2020/10/windows10.0-kb4578968-x86-ndp48_22b6237ece753e66567645ad6cd1a28f20091268.msu
-RENAME=
-SIZE=43394337
-TYPE=HOTFIX(SVCPACK.INF)
-CATEGORY=
-TIE_UP=
-XOR_KEY=
-SYNCHRO_KEY=
-RELEASE=2020/10/05
-RUN_ORDER=002
-CMD=
-DECODE=0
-DECODE_TYPE=
-DECODE_GET=
-IEXPRESS=0
-IEXPRESS_LIST=
-IEXPRESS_CMD=
-PREVIOUS_SP=
-COMMENT=累積的な更新プログラム
-
 [KB4580325]
 TITLE=2020-10 x86 ベース システム用 Windows 10 Version 20H2 セキュリティ更新プログラム (Adobe Flash Player 対応)
 INFO=http://support.microsoft.com/help/4580325
@@ -75,7 +52,7 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2020/10/07
-RUN_ORDER=003
+RUN_ORDER=002
 CMD=
 DECODE=0
 DECODE_TYPE=
@@ -86,19 +63,19 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=セキュリティ更新プログラム (Adobe Flash Player 対応)
 
-[KB4579311]
-TITLE=2020-10 x86 ベース システム用 Windows 10 Version 20H2 の累積更新プログラム
-INFO=http://support.microsoft.com/help/4579311
-FILE=http://download.windowsupdate.com/d/msdownload/update/software/secu/2020/10/windows10.0-kb4579311-x86_014a0d35ad62119ea6349b6b96067fee60df4399.msu
+[KB4580364]
+TITLE=2020-10x86 ベース システム用 Windows 10 Version 20H2 の累積更新プログラム (KB4580364)
+INFO=http://support.microsoft.com/help/4580364
+FILE=http://download.windowsupdate.com/c/msdownload/update/software/updt/2020/10/windows10.0-kb4580364-x86_88463778c741257cd9b7f59f800c88febc82c617.msu
 RENAME=
-SIZE=121540896
+SIZE=120381902
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
 TIE_UP=KB4577266
 XOR_KEY=
 SYNCHRO_KEY=
-RELEASE=2020/10/09
-RUN_ORDER=004
+RELEASE=2020/10/27
+RUN_ORDER=003
 CMD=
 DECODE=0
 DECODE_TYPE=
@@ -108,6 +85,29 @@ IEXPRESS_LIST=
 IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=累積更新プログラム
+
+[KB4580419]
+TITLE=.NET Framework 3.5 用の2020-10累積的な更新プログラムのプレビューと x86 (KB4580419) のWindows 10 Version 2009 用の 4.8
+INFO=http://support.microsoft.com/help/4580419
+FILE=http://download.windowsupdate.com/c/msdownload/update/software/updt/2020/10/windows10.0-kb4580419-x86-ndp48_b7ca3eabde654cfe7de7018b21b0b52cc3292b7f.msu
+RENAME=
+SIZE=43383799
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=KB4578968
+SYNCHRO_KEY=
+RELEASE=2020/10/05
+RUN_ORDER=004
+CMD=
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=.NET用0累積的な更新プログラム
 
 [KB4052623_200907]
 TITLE=Microsoft Defender Antivirus マルウェア対策プラットフォームの更新プログラム - (Version 4.18.2009.7)

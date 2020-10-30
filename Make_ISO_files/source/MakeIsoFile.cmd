@@ -58,7 +58,7 @@ Rem --- 環境変数設定 ----------------------------------------------------------
     GoTo SETTING
 
 :HELP
-    Echo !WRK_FIL! [Help^|Reuse-Image^|Add-Driver^|Split-Image^|Make-Image]
+    Echo !WRK_FIL! [ Help ^| Reuse-Image ^| Add-Driver ^| Split-Image ^| Make-Image ]
     GoTo DONE
 
 :SETTING
@@ -284,10 +284,10 @@ Rem --- 作業フォルダーの作成 --------------------------------------------------
 Rem --- 破損イメージの削除 ----------------------------------------------------
     For %%I In (!WIN_VER!) Do (
         For %%J In (!ARC_TYP!) Do (
-            Set WIM_NOW=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J
-            Set WIM_IMG=!WIM_NOW!\img
-            Set WIM_MNT=!WIM_NOW!\mnt
-            Set WIM_WRE=!WIM_NOW!\wre
+            Set WIM_NOW=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!
+            Set WIM_IMG=!WIM_NOW!\%%~J\img
+            Set WIM_MNT=!WIM_NOW!\%%~J\mnt
+            Set WIM_WRE=!WIM_NOW!\%%~J\wre
             If Exist "!WIM_WRE!\Windows" (
                 Echo --- 破損イメージの削除 --------------------------------------------------------
                 Dism /Quiet /UnMount-Wim /MountDir:"!WIM_WRE!" /Discard
@@ -312,12 +312,12 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_DRV=!WIM_PKG!\w%%~I\drv
             Set WIM_WUD=!WIM_PKG!\w%%~I\%%~J
             Set WIM_CAB=!WIM_PKG!\w%%~I\%%~J\cab
-            Set WIM_NOW=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!\%%~J
-            Set WIM_BAK=!WIM_NOW!\bak
-            Set WIM_EFI=!WIM_NOW!\efi
-            Set WIM_IMG=!WIM_NOW!\img
-            Set WIM_MNT=!WIM_NOW!\mnt
-            Set WIM_WRE=!WIM_NOW!\wre
+            Set WIM_NOW=!WIM_WRK!\w%%~I.!NOW_DAY!!NOW_TIM!
+            Set WIM_BAK=!WIM_NOW!\%%~J\bak
+            Set WIM_EFI=!WIM_NOW!\%%~J\efi
+            Set WIM_IMG=!WIM_NOW!\%%~J\img
+            Set WIM_MNT=!WIM_NOW!\%%~J\mnt
+            Set WIM_WRE=!WIM_NOW!\%%~J\wre
 
             If /I "!DRV_DVD!" EQU "!WIM_IMG!" (
                 Echo イメージフォルダーの統合元と作業用が同じです。
@@ -857,6 +857,13 @@ Rem ---------------------------------------------------------------------------
         Del /F "!OPT_TMP!"
     )
 Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!" Rem --- Trigger an update -----------------------------------------------------
+    Echo>>"!OPT_CMD!"     Pushd "%ProgramFiles%\Windows Defender"
+    If !WIN_VER! LEQ 7 (Echo>>"!OPT_CMD!" Rem     MpCmdRun.exe -RemoveDefinitions -All
+    ) Else             (Echo>>"!OPT_CMD!" Rem     MpCmdRun.exe -RemoveDefinitions -DynamicSignatures
+    ) 
+    Echo>>"!OPT_CMD!"         MpCmdRun.exe -SignatureUpdate
+    Echo>>"!OPT_CMD!"     Popd
     Echo>>"!OPT_CMD!" Rem --- Cleaning --------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem Del /F /S /Q "%%configsetroot%%" ^> Nul
     Echo>>"!OPT_CMD!" Rem For /D %%%%I In ("%%configsetroot%%\*") Do (RmDir /S /Q "%%%%~I" ^> Nul )
@@ -867,6 +874,8 @@ Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!"     Echo ^%%DATE^%% ^%%TIME^%% End
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
     Echo>>"!OPT_CMD!" Rem pause
+    Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
+    Echo>>"!OPT_CMD!"     TimeOut /T 10 /NoBreak
     Echo>>"!OPT_CMD!" Rem ---------------------------------------------------------------------------
 Rem ---------------------------------------------------------------------------
     If Exist "!OPT_BAK!" (Del /F "!OPT_BAK!")
