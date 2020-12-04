@@ -11,59 +11,59 @@
             </SetupUILanguage>
         </component>
         <component name="Microsoft-Windows-Setup" processorArchitecture="x86" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <UseConfigurationSet>true</UseConfigurationSet>
 <!--
             <DiskConfiguration>
                 <Disk wcm:action="add">
-                    <DiskID>0</DiskID>
-                    <WillWipeDisk>true</WillWipeDisk>
                     <CreatePartitions>
                         <CreatePartition wcm:action="add">
                             <Order>1</Order>
-                            <Size>529</Size>
-                            <Type>Primary</Type>
-                        </CreatePartition>
-                        <CreatePartition wcm:action="add">
-                            <Order>2</Order>
                             <Size>100</Size>
                             <Type>EFI</Type>
                         </CreatePartition>
                         <CreatePartition wcm:action="add">
-                            <Order>3</Order>
-                            <Size>128</Size>
+                            <Order>2</Order>
+                            <Size>16</Size>
                             <Type>MSR</Type>
                         </CreatePartition>
                         <CreatePartition wcm:action="add">
-                            <Order>4</Order>
+                            <Order>3</Order>
+                            <Size>60780</Size>
                             <Type>Primary</Type>
-                            <Extend>true</Extend>
+                        </CreatePartition>
+                        <CreatePartition wcm:action="add">
+                            <Order>4</Order>
+                            <Size>540</Size>
+                            <Type>Primary</Type>
                         </CreatePartition>
                     </CreatePartitions>
                     <ModifyPartitions>
                         <ModifyPartition wcm:action="add">
+                            <Format>FAT32</Format>
+                            <Label>System</Label>
                             <Order>1</Order>
                             <PartitionID>1</PartitionID>
-                            <Format>NTFS</Format>
-                            <Label>WinRE</Label>
-                            <TypeID>de94bba4-06d1-4d40-a16a-bfd50179d6ac</TypeID>
                         </ModifyPartition>
                         <ModifyPartition wcm:action="add">
                             <Order>2</Order>
                             <PartitionID>2</PartitionID>
-                            <Format>FAT32</Format>
-                            <Label>System</Label>
                         </ModifyPartition>
                         <ModifyPartition wcm:action="add">
+                            <Format>NTFS</Format>
+                            <Label>Windows</Label>
+                            <Letter>C</Letter>
                             <Order>3</Order>
                             <PartitionID>3</PartitionID>
                         </ModifyPartition>
                         <ModifyPartition wcm:action="add">
+                            <Format>NTFS</Format>
+                            <Label>WinRE</Label>
                             <Order>4</Order>
                             <PartitionID>4</PartitionID>
-                            <Format>NTFS</Format>
-                            <Label>Windows</Label>
+                            <TypeID>de94bba4-06d1-4d40-a16a-bfd50179d6ac</TypeID>
                         </ModifyPartition>
                     </ModifyPartitions>
+                    <DiskID>0</DiskID>
+                    <WillWipeDisk>true</WillWipeDisk>
                 </Disk>
             </DiskConfiguration>
             <ImageInstall>
@@ -78,11 +78,12 @@
                     </InstallFrom>
                     <InstallTo>
                         <DiskID>0</DiskID>
-                        <PartitionID>4</PartitionID>
+                        <PartitionID>3</PartitionID>
                     </InstallTo>
                 </OSImage>
             </ImageInstall>
 -->
+            <UseConfigurationSet>true</UseConfigurationSet>
             <UserData>
                 <AcceptEula>true</AcceptEula>
                 <FullName>Windows User</FullName>
@@ -112,7 +113,6 @@
                     <Path>%configsetroot%\autounattend\options\options.cmd</Path>
                     <Description>Options Install</Description>
                     <Order>1</Order>
-                    <WillReboot>Always</WillReboot>
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>
@@ -141,6 +141,14 @@
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
             </UserAccounts>
+<!-- -->
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <CommandLine>%configsetroot%\autounattend\options\options.cmd sub</CommandLine>
+                </SynchronousCommand>
+            </FirstLogonCommands>
+<!-- -->
         </component>
     </settings>
 </unattend>

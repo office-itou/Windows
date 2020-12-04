@@ -2,8 +2,8 @@ C:\WimWK
 +---bin
 +---cfg
 +---lst
-|       Windows10x64_skylake_202001.lst
-|       Windows10x86_skylake_202001.lst
+|       Windows10x64_skylake_202011.lst
+|       Windows10x86_skylake_202011.lst
 |
 +---pkg
 |   +---w10

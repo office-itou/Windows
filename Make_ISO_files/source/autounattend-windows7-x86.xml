@@ -11,7 +11,6 @@
             </SetupUILanguage>
         </component>
         <component name="Microsoft-Windows-Setup" processorArchitecture="x86" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <UseConfigurationSet>true</UseConfigurationSet>
 <!--
             <DiskConfiguration>
                 <Disk wcm:action="add">
@@ -64,6 +63,7 @@
                 </OSImage>
             </ImageInstall>
 -->
+            <UseConfigurationSet>true</UseConfigurationSet>
             <UserData>
                 <AcceptEula>true</AcceptEula>
                 <FullName>Windows User</FullName>
@@ -93,7 +93,6 @@
                     <Path>%configsetroot%\autounattend\options\options.cmd</Path>
                     <Description>Options Install</Description>
                     <Order>1</Order>
-                    <WillReboot>Always</WillReboot>
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>
@@ -122,6 +121,14 @@
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
             </UserAccounts>
+<!-- -->
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <CommandLine>%configsetroot%\autounattend\options\options.cmd sub</CommandLine>
+                </SynchronousCommand>
+            </FirstLogonCommands>
+<!-- -->
         </component>
     </settings>
 </unattend>

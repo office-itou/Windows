@@ -18,11 +18,6 @@ Rem --- 作業環境確認 ----------------------------------------------------------
         )
     )
 
-    If /I "%~1" EQU "" (
-        Echo マウント先フォルダーを指定して下さい。
-        GoTo DONE
-    )
-
 Rem --- 環境変数設定 ----------------------------------------------------------
     For /F "usebackq delims=" %%I In (`Echo %0`) Do (
         Set WRK_DIR=%%~dpI
@@ -41,10 +36,33 @@ Rem --- 環境変数設定 ----------------------------------------------------------
 
     For /F "tokens=1-2 usebackq delims=\" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~I\%%~J)
 
-Rem *** Unmount ***************************************************************
-Rem TakeOwn /F "%~1\*.*" /A /R /D Y > NUL 2>&1
-Rem ICacls "%~1" /reset /T /Q
-    Dism /UnMount-Wim /MountDir:"%~1" /Discard
+Rem *** Unmount and Remove ****************************************************
+Rem Dism /Cleanup-Wim
+    Set WIM_WRK=!WRK_TOP!\wrk
+    For /D %%I In ("!WIM_WRK!\*") Do (
+        Set WIM_NOW=%%~I
+        If Exist "!WIM_NOW!" (
+            If /I "!WIM_NOW:~0,77!" EQU "!WIM_NOW!" (Echo "!WIM_NOW!") Else (Echo "!WIM_NOW:~0,59!...!WIM_NOW:~-15!")
+            For /D %%J In ("!WIM_NOW!\*") Do (
+                Set WRK_NAM=MakeIsoFile
+                Set WIN_VER=%%~nI
+                Set WIN_VER=!WIN_VER:~1!!
+                Set ARC_TYP=%%~nJ
+                Set NOW_DAY=%%~xI
+                Set NOW_DAY=!NOW_DAY:~1,8!
+                Set NOW_TIM=%%~xI
+                Set NOW_TIM=!NOW_TIM:~9!
+                Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
+                Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
+                If Exist "!CMD_DAT!" (Del /F /S /Q "!CMD_DAT!")
+                If Exist "!CMD_WRK!" (Del /F /S /Q "!CMD_WRK!")
+            )
+            If Exist "!WIM_NOW!\mnt\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_NOW!\mnt" /Discard)
+Rem         TakeOwn /F "!WIM_NOW!\*.*" /A /R /D Y > NUL 2>&1
+Rem         ICacls "!WIM_NOW!" /reset /T /Q
+            RmDir /S /Q "!WIM_NOW!"
+        )
+    )
 
 Rem *** 作業終了 **************************************************************
 :DONE

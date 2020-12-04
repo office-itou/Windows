@@ -4,7 +4,7 @@ SOFTWARE=Windows 7 x64
 TARGET=Service Pack 1
 LANGUAGE=Japanese
 NAME=Jun Itou
-COMMENT=Rollup統合DVD作成用 2020/10
+COMMENT=Rollup統合DVD作成用 2020/11
 
 [LIST]
 COUNT=76
@@ -81,9 +81,9 @@ COUNT=76
 71=EDGE
 72=KB890830
 73=KB4481252
-74=KB915597
-75=MSE
-76=MSE_DUP
+74=MSE
+75=MSE_DUP
+76=KB915597
 
 [WUAGENT]
 TITLE=Microsoft Update クライアントへの更新
@@ -1719,17 +1719,17 @@ PREVIOUS_SP=
 COMMENT=new Microsoft Edge
 
 [KB890830]
-TITLE=悪意のあるソフトウェアの削除ツール x64 - v5.83 (KB890830)
+TITLE=悪意のあるソフトウェアの削除ツール x64 - v5.84 (KB890830)
 INFO=http://support.microsoft.com/help/890830
-FILE=http://download.windowsupdate.com/d/msdownload/update/software/uprl/2020/09/windows-kb890830-x64-v5.83_fede0eab17a3acf1aa945b14f37324ae6a8f6fc6.exe
+FILE=http://download.windowsupdate.com/d/msdownload/update/software/uprl/2020/11/windows-kb890830-x64-v5.84_e2e371dfabc01c0f6fe097da99353ea860db64a5.exe
 RENAME=
-SIZE=34667768
+SIZE=37018880
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
 TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
-RELEASE=2020/09/02
+RELEASE=2020/11/04
 RUN_ORDER=072
 CMD=/x
 DECODE=0
@@ -1764,29 +1764,6 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=Microsoft Silverlight
 
-[KB915597]
-TITLE=Windows Defender in Windows 7 and Windows Vista
-INFO=http://www.microsoft.com/en-us/wdsi/defenderupdates
-FILE=http://go.microsoft.com/fwlink/?LinkID=121721&clcid=0x409&arch=x64&eng=0.0.0.0&avdelta=0.0.0.0&asdelta=0.0.0.0&prod=925A3ACA-C353-458A-AC8D-A7E5EB378092
-RENAME=mpas-fe-x64.exe
-SIZE=1
-TYPE=HOTFIX(SVCPACK.INF)
-CATEGORY=
-TIE_UP=
-XOR_KEY=
-SYNCHRO_KEY=
-RELEASE=2020/01/14
-RUN_ORDER=074
-CMD=-q
-DECODE=0
-DECODE_TYPE=
-DECODE_GET=
-IEXPRESS=0
-IEXPRESS_LIST=
-IEXPRESS_CMD=
-PREVIOUS_SP=
-COMMENT=Windows Defender
-
 [MSE]
 TITLE=Microsoft Security Essentials
 INFO=http://www.microsoft.com/ja-jp/download/details.aspx?id=5201
@@ -1799,7 +1776,7 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2018/10/13
-RUN_ORDER=075
+RUN_ORDER=074
 CMD=/s /runwgacheck /o
 DECODE=0
 DECODE_TYPE=
@@ -1822,7 +1799,7 @@ TIE_UP=MSE
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2019/04/10
-RUN_ORDER=076
+RUN_ORDER=075
 CMD=-q
 DECODE=0
 DECODE_TYPE=
@@ -1832,3 +1809,26 @@ IEXPRESS_LIST=
 IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=セキュリティ インテリジェンス更新プログラム
+
+[KB915597]
+TITLE=Windows Defender in Windows 7 and Windows Vista
+INFO=http://www.microsoft.com/en-us/wdsi/defenderupdates
+FILE=http://go.microsoft.com/fwlink/?LinkID=121721&clcid=0x409&arch=x64&eng=0.0.0.0&avdelta=0.0.0.0&asdelta=0.0.0.0&prod=925A3ACA-C353-458A-AC8D-A7E5EB378092
+RENAME=mpas-fe-x64.exe
+SIZE=1
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2020/01/14
+RUN_ORDER=076
+CMD=-q
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=Windows Defender

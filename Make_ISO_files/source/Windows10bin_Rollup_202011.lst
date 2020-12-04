@@ -1,10 +1,10 @@
 [INFO]
 VERSION=0.103.0
-SOFTWARE=Windows 7 x64
-TARGET=Service Pack 1
+SOFTWARE=Windows 10 x64
+TARGET=None
 LANGUAGE=Japanese
 NAME=Jun Itou
-COMMENT=ìùçáDVDçÏê¨óp 2020/10
+COMMENT=ìùçáDVDçÏê¨óp 2020/11
 
 [LIST]
 COUNT=4
