@@ -537,11 +537,15 @@ Rem                         If /I "!LST_FNAME:~0,77!" EQU "!LST_FNAME!" (Echo "!
                         )
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "cab" (
-                    For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
-                    If Not Exist "!LST_DIR!" (
-                        Echo --- ファイル展開 --------------------------------------------------------------
-                        MkDir "!LST_DIR!"
-                        Expand "!LST_RENAME!" -F:* "!LST_DIR!" > Nul || GoTo DONE
+                           If /I "!LST_PACKAGE!" EQU "x64" (Rem
+                    ) Else If /I "!LST_PACKAGE!" EQU "x86" (Rem
+                    ) Else (
+                        For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
+                        If Not Exist "!LST_DIR!" (
+                            Echo --- ファイル展開 --------------------------------------------------------------
+                            MkDir "!LST_DIR!"
+                            Expand "!LST_RENAME!" -F:* "!LST_DIR!" > Nul || GoTo DONE
+                        )
                     )
                 ) Else If /I "!LST_SECTION!" EQU "IE11" (
                     For %%E In ("!LST_RENAME!") Do (Set LST_DIR=%%~dpnE)
