@@ -37,7 +37,8 @@ Rem --- ŠÂ‹«•Ï”Ý’è ----------------------------------------------------------
     For /F "tokens=1-2 usebackq delims=\" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~I\%%~J)
 
 Rem *** Unmount and Remove ****************************************************
-Rem Dism /Cleanup-Wim
+Rem Dism /Cleanup-Mountpoints
+Rem Dism /Cleanup-WIM
     Set WIM_WRK=!WRK_TOP!\wrk
     For /D %%I In ("!WIM_WRK!\*") Do (
         Set WIM_NOW=%%~I
@@ -54,10 +55,10 @@ Rem Dism /Cleanup-Wim
                 Set NOW_TIM=!NOW_TIM:~9!
                 Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
                 Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
-                If Exist "!CMD_DAT!" (Del /F /S /Q "!CMD_DAT!")
-                If Exist "!CMD_WRK!" (Del /F /S /Q "!CMD_WRK!")
+                If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!")
+                If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!")
             )
-            If Exist "!WIM_NOW!\mnt\Windows" (Dism /UnMount-Wim /MountDir:"!WIM_NOW!\mnt" /Discard)
+            If Exist "!WIM_NOW!\mnt\Windows\\" (Dism /UnMount-Wim /MountDir:"!WIM_NOW!\mnt" /Discard)
 Rem         TakeOwn /F "!WIM_NOW!\*.*" /A /R /D Y > NUL 2>&1
 Rem         ICacls "!WIM_NOW!" /reset /T /Q
             RmDir /S /Q "!WIM_NOW!"

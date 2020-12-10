@@ -1,4 +1,4 @@
- ***************************************************************************
+Rem ***************************************************************************
 @Echo Off
     Cls
 
@@ -270,6 +270,7 @@ Rem Set WIM_TOP=%~3
     Set WIM_WRK=!WIM_TOP!\wrk
     Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
     Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
+    Set CMD_DUP=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dup
 
     Set DVD_SRC=!DRV_DVD!\
     Set DVD_SRC=!DVD_SRC:\\=\!
@@ -332,6 +333,16 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_IMG=!WIM_NOW!\%%~J\img
             Set WIM_MNT=!WIM_NOW!\%%~J\mnt
             Set WIM_WRE=!WIM_NOW!\%%~J\wre
+            Set WIM_BT1=!WIM_NOW!\%%~J\bt1
+            Set WIM_BT2=!WIM_NOW!\%%~J\bt2
+            If Exist "!WIM_BT1!\Windows" (
+                Echo --- 破損イメージの削除 --------------------------------------------------------
+                Dism /Quiet /UnMount-Wim /MountDir:"!WIM_BT1!" /Discard
+            )
+            If Exist "!WIM_BT2!\Windows" (
+                Echo --- 破損イメージの削除 --------------------------------------------------------
+                Dism /Quiet /UnMount-Wim /MountDir:"!WIM_BT2!" /Discard
+            )
             If Exist "!WIM_WRE!\Windows" (
                 Echo --- 破損イメージの削除 --------------------------------------------------------
                 Dism /Quiet /UnMount-Wim /MountDir:"!WIM_WRE!" /Discard
@@ -362,6 +373,8 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_IMG=!WIM_NOW!\%%~J\img
             Set WIM_MNT=!WIM_NOW!\%%~J\mnt
             Set WIM_WRE=!WIM_NOW!\%%~J\wre
+            Set WIM_BT1=!WIM_NOW!\%%~J\bt1
+            Set WIM_BT2=!WIM_NOW!\%%~J\bt2
 
             If /I "!DRV_DVD!" EQU "!WIM_IMG!" (
                 Echo イメージフォルダーの統合元と作業用が同じです。
@@ -377,6 +390,8 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
 
             If     Exist "!WIM_MNT!" (RmDir /S /Q "!WIM_MNT!" || GoTo DONE)
             If     Exist "!WIM_WRE!" (RmDir /S /Q "!WIM_WRE!" || GoTo DONE)
+            If     Exist "!WIM_BT1!" (RmDir /S /Q "!WIM_BT1!" || GoTo DONE)
+            If     Exist "!WIM_BT2!" (RmDir /S /Q "!WIM_BT2!" || GoTo DONE)
 
             If Not Exist "!WIM_WUD!" (MkDir       "!WIM_WUD!" || GoTo DONE)
             If Not Exist "!WIM_CAB!" (MkDir       "!WIM_CAB!" || GoTo DONE)
@@ -385,12 +400,15 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             If Not Exist "!WIM_IMG!" (MkDir       "!WIM_IMG!" || GoTo DONE)
             If Not Exist "!WIM_MNT!" (MkDir       "!WIM_MNT!" || GoTo DONE)
             If Not Exist "!WIM_WRE!" (MkDir       "!WIM_WRE!" || GoTo DONE)
+            If Not Exist "!WIM_BT1!" (MkDir       "!WIM_BT1!" || GoTo DONE)
+            If Not Exist "!WIM_BT2!" (MkDir       "!WIM_BT2!" || GoTo DONE)
         )
     )
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
     If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
+    If Exist "!CMD_DUP!" (Del /F "!CMD_DUP!" || GoTo DONE)
 
     Copy /Y Nul "!CMD_WRK!" > Nul || GoTo DONE
 
@@ -503,7 +521,7 @@ Rem *** リストファイル変換 ****************************************************
                                     Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
                                     Set LST_EXTENSION=!LST_EXTENSION:~1!
                                     If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                                    Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                                    Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!","!LST_COMMENT!"
                                 )
                             )
                             Set LST_SECTION=!LST_KEY:~1,-1!
@@ -598,7 +616,7 @@ Rem *** リストファイル変換 ****************************************************
                             Set LST_RENAME=!LST_WINPACK!\!LST_RENAME!
                             Set LST_EXTENSION=!LST_EXTENSION:~1!
                             If /I "!LST_EXTENSION!" EQU "msu" If /I "!LST_CMD!" NEQ "" (Set LST_EXTENSION=wus)
-                            Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!"
+                            Echo>>"!CMD_WRK!" "w!LST_WINVER!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!","!LST_COMMENT!"
                         )
                     )
                 )
@@ -609,9 +627,8 @@ Rem *** リストファイル変換 ****************************************************
 Rem --- ファイルソート --------------------------------------------------------
     Sort "!CMD_WRK!" > "!CMD_DAT!"
 
-Rem *** ファイル取得 **********************************************************
-    Echo --- ファイル取得 --------------------------------------------------------------
-    For /F "tokens=1-10 usebackq delims=," %%I In ("!CMD_DAT!") Do (
+Rem --- Dynamic Update --------------------------------------------------------
+    For /F "tokens=1-11 usebackq delims=," %%I In ("!CMD_DAT!") Do (
         Set LST_WINDOWS=%%~I
         Set LST_PACKAGE=%%~J
         Set LST_TYPE_NUM=%%~K
@@ -622,6 +639,30 @@ Rem *** ファイル取得 **********************************************************
         Set LST_CMD=%%~P
         Set LST_RENAME=%%~Q
         Set LST_FILE=%%~R
+        Set LST_COMMENT=%%~S
+        If /I "!LST_WINDOWS!" EQU "w!WIN_VER!" (
+            If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
+                If /I "!LST_COMMENT!" EQU "Dynamic Update" (
+Rem                 Echo>>"!CMD_DUP!" "!LST_WINDOWS!","!LST_PACKAGE!","!LST_TYPE_NUM!","!LST_TYPE!","!LST_RUN_ORDER!","!LST_SECTION!","!LST_EXTENSION!","!LST_CMD!","!LST_RENAME!","!LST_FILE!","!LST_COMMENT!"
+                )
+            )
+        )
+    )
+
+Rem *** ファイル取得 **********************************************************
+    Echo --- ファイル取得 --------------------------------------------------------------
+    For /F "tokens=1-11 usebackq delims=," %%I In ("!CMD_DAT!") Do (
+        Set LST_WINDOWS=%%~I
+        Set LST_PACKAGE=%%~J
+        Set LST_TYPE_NUM=%%~K
+        Set LST_TYPE=%%~L
+        Set LST_RUN_ORDER=%%~M
+        Set LST_SECTION=%%~N
+        Set LST_EXTENSION=%%~O
+        Set LST_CMD=%%~P
+        Set LST_RENAME=%%~Q
+        Set LST_FILE=%%~R
+        Set LST_COMMENT=%%~S
         Set LST_WINPKG=!WIM_PKG!\!LST_WINDOWS!
         For %%E In ("!LST_RENAME!") Do (Set LST_FNAME=%%~nxE)
         For /F "tokens=1 usebackq delims=:" %%X In ('!LST_FILE!') Do (
@@ -771,9 +812,9 @@ Rem === UEFIブート準備 ========================================================
         If /I "!ARC_TYP!" EQU "x64" (
             If Not Exist "!WIM_EFI!\bootx64.efi" (
                 Echo --- bootx64.efi の抽出 --------------------------------------------------------
-                Dism /Quiet /Mount-Wim /WimFile:"!WIM_IMG!\sources\boot.wim" /index:1 /MountDir:"!WIM_MNT!" /ReadOnly || GoTo DONE
-                Copy /Y "!WIM_MNT!\Windows\Boot\EFI\bootmgfw.efi" "!WIM_EFI!\bootx64.efi" > Nul || GoTo DONE
-                Dism /Quiet /Unmount-Wim /MountDir:"!WIM_MNT!" /Discard || GoTo DONE
+                Dism /Quiet /Mount-Wim /WimFile:"!WIM_IMG!\sources\boot.wim" /index:1 /MountDir:"!WIM_BT1!" /ReadOnly || GoTo DONE
+                Copy /Y "!WIM_BT1!\Windows\Boot\EFI\bootmgfw.efi" "!WIM_EFI!\bootx64.efi" > Nul || GoTo DONE
+                Dism /Quiet /Unmount-Wim /MountDir:"!WIM_BT1!" /Discard || GoTo DONE
             )
             Echo --- bootx64.efi のコピー ------------------------------------------------------
             Robocopy /J /MIR /A-:RHS /NDL /NFL /NC /NJH /NJS "!WIM_EFI!" "!WIM_IMG!\efi\boot" "bootx64.efi" > Nul
@@ -856,7 +897,7 @@ Rem ---------------------------------------------------------------------------
         )
     )
 Rem ---------------------------------------------------------------------------
-    For /F "tokens=1-10 usebackq delims=," %%I In ("!CMD_DAT!") Do (
+    For /F "tokens=1-11 usebackq delims=," %%I In ("!CMD_DAT!") Do (
         Set LST_WINDOWS=%%~I
         Set LST_PACKAGE=%%~J
         Set LST_TYPE_NUM=%%~K
@@ -867,6 +908,7 @@ Rem ---------------------------------------------------------------------------
         Set LST_CMD=%%~P
         Set LST_RENAME=%%~Q
         Set LST_FILE=%%~R
+        Set LST_COMMENT=%%~S
         For %%E In ("!LST_RENAME!") Do (
             Set LST_FNAME=%%~nxE
             Set LST_FDSRC=%%~dpE
@@ -1008,146 +1050,24 @@ Rem ---------------------------------------------------------------------------
     If !FLG_DRV! EQU 1 (If !OPT_MSU! EQU 0 (GoTo MAKE_ISO_IMAGE))
 
 Rem ---------------------------------------------------------------------------
-:ADD_PACKAGE
+:WIM_PACKAGE
 Rem === Windows Update ファイル と ドライバー の統合 ==========================
-    Set ADD_PAC=/Image:^"!WIM_MNT!^" /Add-Package /IgnoreCheck
-    Set ADD_DRV=/Image:^"!WIM_MNT!^" /Add-Driver /ForceUnsigned /Recurse
+    Set WIM_PAC=/Image:^"!WIM_MNT!^" /Add-Package /IgnoreCheck
+    Set WIM_DRV=/Image:^"!WIM_MNT!^" /Add-Driver /ForceUnsigned /Recurse
+    Set BT1_PAC=/Image:^"!WIM_BT1!^" /Add-Package /IgnoreCheck
+    Set BT1_DRV=/Image:^"!WIM_BT1!^" /Add-Driver /ForceUnsigned /Recurse
+    Set BT2_PAC=/Image:^"!WIM_BT2!^" /Add-Package /IgnoreCheck
+    Set BT2_DRV=/Image:^"!WIM_BT2!^" /Add-Driver /ForceUnsigned /Recurse
     Set WRE_PAC=/Image:^"!WIM_WRE!^" /Add-Package /IgnoreCheck
     Set WRE_DRV=/Image:^"!WIM_WRE!^" /Add-Driver /ForceUnsigned /Recurse
 
-    Set ADD_FLG=0
-    Set DRV_USB=
-    Set DRV_RST=
-    Set DRV_NVM=
-
-    If !WIN_VER! EQU 7 (
-        If !IDX_LST! NEQ 0 (
-            Echo --- ドライバーの統合 ----------------------------------------------------------
-            For /F "tokens=1-10 usebackq delims=," %%I In ("!CMD_DAT!") Do (
-                Set LST_WINDOWS=%%~I
-                Set LST_PACKAGE=%%~J
-                Set LST_TYPE_NUM=%%~K
-                Set LST_TYPE=%%~L
-                Set LST_RUN_ORDER=%%~M
-                Set LST_SECTION=%%~N
-                Set LST_EXTENSION=%%~O
-                Set LST_CMD=%%~P
-                Set LST_RENAME=%%~Q
-                Set LST_FILE=%%~R
-                For %%E In ("!LST_RENAME!") Do (
-                    Set LST_FNAME=%%~nxE
-                    Set LST_FDSRC=%%~dpE
-                    Set LST_FDSRC=!LST_FDSRC:~0,-1!
-                    Set LST_FNSRC=%%~dpnE
-                    Set LST_FNDST=%%~nE
-                )
-                If /I "!LST_WINDOWS!" EQU "w!WIN_VER!" (
-                    If /I "!LST_PACKAGE!" EQU "drv" (
-                        Set LST_SECTION_LST=!LST_SECTION:_= !
-                        For %%A In (!LST_SECTION_LST!) Do (
-                            If /I "%%A" EQU "!ARC_TYP!" (
-                                If /I "!LST_EXTENSION!" EQU "inf" (
-                                    If /I "!LST_FNAME!" EQU "iusb3hub.inf" (Set DRV_USB=!LST_FDSRC!&Set ADD_FLG=1)
-                                    If /I "!LST_FNAME!" EQU "iaAHCIC.inf"  (Set DRV_RST=!LST_FDSRC!&Set ADD_FLG=1)
-Rem                                 If /I "!LST_FNAME!" EQU "IaNVMe.inf"   (Set DRV_NVM=!LST_FDSRC!&Set ADD_FLG=1)
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-
-Rem --- boot.wim / install.wimを更新する --------------------------------------
-        If !ADD_FLG! EQU 1 (
-            Echo --- boot.wimを更新する [1] ----------------------------------------------------
-            Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:1 /MountDir:"!WIM_MNT!"    || GoTo :DONE
-            If /I "!DRV_USB!" NEQ "" (
-                If /I "!DRV_USB:~0,77!" EQU "!DRV_USB!" (Echo "!DRV_USB!") Else (Echo "!DRV_USB:~0,59!...!DRV_USB:~-15!")
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_USB!"                                                  || GoTo :DONE
-            )
-            If /I "!DRV_RST!" NEQ "" (
-                If /I "!DRV_RST:~0,77!" EQU "!DRV_RST!" (Echo "!DRV_RST!") Else (Echo "!DRV_RST:~0,59!...!DRV_RST:~-15!")
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_RST!"                                                  || GoTo :DONE
-            )
-            If /I "!DRV_NVM!" NEQ "" (
-                If /I "!DRV_NVM:~0,77!" EQU "!DRV_NVM!" (Echo "!DRV_NVM!") Else (Echo "!DRV_NVM:~0,59!...!DRV_NVM:~-15!")
-                Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"       || GoTo :DONE
-                Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"       || GoTo :DONE
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_NVM!"                                                  || GoTo :DONE
-            )
-            Echo --- boot.wimを保存する [1] ----------------------------------------------------
-            Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
-
-            Echo --- boot.wimを更新する [2] ----------------------------------------------------
-            Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:2 /MountDir:"!WIM_MNT!"    || GoTo :DONE
-            If /I "!DRV_USB!" NEQ "" (
-                If /I "!DRV_USB:~0,77!" EQU "!DRV_USB!" (Echo "!DRV_USB!") Else (Echo "!DRV_USB:~0,59!...!DRV_USB:~-15!")
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_USB!"                                                  || GoTo :DONE
-            )
-            If /I "!DRV_RST!" NEQ "" (
-                If /I "!DRV_RST:~0,77!" EQU "!DRV_RST!" (Echo "!DRV_RST!") Else (Echo "!DRV_RST:~0,59!...!DRV_RST:~-15!")
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_RST!"                                                  || GoTo :DONE
-            )
-            If /I "!DRV_NVM!" NEQ "" (
-                If /I "!DRV_NVM:~0,77!" EQU "!DRV_NVM!" (Echo "!DRV_NVM!") Else (Echo "!DRV_NVM:~0,59!...!DRV_NVM:~-15!")
-                Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"       || GoTo :DONE
-                Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"       || GoTo :DONE
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_NVM!"                                                  || GoTo :DONE
-            )
-            Echo --- boot.wimを保存する [2] ----------------------------------------------------
-            Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
-
-            Echo --- install.wimを更新する -----------------------------------------------------
-            Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
-            If /I "!DRV_USB!" NEQ "" (
-                If /I "!DRV_USB:~0,77!" EQU "!DRV_USB!" (Echo "!DRV_USB!") Else (Echo "!DRV_USB:~0,59!...!DRV_USB:~-15!")
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_USB!"                                                  || GoTo :DONE
-            )
-            If /I "!DRV_RST!" NEQ "" (
-                If /I "!DRV_RST:~0,77!" EQU "!DRV_RST!" (Echo "!DRV_RST!") Else (Echo "!DRV_RST:~0,59!...!DRV_RST:~-15!")
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_RST!"                                                  || GoTo :DONE
-            )
-            If /I "!DRV_NVM!" NEQ "" (
-                If /I "!DRV_NVM:~0,77!" EQU "!DRV_NVM!" (Echo "!DRV_NVM!") Else (Echo "!DRV_NVM:~0,59!...!DRV_NVM:~-15!")
-                Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"       || GoTo :DONE
-                Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"       || GoTo :DONE
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_NVM!"                                                  || GoTo :DONE
-            )
-
-            Echo --- winRE.wimを更新する -------------------------------------------------------
-            Dism /Quiet /Mount-WIM /WimFile:"!WIM_MNT!\Windows\System32\Recovery\winRE.wim" /Index:1 /MountDir:"!WIM_WRE!"    || GoTo :DONE
-            If /I "!DRV_USB!" NEQ "" (
-                If /I "!DRV_USB:~0,77!" EQU "!DRV_USB!" (Echo "!DRV_USB!") Else (Echo "!DRV_USB:~0,59!...!DRV_USB:~-15!")
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_USB!"                                                  || GoTo :DONE
-            )
-            If /I "!DRV_RST!" NEQ "" (
-                If /I "!DRV_RST:~0,77!" EQU "!DRV_RST!" (Echo "!DRV_RST!") Else (Echo "!DRV_RST:~0,59!...!DRV_RST:~-15!")
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_RST!"                                                  || GoTo :DONE
-            )
-            If /I "!DRV_NVM!" NEQ "" (
-                If /I "!DRV_NVM:~0,77!" EQU "!DRV_NVM!" (Echo "!DRV_NVM!") Else (Echo "!DRV_NVM:~0,59!...!DRV_NVM:~-15!")
-                Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu"       || GoTo :DONE
-                Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu"       || GoTo :DONE
-                Dism /Quiet !ADD_DRV! /Driver:"!DRV_NVM!"                                                  || GoTo :DONE
-            )
-            Echo --- winRE.wimを保存する -------------------------------------------------------
-            Dism /Quiet /UnMount-Wim /MountDir:"!WIM_WRE!" /Commit                                         || GoTo :DONE
-
-Rem         Echo --- install.wimを保存する -----------------------------------------------------
-Rem         Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
-        )
-    )
-
-Rem --- Windows Update ファイルの統合 -----------------------------------------
-    Echo --- Windows Update ファイルの統合 ---------------------------------------------
-Rem --- install.wimを更新する -------------------------------------------------
-    Echo --- install.wimを更新する -----------------------------------------------------
-    If !ADD_FLG! EQU 0 (
-        Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
-    )
-    For /F "tokens=1-10 usebackq delims=," %%I In ("!CMD_DAT!") Do (
+Rem --- lstファイルを分解する -------------------------------------------------
+    Echo --- lstファイルを分解する -----------------------------------------------------
+    Set CMD_WIM=!CMD_DAT!.wim
+    Set CMD_WRE=!CMD_DAT!.wre
+    If Exist "!CMD_WIM!" (Del /F "!CMD_WIM!")
+    If Exist "!CMD_WRE!" (Del /F "!CMD_WRE!")
+    For /F "tokens=1-11 usebackq delims=," %%I In ("!CMD_DAT!") Do (
         Set LST_WINDOWS=%%~I
         Set LST_PACKAGE=%%~J
         Set LST_TYPE_NUM=%%~K
@@ -1158,41 +1078,138 @@ Rem --- install.wimを更新する -------------------------------------------------
         Set LST_CMD=%%~P
         Set LST_RENAME=%%~Q
         Set LST_FILE=%%~R
+        Set LST_COMMENT=%%~S
+        For %%E In ("!LST_RENAME!") Do (
+            Set LST_FNAME=%%~nxE
+            Set LST_FDSRC=%%~dpE
+            Set LST_FDSRC=!LST_FDSRC:~0,-1!
+            Set LST_FNSRC=%%~dpnE
+            Set LST_FNBAS=%%~nE
+        )
         If /I "!LST_WINDOWS!" EQU "w!WIN_VER!" (
-            If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
-                If /I "!LST_EXTENSION!" EQU "msu" (
-                    If /I "!LST_RENAME:~0,77!" EQU "!LST_RENAME!" (Echo "!LST_RENAME!") Else (Echo "!LST_RENAME:~0,59!...!LST_RENAME:~-15!")
-                    If /I "!LST_SECTION!" EQU "KB2533552" (
-                        For %%E In ("!LST_RENAME!") Do (
-                            Set LST_FPATH=%%~dpnE
-                            Set LST_FNAME=%%~nE
-                            For /F "usebackq delims=_" %%F In (`Echo "!LST_FNAME!"`) Do (
-                                Set LST_FCAB=!LST_FPATH!\%%~F
+            If /I "!LST_PACKAGE!" EQU "adk" (Rem
+            ) Else If /I "!LST_PACKAGE!" EQU "bin" (Rem
+            ) Else If /I "!LST_PACKAGE!" EQU "drv" (
+                For /F "tokens=2 usebackq delims=_" %%A in ('!LST_SECTION!') Do (
+                    If /I "%%A" EQU "!ARC_TYP!" (
+                        If /I "!LST_EXTENSION!" EQU "inf" (
+                            If /I "!LST_FNAME!" EQU "iusb3hub.inf" (
+                                Echo>>"!CMD_WRE!" !LST_RENAME!
+                            )
+                            If /I "!LST_FNAME!" EQU "iaAHCIC.inf"  (
+                                Echo>>"!CMD_WRE!" !LST_RENAME!
+                            )
+                            If /I "!LST_FNAME!" EQU "IaNVMe.inf"   (
+                                Echo>>"!CMD_WRE!" !WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu
+                                Echo>>"!CMD_WRE!" !WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu
+                                Echo>>"!CMD_WRE!" !LST_RENAME!
                             )
                         )
-                        Dism /Quiet !ADD_PAC! /PackagePath:"!LST_FCAB!"                                || GoTo :DONE
+                    )
+                )
+            ) Else If /I "!LST_PACKAGE!" EQU "!ARC_TYP!" (
+                If /I "!LST_EXTENSION!" EQU "msu" (
+                    If /I "!LST_SECTION!" EQU "KB2533552" (
+                        Set LST_FNLST=!LST_FNBAS:_= !
+                        For /F "tokens=1 usebackq delims= " %%A In (`Echo !LST_FNLST!`) Do (Echo>>"!CMD_WIM!" !LST_FNSRC!\%%A)
                     ) Else (
-                        Dism /Quiet !ADD_PAC! /PackagePath:"!LST_RENAME!"                              || GoTo :DONE
+                        Echo>>"!CMD_WIM!" !LST_RENAME!
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "exe" (
                     If /I "!LST_SECTION!" EQU "IE11" (
                         If /I "!LST_CMD!" EQU "" (
-                            If /I "!LST_RENAME:~0,77!" EQU "!LST_RENAME!" (Echo "!LST_RENAME!") Else (Echo "!LST_RENAME:~0,59!...!LST_RENAME:~-15!")
-                            Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Win7.CAB"           || GoTo :DONE
-                            Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\ielangpack-ja-JP.CAB"  || GoTo :DONE
-                            Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Spelling-en.MSU"    || GoTo :DONE
-                            Dism /Quiet !ADD_PAC! /PackagePath:"!WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Hyphenation-en.MSU" || GoTo :DONE
+                            Echo>>"!CMD_WIM!" !WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Win7.CAB
+                            Echo>>"!CMD_WIM!" !WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\ielangpack-ja-JP.CAB
+                            Echo>>"!CMD_WIM!" !WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Spelling-en.MSU
+                            Echo>>"!CMD_WIM!" !WIM_WUD!\IE11-Windows6.1-!ARC_TYP!-ja-jp\IE-Hyphenation-en.MSU
                         )
                     )
                 ) Else If /I "!LST_EXTENSION!" EQU "cab" (
-                    If /I "!LST_RENAME:~0,77!" EQU "!LST_RENAME!" (Echo "!LST_RENAME!") Else (Echo "!LST_RENAME:~0,59!...!LST_RENAME:~-15!")
-                    Dism /Quiet !ADD_PAC! /PackagePath:"!LST_RENAME!"                              || GoTo :DONE
-               )
+                    Echo>>"!CMD_WIM!" !LST_RENAME!
+                )
             )
         )
     )
-    Echo --- install.wimを保存する -----------------------------------------------------
-    Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit                                         || GoTo :DONE
+
+Rem --- ドライバーの統合 ------------------------------------------------------
+    If Exist "!CMD_WRE!" (
+        Echo --- ドライバーの統合 ----------------------------------------------------------
+
+        Echo --- boot.wimを更新する [1] ----------------------------------------------------
+        Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:1 /MountDir:"!WIM_BT1!" || GoTo :DONE
+        For /F "usebackq delims=" %%I In ("!CMD_WRE!") Do (
+            Set FNAME=%%~I
+            Set FDIRE=%%~dpI
+            Set FDIRE=!FDIRE:~0,-1!
+            Set FEXTE=%%~xI
+            If /I "!FNAME:~0,77!" EQU "!FNAME!" (Echo "!FNAME!") Else (Echo "!FNAME:~0,59!...!FNAME:~-15!")
+            If /I "!FEXTE!" EQU ".inf" (
+                Dism /Quiet !BT1_DRV! /Driver:"!FDIRE!" || GoTo :DONE
+            ) Else (
+                Dism /Quiet !BT1_PAC! /PackagePath:"!FNAME!" || GoTo :DONE
+            )
+        )
+        Echo --- boot.wimを保存する [1] ----------------------------------------------------
+        Dism /Quiet /UnMount-Wim /MountDir:"!WIM_BT1!" /Commit || GoTo :DONE
+
+        Echo --- boot.wimを更新する [2] ----------------------------------------------------
+        Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:2 /MountDir:"!WIM_BT2!" || GoTo :DONE
+        For /F "usebackq delims=" %%I In ("!CMD_WRE!") Do (
+            Set FNAME=%%~I
+            Set FDIRE=%%~dpI
+            Set FDIRE=!FDIRE:~0,-1!
+            Set FEXTE=%%~xI
+            If /I "!FNAME:~0,77!" EQU "!FNAME!" (Echo "!FNAME!") Else (Echo "!FNAME:~0,59!...!FNAME:~-15!")
+            If /I "!FEXTE!" EQU ".inf" (
+                Dism /Quiet !BT2_DRV! /Driver:"!FDIRE!" || GoTo :DONE
+            ) Else (
+                Dism /Quiet !BT2_PAC! /PackagePath:"!FNAME!" || GoTo :DONE
+            )
+        )
+        Echo --- boot.wimを保存する [2] ----------------------------------------------------
+        Dism /Quiet /UnMount-Wim /MountDir:"!WIM_BT2!" /Commit || GoTo :DONE
+
+        Echo --- winRE.wimを更新する -------------------------------------------------------
+        Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
+        Dism /Quiet /Mount-WIM /WimFile:"!WIM_MNT!\Windows\System32\Recovery\winRE.wim" /Index:1 /MountDir:"!WIM_WRE!" || GoTo :DONE
+        For /F "usebackq delims=" %%I In ("!CMD_WRE!") Do (
+            Set FNAME=%%~I
+            Set FDIRE=%%~dpI
+            Set FDIRE=!FDIRE:~0,-1!
+            Set FEXTE=%%~xI
+            If /I "!FNAME:~0,77!" EQU "!FNAME!" (Echo "!FNAME!") Else (Echo "!FNAME:~0,59!...!FNAME:~-15!")
+            If /I "!FEXTE!" EQU ".inf" (
+                Dism /Quiet !WRE_DRV! /Driver:"!FDIRE!" || GoTo :DONE
+                Dism /Quiet !WIM_DRV! /Driver:"!FDIRE!" || GoTo :DONE
+            ) Else (
+                Dism /Quiet !WRE_PAC! /PackagePath:"!FNAME!" || GoTo :DONE
+                Dism /Quiet !WIM_PAC! /PackagePath:"!FNAME!" || GoTo :DONE
+            )
+        )
+        Echo --- winRE.wimを保存する -------------------------------------------------------
+        Dism /Quiet /UnMount-Wim /MountDir:"!WIM_WRE!" /Commit || GoTo :DONE
+        Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit || GoTo :DONE
+    )
+
+Rem --- install.wimを更新する -------------------------------------------------
+    If Exist "!CMD_WIM!" (
+        Echo --- install.wimを更新する -----------------------------------------------------
+        Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
+        For /F "usebackq delims=" %%I In ("!CMD_WIM!") Do (
+            Set FNAME=%%~I
+            Set FDIRE=%%~dpI
+            Set FDIRE=!FDIRE:~0,-1!
+            Set FEXTE=%%~xI
+            If /I "!FNAME:~0,77!" EQU "!FNAME!" (Echo "!FNAME!") Else (Echo "!FNAME:~0,59!...!FNAME:~-15!")
+            If /I "!FEXTE!" EQU ".inf" (
+                Dism /Quiet !WIM_DRV! /Driver:"!FDIRE!" || GoTo :DONE
+            ) Else (
+                Dism /Quiet !WIM_PAC! /PackagePath:"!FNAME!" || GoTo :DONE
+            )
+        )
+        Echo --- install.wimを保存する -----------------------------------------------------
+        Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit || GoTo :DONE
+    )
 
 :MAKE_ISO_IMAGE
 Rem === DVDイメージを作成する =================================================
@@ -1215,6 +1232,9 @@ Rem === DVDイメージを作成する =================================================
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!" || GoTo DONE)
     If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!" || GoTo DONE)
+    If Exist "!CMD_DUP!" (Del /F "!CMD_DUP!" || GoTo DONE)
+    If Exist "!CMD_WIM!" (Del /F "!CMD_WIM!" || GoTo DONE)
+    If Exist "!CMD_WRE!" (Del /F "!CMD_WRE!" || GoTo DONE)
 
     Echo --- 作業ファイルの削除 --------------------------------------------------------
     Echo "!WIM_IMG!"

@@ -7,19 +7,21 @@ NAME=Jun Itou
 COMMENT=統合DVD作成用 2020/11 Version 20H2用
 
 [LIST]
-COUNT=12
+COUNT=14
 1=KB4586864
-2=KB4586853
+2=KB4593175
 3=KB4580325
-4=KB4589212
-5=KB4586876
-6=KB4579305
-7=KB4586858
-8=KB4594440
-9=KB4052623_201007
-10=KB4052623_200110
-11=KB890830
-12=WDA_DUP
+4=KB4586876
+5=KB4586781
+6=KB4586858
+7=KB4594440
+8=KB4586853
+9=KB4592438
+10=KB890830
+11=WDA_DUP
+12=KB4052623_200110
+13=KB4052623_201007
+14=KB4052623_201106
 
 [KB4586864]
 TITLE=2020-11 x64 ベース システム用 Windows 10 Version 20H2 サービス スタック更新プログラム (KB4586864)
@@ -30,7 +32,7 @@ SIZE=15178663
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
 TIE_UP=
-XOR_KEY=
+XOR_KEY=KB4593175
 SYNCHRO_KEY=
 RELEASE=2020/11/05
 RUN_ORDER=001
@@ -44,18 +46,18 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=サービススタック更新プログラム
 
-[KB4586853]
-TITLE=2020-11 x64 ベース システム用 Windows 10 Version 20H2 の累積更新プログラム (KB4586853)
-INFO=http://support.microsoft.com/help/4586853
-FILE=http://download.windowsupdate.com/d/msdownload/update/software/updt/2020/11/windows10.0-kb4586853-x64_9c181d397b4b5d320af7e6f385ebc4bba693a95c.msu
+[KB4593175]
+TITLE=2020-12 x64 ベース システム用 Windows 10 Version 20H2 サービス スタック更新プログラム (KB4593175)
+INFO=http://support.microsoft.com/help/4593175
+FILE=http://download.windowsupdate.com/c/msdownload/update/software/secu/2020/12/windows10.0-kb4593175-x64_49d6fbe1ad4b01b53daee97fd2cbf8652bc313bc.msu
 RENAME=
-SIZE=381082565
+SIZE=15233681
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
-TIE_UP=KB4586864
+TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
-RELEASE=2020/11/22
+RELEASE=2020/12/04
 RUN_ORDER=002
 CMD=
 DECODE=0
@@ -65,7 +67,7 @@ IEXPRESS=0
 IEXPRESS_LIST=
 IEXPRESS_CMD=
 PREVIOUS_SP=
-COMMENT=累積更新プログラム
+COMMENT=サービススタック更新プログラム
 
 [KB4580325]
 TITLE=2020-10 x64 ベース システム用 Windows 10 Version 20H2 セキュリティ更新プログラム (Adobe Flash Player 対応) (KB4580325)
@@ -90,29 +92,6 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=セキュリティ更新プログラム (Adobe Flash Player 対応)
 
-[KB4589212]
-TITLE=2020-11 x64 ベース システム用 Windows 10 Version 20H2 更新プログラム (KB4589212)
-INFO=http://support.microsoft.com/help/4589212
-FILE=http://download.windowsupdate.com/d/msdownload/update/software/updt/2020/11/windows10.0-kb4589212-x64_9db59d4b6afaee4f4997d59d2787ead2fe5aab46.msu
-RENAME=
-SIZE=3105750
-TYPE=HOTFIX(SVCPACK.INF)
-CATEGORY=
-TIE_UP=
-XOR_KEY=
-SYNCHRO_KEY=
-RELEASE=2020/11/02
-RUN_ORDER=004
-CMD=
-DECODE=0
-DECODE_TYPE=
-DECODE_GET=
-IEXPRESS=0
-IEXPRESS_LIST=
-IEXPRESS_CMD=
-PREVIOUS_SP=
-COMMENT=Intel microcode updates
-
 [KB4586876]
 TITLE=.NET Framework 3.5 用の2020-11累積的な更新プログラムのプレビューと x64 (KB4586876) のWindows 10, version 20H2 用の 4.8
 INFO=http://support.microsoft.com/kb/4586876
@@ -125,7 +104,7 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2020/11/03
-RUN_ORDER=005
+RUN_ORDER=004
 CMD=
 DECODE=0
 DECODE_TYPE=
@@ -136,28 +115,28 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=.NET Frameworkの累積的な更新プログラム
 
-[KB4579305]
-TITLE=2020-10 Dynamic Update for Windows 10 Version 20H2 for x64-based Systems (KB4579305)
-INFO=http://support.microsoft.com/help/4579305
-FILE=http://download.windowsupdate.com/d/msdownload/update/software/crup/2020/09/windows10.0-kb4579305-x64_b719afd64eeb5e2df6e8ec6b02155510529a02c9.cab
+[KB4586781]
+TITLE=2020-11 x64 ベース システム用 Windows 10 Version 20H2 の累積更新プログラム (KB4586781)
+INFO=http://support.microsoft.com/help/4586781
+FILE=http://download.windowsupdate.com/c/msdownload/update/software/secu/2020/11/windows10.0-kb4586781-x64_bd543ce012ec1695201cdb2d324a2206bd445132.msu
 RENAME=
-SIZE=956380
+SIZE=367534825
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
-TIE_UP=
-XOR_KEY=KB4586858
+TIE_UP=KB4586864
+XOR_KEY=KB4594440;KB4586853;KB4592438
 SYNCHRO_KEY=
-RELEASE=2020/09/05
-RUN_ORDER=009
+RELEASE=2020/11/06
+RUN_ORDER=005
 CMD=
-DECODE=1
-DECODE_TYPE=IExpress Setup
+DECODE=0
+DECODE_TYPE=
 DECODE_GET=
 IEXPRESS=0
 IEXPRESS_LIST=
 IEXPRESS_CMD=
 PREVIOUS_SP=
-COMMENT=Dynamic Update
+COMMENT=累積更新プログラム
 
 [KB4586858]
 TITLE=2020-11 Dynamic Update for Windows 10 Version 20H2 for x64-based Systems (KB4586858)
@@ -171,7 +150,7 @@ TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2020/11/05
-RUN_ORDER=010
+RUN_ORDER=006
 CMD=
 DECODE=1
 DECODE_TYPE=IExpress Setup
@@ -190,11 +169,11 @@ RENAME=
 SIZE=373686097
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
-TIE_UP=
+TIE_UP=KB4586864
 XOR_KEY=
 SYNCHRO_KEY=
 RELEASE=2020/11/15
-RUN_ORDER=011
+RUN_ORDER=008
 CMD=
 DECODE=1
 DECODE_TYPE=IExpress Setup
@@ -203,22 +182,22 @@ IEXPRESS=0
 IEXPRESS_LIST=
 IEXPRESS_CMD=
 PREVIOUS_SP=
-COMMENT=Dynamic Cumulative Update
+COMMENT=Dynamic Update
 
-[KB4052623_201007]
-TITLE=Microsoft Defender Antivirus マルウェア対策プラットフォームの更新プログラム - KB4052623 (Version 4.18.2010.7)
-INFO=http://support.microsoft.com/en-us/help/4052623/update-for-windows-defender-antimalware-platform
-FILE=http://download.windowsupdate.com/d/msdownload/update/software/defu/2020/10/updateplatform_f8a733421d0246eeab5c541bea1de7ef3239dbc5.exe
+[KB4586853]
+TITLE=2020-11 x64 ベース システム用 Windows 10 Version 20H2 の累積更新プログラム (KB4586853)
+INFO=http://support.microsoft.com/help/4586853
+FILE=http://download.windowsupdate.com/d/msdownload/update/software/updt/2020/11/windows10.0-kb4586853-x64_9c181d397b4b5d320af7e6f385ebc4bba693a95c.msu
 RENAME=
-SIZE=5235528
+SIZE=381082565
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
-TIE_UP=
-XOR_KEY=
+TIE_UP=KB4586864
+XOR_KEY=KB4592438
 SYNCHRO_KEY=
-RELEASE=2020/10/31
-RUN_ORDER=012
-CMD=/quiet /norestart
+RELEASE=2020/11/22
+RUN_ORDER=009
+CMD=
 DECODE=0
 DECODE_TYPE=
 DECODE_GET=
@@ -226,7 +205,76 @@ IEXPRESS=0
 IEXPRESS_LIST=
 IEXPRESS_CMD=
 PREVIOUS_SP=
-COMMENT=マルウェア対策プラットフォームの更新プログラム
+COMMENT=累積更新プログラム
+
+[KB4592438]
+TITLE=2020-12 x64 ベース システム用 Windows 10 Version 20H2 の累積更新プログラム (KB4592438)
+INFO=http://support.microsoft.com/help/4592438
+FILE=http://download.windowsupdate.com/d/msdownload/update/software/secu/2020/12/windows10.0-kb4592438-x64_b6914251264f8f973c3f82f99b894935f33c38e6.msu
+RENAME=
+SIZE=381311078
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=KB4593175
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2020/12/04
+RUN_ORDER=010
+CMD=
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=累積更新プログラム
+
+[KB890830]
+TITLE=悪意のあるソフトウェアの削除ツール x64 - v5.84 (KB890830)
+INFO=http://support.microsoft.com/help/890830
+FILE=http://download.windowsupdate.com/d/msdownload/update/software/uprl/2020/11/windows-kb890830-x64-v5.84_e2e371dfabc01c0f6fe097da99353ea860db64a5.exe
+RENAME=
+SIZE=37018880
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=2020/11/04
+RUN_ORDER=011
+CMD=/x
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=悪意のあるソフトウェアの削除ツール
+
+[WDA_DUP]
+TITLE=Windows Defender Antivirus for Windows 10 and Windows 8.1
+INFO=http://www.microsoft.com/en-us/wdsi/defenderupdates
+FILE=http://go.microsoft.com/fwlink/?LinkID=121721&arch=x64
+RENAME=mpam-fe-x64.exe
+SIZE=1
+TYPE=HOTFIX(SVCPACK.INF)
+CATEGORY=
+TIE_UP=
+XOR_KEY=
+SYNCHRO_KEY=
+RELEASE=
+RUN_ORDER=012
+CMD=-q
+DECODE=0
+DECODE_TYPE=
+DECODE_GET=
+IEXPRESS=0
+IEXPRESS_LIST=
+IEXPRESS_CMD=
+PREVIOUS_SP=
+COMMENT=
 
 [KB4052623_200110]
 TITLE=Windows Defender Antivirus マルウェア対策プラットフォームの更新プログラム - (Version 4.18.2001.10)
@@ -251,20 +299,20 @@ IEXPRESS_CMD=
 PREVIOUS_SP=
 COMMENT=マルウェア対策プラットフォームの更新プログラム
 
-[KB890830]
-TITLE=悪意のあるソフトウェアの削除ツール x64 - v5.84 (KB890830)
-INFO=http://support.microsoft.com/help/890830
-FILE=http://download.windowsupdate.com/d/msdownload/update/software/uprl/2020/11/windows-kb890830-x64-v5.84_e2e371dfabc01c0f6fe097da99353ea860db64a5.exe
+[KB4052623_201007]
+TITLE=Microsoft Defender Antivirus マルウェア対策プラットフォームの更新プログラム - KB4052623 (Version 4.18.2010.7)
+INFO=http://support.microsoft.com/en-us/help/4052623/update-for-windows-defender-antimalware-platform
+FILE=http://download.windowsupdate.com/d/msdownload/update/software/defu/2020/10/updateplatform_f8a733421d0246eeab5c541bea1de7ef3239dbc5.exe
 RENAME=
-SIZE=37018880
+SIZE=5235528
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
 TIE_UP=
-XOR_KEY=
+XOR_KEY=KB4052623_201106
 SYNCHRO_KEY=
-RELEASE=2020/11/04
+RELEASE=2020/10/31
 RUN_ORDER=014
-CMD=/x
+CMD=/quiet /norestart
 DECODE=0
 DECODE_TYPE=
 DECODE_GET=
@@ -272,22 +320,22 @@ IEXPRESS=0
 IEXPRESS_LIST=
 IEXPRESS_CMD=
 PREVIOUS_SP=
-COMMENT=悪意のあるソフトウェアの削除ツール
+COMMENT=マルウェア対策プラットフォームの更新プログラム
 
-[WDA_DUP]
-TITLE=Windows Defender Antivirus for Windows 10 and Windows 8.1
-INFO=http://www.microsoft.com/en-us/wdsi/defenderupdates
-FILE=http://go.microsoft.com/fwlink/?LinkID=121721&arch=x64
-RENAME=mpam-fe-x64.exe
-SIZE=1
+[KB4052623_201106]
+TITLE=Microsoft Defender Antivirus マルウェア対策プラットフォームの更新プログラム - KB4052623 (Version 4.18.2011.6)
+INFO=http://support.microsoft.com/en-us/help/4052623/update-for-windows-defender-antimalware-platform
+FILE=http://download.windowsupdate.com/d/msdownload/update/software/defu/2020/11/updateplatform_e2a95a1a729b3e06ee156591826d0adb52502e5d.exe
+RENAME=
+SIZE=5830536
 TYPE=HOTFIX(SVCPACK.INF)
 CATEGORY=
 TIE_UP=
 XOR_KEY=
 SYNCHRO_KEY=
-RELEASE=
+RELEASE=2020/11/19
 RUN_ORDER=015
-CMD=-q
+CMD=/quiet /norestart
 DECODE=0
 DECODE_TYPE=
 DECODE_GET=
@@ -295,4 +343,4 @@ IEXPRESS=0
 IEXPRESS_LIST=
 IEXPRESS_CMD=
 PREVIOUS_SP=
-COMMENT=
+COMMENT=マルウェア対策プラットフォームの更新プログラム
