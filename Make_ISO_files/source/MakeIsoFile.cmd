@@ -1228,7 +1228,11 @@ Rem --- イメージの結合 --------------------------------------------------------
 Rem Dism /Quiet /Mount-WIM /WimFile:"!WIM_WIM!\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
     If !WIM_ADD! NEQ 0 (
         Echo --- イメージの結合 ------------------------------------------------------------
-        Dism /Quiet /Append-Image /ImageFile:"!WIM_IMG!\sources\install.wim" /CaptureDir:"!WIM_MNT!" /Name:"!WIN_TYP! !LST_OPT!" /Description:"!WIN_TYP! !LST_OPT!" || GoTo :DONE
+        If /I "!LST_OPT!" EQU "" (
+            Dism /Quiet /Append-Image /ImageFile:"!WIM_IMG!\sources\install.wim" /CaptureDir:"!WIM_MNT!" /Name:"!WIN_TYP! custom" /Description:"!WIN_TYP! custom" || GoTo :DONE
+        ) Else (
+            Dism /Quiet /Append-Image /ImageFile:"!WIM_IMG!\sources\install.wim" /CaptureDir:"!WIM_MNT!" /Name:"!WIN_TYP! !LST_OPT!" /Description:"!WIN_TYP! !LST_OPT!" || GoTo :DONE
+        )
     )
     Dism /Quiet /Unmount-Image /MountDir:"!WIM_MNT!" /Discard || GoTo :DONE
 
