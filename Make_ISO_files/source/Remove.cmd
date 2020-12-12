@@ -55,10 +55,17 @@ Rem Dism /Cleanup-WIM
                 Set NOW_TIM=!NOW_TIM:~9!
                 Set CMD_DAT=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.dat
                 Set CMD_WRK=!WIM_WRK!\!WRK_NAM!.w!WIN_VER!.!ARC_TYP!.!NOW_DAY!!NOW_TIM!.wrk
+                Set CMD_WIM=!CMD_DAT!.wim
+                Set CMD_WRE=!CMD_DAT!.wre
                 If Exist "!CMD_DAT!" (Del /F "!CMD_DAT!")
                 If Exist "!CMD_WRK!" (Del /F "!CMD_WRK!")
+                If Exist "!CMD_WIM!" (Del /F "!CMD_WIM!")
+                If Exist "!CMD_WRE!" (Del /F "!CMD_WRE!")
             )
-            If Exist "!WIM_NOW!\mnt\Windows\\" (Dism /UnMount-Wim /MountDir:"!WIM_NOW!\mnt" /Discard)
+            If Exist "!WIM_NOW!\!ARC_TYP!\bt1\Windows\\" (Dism /UnMount-Wim /MountDir:"!WIM_NOW!\!ARC_TYP!\bt1" /Discard)
+            If Exist "!WIM_NOW!\!ARC_TYP!\bt2\Windows\\" (Dism /UnMount-Wim /MountDir:"!WIM_NOW!\!ARC_TYP!\bt2" /Discard)
+            If Exist "!WIM_NOW!\!ARC_TYP!\wre\Windows\\" (Dism /UnMount-Wim /MountDir:"!WIM_NOW!\!ARC_TYP!\wre" /Discard)
+            If Exist "!WIM_NOW!\!ARC_TYP!\mnt\Windows\\" (Dism /UnMount-Wim /MountDir:"!WIM_NOW!\!ARC_TYP!\mnt" /Discard)
 Rem         TakeOwn /F "!WIM_NOW!\*.*" /A /R /D Y > NUL 2>&1
 Rem         ICacls "!WIM_NOW!" /reset /T /Q
             RmDir /S /Q "!WIM_NOW!"

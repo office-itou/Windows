@@ -375,6 +375,7 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             Set WIM_WRE=!WIM_NOW!\%%~J\wre
             Set WIM_BT1=!WIM_NOW!\%%~J\bt1
             Set WIM_BT2=!WIM_NOW!\%%~J\bt2
+            Set WIM_WIM=!WIM_NOW!\%%~J\wim
 
             If /I "!DRV_DVD!" EQU "!WIM_IMG!" (
                 Echo イメージフォルダーの統合元と作業用が同じです。
@@ -402,6 +403,7 @@ Rem --- 破損イメージの削除 ----------------------------------------------------
             If Not Exist "!WIM_WRE!" (MkDir       "!WIM_WRE!" || GoTo DONE)
             If Not Exist "!WIM_BT1!" (MkDir       "!WIM_BT1!" || GoTo DONE)
             If Not Exist "!WIM_BT2!" (MkDir       "!WIM_BT2!" || GoTo DONE)
+            If Not Exist "!WIM_WIM!" (MkDir       "!WIM_WIM!" || GoTo DONE)
         )
     )
 
@@ -1052,6 +1054,7 @@ Rem ---------------------------------------------------------------------------
 Rem ---------------------------------------------------------------------------
 :WIM_PACKAGE
 Rem === Windows Update ファイル と ドライバー の統合 ==========================
+    Set WIM_ADD=0
     Set WIM_PAC=/Image:^"!WIM_MNT!^" /Add-Package /IgnoreCheck
     Set WIM_DRV=/Image:^"!WIM_MNT!^" /Add-Driver /ForceUnsigned /Recurse
     Set BT1_PAC=/Image:^"!WIM_BT1!^" /Add-Package /IgnoreCheck
@@ -1131,9 +1134,16 @@ Rem --- lstファイルを分解する -------------------------------------------------
         )
     )
 
+Rem --- イメージの取り出し ----------------------------------------------------
+    Echo --- イメージの取り出し --------------------------------------------------------
+    If Exist "!WIM_WIM!\install.wim" (Del "!WIM_WIM!\install.wim")
+    Dism /Quiet /Export-Image /SourceImageFile:"!WIM_IMG!\sources\install.wim" /SourceName:"!WIN_TYP!" /DestinationImageFile:"!WIM_WIM!\install.wim" || GoTo :DONE
+    Dism /Quiet /Mount-WIM /WimFile:"!WIM_WIM!\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
+
 Rem --- ドライバーの統合 ------------------------------------------------------
     If Exist "!CMD_WRE!" (
         Echo --- ドライバーの統合 ----------------------------------------------------------
+        Set WIM_ADD=1
 
         Echo --- boot.wimを更新する [1] ----------------------------------------------------
         Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:1 /MountDir:"!WIM_BT1!" || GoTo :DONE
@@ -1170,7 +1180,7 @@ Rem --- ドライバーの統合 ------------------------------------------------------
         Dism /Quiet /UnMount-Wim /MountDir:"!WIM_BT2!" /Commit || GoTo :DONE
 
         Echo --- winRE.wimを更新する -------------------------------------------------------
-        Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
+Rem     Dism /Quiet /Mount-WIM /WimFile:"!WIM_WIM!\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
         Dism /Quiet /Mount-WIM /WimFile:"!WIM_MNT!\Windows\System32\Recovery\winRE.wim" /Index:1 /MountDir:"!WIM_WRE!" || GoTo :DONE
         For /F "usebackq delims=" %%I In ("!CMD_WRE!") Do (
             Set FNAME=%%~I
@@ -1188,13 +1198,15 @@ Rem --- ドライバーの統合 ------------------------------------------------------
         )
         Echo --- winRE.wimを保存する -------------------------------------------------------
         Dism /Quiet /UnMount-Wim /MountDir:"!WIM_WRE!" /Commit || GoTo :DONE
-        Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit || GoTo :DONE
+        Dism /Quiet /Commit-Image /MountDir:"!WIM_MNT!" || GoTo :DONE
+Rem     Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit || GoTo :DONE
     )
 
 Rem --- install.wimを更新する -------------------------------------------------
     If Exist "!CMD_WIM!" (
         Echo --- install.wimを更新する -----------------------------------------------------
-        Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
+        Set WIM_ADD=1
+Rem     Dism /Quiet /Mount-WIM /WimFile:"!WIM_WIM!\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
         For /F "usebackq delims=" %%I In ("!CMD_WIM!") Do (
             Set FNAME=%%~I
             Set FDIRE=%%~dpI
@@ -1208,8 +1220,17 @@ Rem --- install.wimを更新する -------------------------------------------------
             )
         )
         Echo --- install.wimを保存する -----------------------------------------------------
-        Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit || GoTo :DONE
+        Dism /Quiet /Commit-Image /MountDir:"!WIM_MNT!" || GoTo :DONE
+Rem     Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit || GoTo :DONE
     )
+
+Rem --- イメージの結合 --------------------------------------------------------
+Rem Dism /Quiet /Mount-WIM /WimFile:"!WIM_WIM!\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
+    If !WIM_ADD! NEQ 0 (
+        Echo --- イメージの結合 ------------------------------------------------------------
+        Dism /Quiet /Append-Image /ImageFile:"!WIM_IMG!\sources\install.wim" /CaptureDir:"!WIM_MNT!" /Name:"!WIN_TYP! !LST_OPT!" /Description:"!WIN_TYP! !LST_OPT!" || GoTo :DONE
+    )
+    Dism /Quiet /Unmount-Image /MountDir:"!WIM_MNT!" /Discard || GoTo :DONE
 
 :MAKE_ISO_IMAGE
 Rem === DVDイメージを作成する =================================================
