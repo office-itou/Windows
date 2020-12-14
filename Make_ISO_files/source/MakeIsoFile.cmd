@@ -1160,6 +1160,8 @@ Rem --- ドライバーの統合 ------------------------------------------------------
             )
         )
         Echo --- boot.wimを保存する [1] ----------------------------------------------------
+        Dism /Quiet /Commit-Image /MountDir:"!WIM_BT1!" || GoTo :DONE
+Rem     If !WIN_VER! GTR 7 (Dism /Quiet /Image:"!WIM_BT1!" /Cleanup-Image /StartComponentCleanup || GoTo :DONE)
         Dism /Quiet /UnMount-Wim /MountDir:"!WIM_BT1!" /Commit || GoTo :DONE
 
         Echo --- boot.wimを更新する [2] ----------------------------------------------------
@@ -1177,6 +1179,8 @@ Rem --- ドライバーの統合 ------------------------------------------------------
             )
         )
         Echo --- boot.wimを保存する [2] ----------------------------------------------------
+        Dism /Quiet /Commit-Image /MountDir:"!WIM_BT2!" || GoTo :DONE
+Rem     If !WIN_VER! GTR 7 (Dism /Quiet /Image:"!WIM_BT2!" /Cleanup-Image /StartComponentCleanup || GoTo :DONE)
         Dism /Quiet /UnMount-Wim /MountDir:"!WIM_BT2!" /Commit || GoTo :DONE
 
         Echo --- winRE.wimを更新する -------------------------------------------------------
@@ -1197,6 +1201,8 @@ Rem     Dism /Quiet /Mount-WIM /WimFile:"!WIM_WIM!\install.wim" /Name:"!WIN_TYP!
             )
         )
         Echo --- winRE.wimを保存する -------------------------------------------------------
+        Dism /Quiet /Commit-Image /MountDir:"!WIM_WRE!" || GoTo :DONE
+Rem     If !WIN_VER! GTR 7 (Dism /Quiet /Image:"!WIM_WRE!" /Cleanup-Image /StartComponentCleanup || GoTo :DONE)
         Dism /Quiet /UnMount-Wim /MountDir:"!WIM_WRE!" /Commit || GoTo :DONE
         Dism /Quiet /Commit-Image /MountDir:"!WIM_MNT!" || GoTo :DONE
 Rem     Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit || GoTo :DONE
@@ -1221,6 +1227,8 @@ Rem     Dism /Quiet /Mount-WIM /WimFile:"!WIM_WIM!\install.wim" /Name:"!WIN_TYP!
         )
         Echo --- install.wimを保存する -----------------------------------------------------
         Dism /Quiet /Commit-Image /MountDir:"!WIM_MNT!" || GoTo :DONE
+Rem     Dism /Quiet /Image:"!WIM_MNT!" /Cleanup-Image /spsuperseded || GoTo :DONE
+Rem     If !WIN_VER! GTR 7 (Dism /Quiet /Image:"!WIM_MNT!" /Cleanup-Image /StartComponentCleanup || GoTo :DONE)
 Rem     Dism /Quiet /UnMount-Wim /MountDir:"!WIM_MNT!" /Commit || GoTo :DONE
     )
 

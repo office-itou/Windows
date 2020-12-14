@@ -37,8 +37,8 @@ Rem --- ŠÂ‹«•Ï”İ’è ----------------------------------------------------------
     For /F "tokens=1-2 usebackq delims=\" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~I\%%~J)
 
 Rem *** Unmount and Remove ****************************************************
-Rem Dism /Cleanup-Mountpoints
-Rem Dism /Cleanup-WIM
+    Dism /Cleanup-Mountpoints
+    Dism /Cleanup-WIM
     Set WIM_WRK=!WRK_TOP!\wrk
     For /D %%I In ("!WIM_WRK!\*") Do (
         Set WIM_NOW=%%~I
