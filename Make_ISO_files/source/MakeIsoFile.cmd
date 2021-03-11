@@ -1068,8 +1068,10 @@ Rem --- lstファイルを分解する -------------------------------------------------
     Echo --- lstファイルを分解する -----------------------------------------------------
     Set CMD_WIM=!CMD_DAT!.wim
     Set CMD_WRE=!CMD_DAT!.wre
+    Set CMD_DRV=!CMD_DAT!.drv
     If Exist "!CMD_WIM!" (Del /F "!CMD_WIM!")
     If Exist "!CMD_WRE!" (Del /F "!CMD_WRE!")
+    If Exist "!CMD_DRV!" (Del /F "!CMD_DRV!")
     For /F "tokens=1-11 usebackq delims=," %%I In ("!CMD_DAT!") Do (
         Set LST_WINDOWS=%%~I
         Set LST_PACKAGE=%%~J
@@ -1097,15 +1099,15 @@ Rem --- lstファイルを分解する -------------------------------------------------
                     If /I "%%A" EQU "!ARC_TYP!" (
                         If /I "!LST_EXTENSION!" EQU "inf" (
                             If /I "!LST_FNAME!" EQU "iusb3hub.inf" (
-                                Echo>>"!CMD_WRE!" !LST_RENAME!
+                                Echo>>"!CMD_DRV!" !LST_RENAME!
                             )
                             If /I "!LST_FNAME!" EQU "iaAHCIC.inf"  (
-                                Echo>>"!CMD_WRE!" !LST_RENAME!
+                                Echo>>"!CMD_DRV!" !LST_RENAME!
                             )
                             If /I "!LST_FNAME!" EQU "IaNVMe.inf"   (
-                                Echo>>"!CMD_WRE!" !WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu
-                                Echo>>"!CMD_WRE!" !WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu
-                                Echo>>"!CMD_WRE!" !LST_RENAME!
+                                Echo>>"!CMD_DRV!" !WIM_WUD!\Windows6.1-KB2990941-v3-!ARC_TYP!.msu
+                                Echo>>"!CMD_DRV!" !WIM_WUD!\Windows6.1-kb3087873-v2-!ARC_TYP!.msu
+                                Echo>>"!CMD_DRV!" !LST_RENAME!
                             )
                         )
                     )
@@ -1141,13 +1143,13 @@ Rem --- イメージの取り出し ----------------------------------------------------
     Dism /Quiet /Mount-WIM /WimFile:"!WIM_WIM!\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
 
 Rem --- ドライバーの統合 ------------------------------------------------------
-    If Exist "!CMD_WRE!" (
+    If Exist "!CMD_DRV!" (
         Echo --- ドライバーの統合 ----------------------------------------------------------
         Set WIM_ADD=1
 
         Echo --- boot.wimを更新する [1] ----------------------------------------------------
         Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:1 /MountDir:"!WIM_BT1!" || GoTo :DONE
-        For /F "usebackq delims=" %%I In ("!CMD_WRE!") Do (
+        For /F "usebackq delims=" %%I In ("!CMD_DRV!") Do (
             Set FNAME=%%~I
             Set FDIRE=%%~dpI
             Set FDIRE=!FDIRE:~0,-1!
@@ -1166,7 +1168,7 @@ Rem     If !WIN_VER! GTR 7 (Dism /Quiet /Image:"!WIM_BT1!" /Cleanup-Image /Start
 
         Echo --- boot.wimを更新する [2] ----------------------------------------------------
         Dism /Quiet /Mount-WIM /WimFile:"!WIM_IMG!\sources\boot.wim" /Index:2 /MountDir:"!WIM_BT2!" || GoTo :DONE
-        For /F "usebackq delims=" %%I In ("!CMD_WRE!") Do (
+        For /F "usebackq delims=" %%I In ("!CMD_DRV!") Do (
             Set FNAME=%%~I
             Set FDIRE=%%~dpI
             Set FDIRE=!FDIRE:~0,-1!
@@ -1186,7 +1188,7 @@ Rem     If !WIN_VER! GTR 7 (Dism /Quiet /Image:"!WIM_BT2!" /Cleanup-Image /Start
         Echo --- winRE.wimを更新する -------------------------------------------------------
 Rem     Dism /Quiet /Mount-WIM /WimFile:"!WIM_WIM!\install.wim" /Name:"!WIN_TYP!" /MountDir:"!WIM_MNT!" || GoTo :DONE
         Dism /Quiet /Mount-WIM /WimFile:"!WIM_MNT!\Windows\System32\Recovery\winRE.wim" /Index:1 /MountDir:"!WIM_WRE!" || GoTo :DONE
-        For /F "usebackq delims=" %%I In ("!CMD_WRE!") Do (
+        For /F "usebackq delims=" %%I In ("!CMD_DRV!") Do (
             Set FNAME=%%~I
             Set FDIRE=%%~dpI
             Set FDIRE=!FDIRE:~0,-1!
@@ -1268,6 +1270,7 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_DUP!" (Del /F "!CMD_DUP!" || GoTo DONE)
     If Exist "!CMD_WIM!" (Del /F "!CMD_WIM!" || GoTo DONE)
     If Exist "!CMD_WRE!" (Del /F "!CMD_WRE!" || GoTo DONE)
+    If Exist "!CMD_DRV!" (Del /F "!CMD_DRV!" || GoTo DONE)
 
     Echo --- 作業ファイルの削除 --------------------------------------------------------
     Echo "!WIM_IMG!"
