@@ -140,6 +140,7 @@ Rem *** USBメモリーを作成する *************************************************
         Echo> "!CMD_WK2!" Rem DiskPart2
         Echo>>"!CMD_WK2!" Select Disk !IDX_DRV!
         Echo>>"!CMD_WK2!" Clean
+        Echo>>"!CMD_WK2!" Convert MBR
         Echo>>"!CMD_WK2!" Create Partition Primary
         Echo>>"!CMD_WK2!" Select Partition 1
         Echo>>"!CMD_WK2!" Format FS=!FMT_USB! Quick
@@ -159,28 +160,29 @@ Rem *** USBメモリーを作成する *************************************************
     )
 
 :TRANSFER
+    Echo.
     If /I "!FMT_USB!" EQU "NTFS" (
-        Echo --- ファイル転送 [DVD → USB] -------------------------------------------------
-        If Exist "!CMD_IMG!\sources\install.swm" (Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin" /XF install.wim
+        Echo --- ファイル転送 [DVD → USB] NTFS --------------------------------------------
+        If Exist "!DVD_SRC!\sources\install.swm" (Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin" /XF install.wim
         ) Else                                   (Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin"
         )
     ) Else If /I "!FMT_USB!" EQU "exFAT" (
-        Echo --- ファイル転送 [DVD → USB] -------------------------------------------------
+        Echo --- ファイル転送 [DVD → USB] exFAT -------------------------------------------
         Echo>>"!CMD_EXC!" System Volume Information
         Echo>>"!CMD_EXC!" $Recycle.Bin
-        If Exist "!CMD_IMG!\sources\install.swm" (Echo>>"!CMD_EXC!" install.wim)
-        Xcopy /J /E /H /R /Y "!CMD_IMG!\*.*" "!USB_DST!\\" /EXCLUDE:!CMD_EXC!
+        If Exist "!DVD_SRC!\sources\install.swm" (Echo>>"!CMD_EXC!" install.wim)
+        Xcopy /J /E /H /R /Y "!DVD_SRC!\*.*" "!USB_DST!\\" /EXCLUDE:!CMD_EXC!
     ) Else (
         For %%I In ("!DVD_SRC!\sources\install.wim") Do (Set WIM_SIZ=%%~zI)
         Set WIM_SIZ=!WIM_SIZ:~0,-6!
         Set /A WIM_SIZ=!WIM_SIZ!+1
         If !WIM_SIZ! LSS 4095 (
-            Echo --- ファイル転送 [DVD → USB] -------------------------------------------------
+            Echo --- ファイル転送 [DVD → USB] FAT32 -------------------------------------------
             Echo>>"!CMD_EXC!" System Volume Information
             Echo>>"!CMD_EXC!" $Recycle.Bin
             Xcopy /J /E /H /R /Y "!DVD_SRC!\*.*" "!USB_DST!\\" /EXCLUDE:!CMD_EXC!
         ) Else (
-            Echo --- ファイル転送 [DVD → HDD] -------------------------------------------------
+            Echo --- ファイル転送 [DVD → HDD] FAT32 -------------------------------------------
             Robocopy /J /S /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!CMD_IMG!" install.wim
             Echo --- ファイル分割 --------------------------------------------------------------
             Dism /Split-Image /ImageFile:"!CMD_IMG!\sources\install.wim" /SWMFile:"!CMD_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
