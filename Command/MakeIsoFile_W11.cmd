@@ -36,7 +36,9 @@ Rem --- 環境変数設定 ----------------------------------------------------------
 
     For /F "tokens=1-2 usebackq delims=\" %%I In ('!WRK_DIR!') Do (Set WRK_TOP=%%~I\%%~J)
 
+Rem ISOファイルのマウント先
     Set DVD_SRC=F:\
+
     Set WIM_TOP=!WRK_TOP!
     Set WIM_BIN=!WIM_TOP!\bin
     Set WIM_IMG=!WIM_TOP!\img

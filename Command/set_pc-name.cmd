@@ -54,7 +54,7 @@ Rem 電源管理変更 --------------------------------------------------------------
     )
 
     If "%GET_MANUFACTURER%"=="VMware, Inc." (
-        Echo "電源管理を変更します。
+        Echo 電源管理を変更します。
         Echo [Enter]を押下してください。
         Pause > Nul 2>&1
         PowerCfg /Change Monitor-Timeout-AC 0
