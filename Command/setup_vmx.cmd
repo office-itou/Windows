@@ -9,16 +9,16 @@ Rem 作業開始 *******************************************************************
 
     SetLocal EnableDelayedExpansion
 
-    Set /P INP_DIR=変換するVMXファイルのフォルダー名を入力して下さい。
-    If /I "%INP_DIR:~0,1%%INP_DIR:~-1,1%" EQU """" (
-        Set DRV_VMX=%INP_DIR:~1,-1%
-    ) Else (
-        Set DRV_VMX=%INP_DIR%
-    )
+    Set /P DRV_VMX=変換するVMXファイルのフォルダー名を入力して下さい。
 
     For /R "%DRV_VMX%" %%F In ("*.vmx") Do (
         If /I "%%~xF" EQU ".vmx" (
             If Not Exist "%%F.orig" (
+                Set PRM_OS=
+                Set PRM_NAME=
+                Set PRM_NIC=
+                Set PRM_USB=
+                Set PRM_SVGA=
                 Echo "%%F" を変換します。
                 Ren "%%F" "%%~nxF.orig"
                 For /F "Usebackq Tokens=1* Delims==" %%I In ("%%F.orig") Do (
@@ -59,6 +59,12 @@ Rem                         Echo>>"%%F" vmotion.checkpointSVGAPrimarySize = "335
                         ) Else If /I "!PRM_NAME:~2,-1!" EQU "VM-PC05"       (Set SET_UUID=xx xx xx xx xx xx xx xx-xx xx xx xx xx xx xx xx
                         ) Else                                              (Set SET_UUID=
                         )
+                    ) Else If /I "%%I" EQU "usb_xhci.present " (
+                        Set PRM_USB=%%J
+                    ) Else If /I "%%I" EQU "mks.enable3d " (
+                        Set PRM_SVGA=%%J
+                    ) Else If /I "%%I" EQU "serial0.present " (
+                        Echo>>"%%F" # %%I=%%J
                     ) Else (
                         Echo>>"%%F" %%I=%%J
                     )
@@ -73,23 +79,41 @@ Rem                         Echo>>"%%F" vmotion.checkpointSVGAPrimarySize = "335
                 Echo>>"%%F" sched.mem.pshare.enable = "FALSE"                           # ページ共有機能の無効化
                 Echo>>"%%F" usb.generic.keepStreamsEnabled = "FALSE"                    # USB 3.0 マス ストレージ デバイスの強制設定^(UAS デバイスの不具合回避^)
                 Echo>>"%%F" devices.hotplug = "FALSE"                                   # HotAdd/HotPlug 機能の無効化
+                Echo>>"%%F" sound.bufferTime = "400"                                    # サウンドカードのバックグラウンドノイズ対策
+                Echo>>"%%F" firmware = "efi"
+                Echo>>"%%F" managedvm.autoAddVTPM = "software"
+                If /I "!PRM_USB!" EQU "" (
+                    Echo>>"%%F" usb_xhci.present = "TRUE"
+                )
+                If /I "!PRM_SVGA!" EQU "" (
+                    Echo>>"%%F" svga.graphicsMemoryKB = "786432"
+                    Echo>>"%%F" svga.guestBackedPrimaryAware = "TRUE"
+                    Echo>>"%%F" mks.enable3d = "TRUE"
+                )
                 Echo>>"%%F" mks.keyboardFilter = "allow"
                 Echo>>"%%F" isolation.tools.hgfs.disable = "FALSE"
                 Echo>>"%%F" sharedFolder0.present = "TRUE"
                 Echo>>"%%F" sharedFolder0.enabled = "TRUE"
                 Echo>>"%%F" sharedFolder0.readAccess = "TRUE"
                 Echo>>"%%F" sharedFolder0.writeAccess = "TRUE"
-                Echo>>"%%F" sharedFolder0.hostPath = "D:\Share"
-                Echo>>"%%F" sharedFolder0.guestName = "Share"
+                Echo>>"%%F" sharedFolder0.hostPath = "D:\share"
+                Echo>>"%%F" sharedFolder0.guestName = "share"
                 Echo>>"%%F" sharedFolder0.expiration = "never"
                 Echo>>"%%F" sharedFolder1.present = "TRUE"
                 Echo>>"%%F" sharedFolder1.enabled = "TRUE"
                 Echo>>"%%F" sharedFolder1.readAccess = "TRUE"
                 Echo>>"%%F" sharedFolder1.writeAccess = "TRUE"
-                Echo>>"%%F" sharedFolder1.hostPath = "D:\VMware"
-                Echo>>"%%F" sharedFolder1.guestName = "VMware"
+                Echo>>"%%F" sharedFolder1.hostPath = "D:\vmware"
+                Echo>>"%%F" sharedFolder1.guestName = "vmware"
                 Echo>>"%%F" sharedFolder1.expiration = "never"
-                Echo>>"%%F" sharedFolder.maxNum = "2"
+                Echo>>"%%F" sharedFolder2.present = "TRUE"
+                Echo>>"%%F" sharedFolder2.enabled = "TRUE"
+                Echo>>"%%F" sharedFolder2.readAccess = "TRUE"
+                Echo>>"%%F" sharedFolder2.writeAccess = "TRUE"
+                Echo>>"%%F" sharedFolder2.hostPath = "D:\workspace"
+                Echo>>"%%F" sharedFolder2.guestName = "workspace"
+                Echo>>"%%F" sharedFolder2.expiration = "never"
+                Echo>>"%%F" sharedFolder.maxNum = "3"
                 If /I "!SET_UUID!" NEQ "" (
                     Echo>>"%%F" uuid.bios = "!SET_UUID!"
                     Echo>>"%%F" uuid.location = "!SET_UUID!"
