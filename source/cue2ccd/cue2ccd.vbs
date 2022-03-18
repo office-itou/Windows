@@ -8,61 +8,70 @@ Rem ---------------------------------------------------------------------------
 Option Explicit
 
     Dim I
+    Dim Ret
 
-    Dim objArguments
-    Set objArguments = WScript.Arguments
+    Dim objShell
+    Dim objStdOut
+    Dim objStdIn
+    Dim objFSO
+    Dim Arguments
 
-    For I = 0 To objArguments.Count - 1
-        MakeStartFoldersCCDFiles objArguments(I)
-    Next
+    Set objStdOut = WScript.StdOut
+    Set objStdIn = WScript.StdIn
+    Set objShell = CreateObject("WScript.Shell")
 
-    Set objArguments = Nothing
+    If InStr(LCase(WScript.FullName), "cscript.exe") = 0 Then
+        For I = 0 To WScript.Arguments.Count - 1
+            Arguments = Arguments & " """ & WScript.Arguments.Item(I) & """"
+        Next
+        objShell.Run "CScript """ & WScript.ScriptFullName & """ " & Arguments
+    Else
+        Set objFSO = CreateObject("Scripting.FileSystemObject")
+        For I = 0 To WScript.Arguments.Count - 1
+            MakeStartFoldersCCDFiles WScript.Arguments.Item(I)
+        Next
+        Set objFSO = Nothing
+
+        Ret = MsgBox("completed", vbOKOnly)
+    End If
+
+    Set objShell =  Nothing
+    Set objStdIn = Nothing
+    Set objStdOut = Nothing
+
+    WScript.Quit Ret
 
 Rem ---------------------------------------------------------------------------
 Sub MakeStartFoldersCCDFiles(objStartFolder)
-    Dim objFSO
     Dim objFolder
-    Dim colFiles
     Dim objFile
 
-Rem ---------------------------------------------------------------------------
-    Set objFSO = CreateObject("Scripting.FileSystemObject")
-
     Set objFolder = objFSO.GetFolder(objStartFolder)
-    Set colFiles = objFolder.Files
-    For Each objFile in colFiles
+    For Each objFile in objFolder.Files
         If UCase(objFSO.GetExtensionName(objFile.Name)) = "CUE" Then
             MakeCCDFile objFolder.Path & "\" & objFile.Name
         End If
     Next
-    MakeSubFoldersCCDFiles objFSO.GetFolder(objStartFolder)
-
-    Set objFSO = Nothing
+    MakeSubFoldersCCDFiles objFolder
+    Set objFolder = Nothing
 End Sub
 
 Rem ---------------------------------------------------------------------------
-Sub MakeSubFoldersCCDFiles(Folder)
-    Dim Subfolder
-    Dim objFSO
+Sub MakeSubFoldersCCDFiles(objStartFolder)
     Dim objFolder
-    Dim colFiles
+    Dim objSubFolder
     Dim objFile
 
-    Set objFSO = CreateObject("Scripting.FileSystemObject")
-
-    Set objFolder = objFSO.GetFolder(Folder)
-    For Each Subfolder in Folder.SubFolders
-        Set objFolder = objFSO.GetFolder(Subfolder.Path)
-        Set colFiles = objFolder.Files
-        For Each objFile in colFiles
+    For Each objSubFolder in objStartFolder.SubFolders
+        Set objFolder = objFSO.GetFolder(objSubFolder.Path)
+        For Each objFile in objSubFolder.Files
             If UCase(objFSO.GetExtensionName(objFile.Name)) = "CUE" Then
-                MakeCCDFile Subfolder.Path & "\" & objFile.Name
+                MakeCCDFile objFolder.Path & "\" & objFile.Name
             End If
         Next
-        MakeSubFoldersCCDFiles Subfolder
+        MakeSubFoldersCCDFiles objSubFolder
+        Set objFolder = Nothing
     Next
-
-    Set objFSO = Nothing
 End Sub
 
 Rem ---------------------------------------------------------------------------
@@ -95,13 +104,14 @@ Sub MakeCCDFile(File)
     Dim objFso
     Dim objFile
 
-    Wscript.Echo File
+    objStdOut.WriteLine File
 
     InpFileName = File
     OutFileName = Replace(InpFileName, ".cue", ".ccd")
     ImgFileName = Replace(InpFileName, ".cue", ".img")
 
 Rem --- get image file size ---------------------------------------------------
+Rem objStdOut.WriteLine "RD: " & ImgFileName
     Set objFso = CreateObject("Scripting.FileSystemObject")
     If objFso.FileExists(ImgFileName) Then
         Set objFile = objFso.GetFile(ImgFileName)
@@ -116,6 +126,7 @@ Rem --- get image file size ---------------------------------------------------
     Set objFso = Nothing
 
 Rem --- read .cue file --------------------------------------------------------
+Rem objStdOut.WriteLine "RD: " & InpFileName
     With CreateObject("ADODB.Stream")
         .Charset = "SJIS"
         .LineSeparator = 10
@@ -141,6 +152,7 @@ Rem --- read .cue file --------------------------------------------------------
     End With
 
 Rem --- write .ccd file -------------------------------------------------------
+Rem objStdOut.WriteLine "WR: " & OutFileName
     With CreateObject("ADODB.Stream")
         .Charset = "SJIS"
         .Open
@@ -308,4 +320,5 @@ Rem --- write .ccd file -------------------------------------------------------
         .SaveToFile OutFileName, 2
         .Close
     End With
+Rem objStdOut.WriteLine "EN: " & File
 End Sub
