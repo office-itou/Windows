@@ -15,6 +15,8 @@ Option Explicit
     Dim objStdIn
     Dim objFSO
     Dim Arguments
+    Dim objFolder
+    Dim FindFlag
 
     Set objStdOut = WScript.StdOut
     Set objStdIn = WScript.StdIn
@@ -27,12 +29,26 @@ Option Explicit
         objShell.Run "CScript """ & WScript.ScriptFullName & """ " & Arguments
     Else
         Set objFSO = CreateObject("Scripting.FileSystemObject")
-        For I = 0 To WScript.Arguments.Count - 1
-            MakeStartFoldersCCDFiles WScript.Arguments.Item(I)
-        Next
+        If WScript.Arguments.Count > 0 Then
+            For I = 0 To WScript.Arguments.Count - 1
+                MakeStartFoldersCCDFiles WScript.Arguments.Item(I)
+            Next
+        Else
+            Set objFolder = CreateObject("Shell.Application").BrowseForFolder(0,"Select a Folder",0,0)
+            If (objFolder Is Nothing) Then
+                Ret = MsgBox("canceled", vbOKOnly)
+                FindFlag = -1
+            Else 
+                MakeStartFoldersCCDFiles objFolder.Self.Path
+            End If
+        End If
         Set objFSO = Nothing
 
-        Ret = MsgBox("completed", vbOKOnly)
+        If FindFlag = 0 Then
+            Ret = MsgBox("file not exist", vbOKOnly)
+        ElseIf FindFlag > 0 Then
+            Ret = MsgBox("completed", vbOKOnly)
+        End If
     End If
 
     Set objShell =  Nothing
@@ -46,10 +62,13 @@ Sub MakeStartFoldersCCDFiles(objStartFolder)
     Dim objFolder
     Dim objFile
 
+    FindFlag = 0
+
     Set objFolder = objFSO.GetFolder(objStartFolder)
     For Each objFile in objFolder.Files
         If UCase(objFSO.GetExtensionName(objFile.Name)) = "CUE" Then
             MakeCCDFile objFolder.Path & "\" & objFile.Name
+            FindFlag = 1
         End If
     Next
     MakeSubFoldersCCDFiles objFolder
@@ -67,6 +86,7 @@ Sub MakeSubFoldersCCDFiles(objStartFolder)
         For Each objFile in objSubFolder.Files
             If UCase(objFSO.GetExtensionName(objFile.Name)) = "CUE" Then
                 MakeCCDFile objFolder.Path & "\" & objFile.Name
+                FindFlag = 1
             End If
         Next
         MakeSubFoldersCCDFiles objSubFolder
