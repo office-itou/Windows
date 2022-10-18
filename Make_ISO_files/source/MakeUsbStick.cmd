@@ -24,8 +24,10 @@ Rem --- 環境変数設定 ----------------------------------------------------------
         Set WRK_DIR=!WRK_DIR:~0,-1!
         Set WRK_FIL=%%~nxI
         Set WRK_NAM=%%~nI
+        Set WRK_BIN=!WRK_DIR!\bin
     )
 
+Rem Set Path=!WRK_BIN!;!WRK_BIN!\Oscdimg\%PROCESSOR_ARCHITECTURE%;%Path%
     Set NOW_DAY=%date:~0,4%%date:~5,2%%date:~8,2%
 
     If /I "%time:~0,1%" EQU " " (
@@ -39,12 +41,14 @@ Rem --- 環境変数設定 ----------------------------------------------------------
     Set ARG_LST=%*
     Set FLG_OPT=0
     Set FLG_FMT=0
+    Set FLG_W11=0
 
     For %%I In (!ARG_LST!) Do (
         Set ARG_PRM=%%~I
                If /I "!ARG_PRM!" EQU ""            (GoTo SETTING
         ) Else If /I "!ARG_PRM!" EQU "Help"        (GoTo HELP
         ) Else If /I "!ARG_PRM!" EQU "No-Format"   (Set FLG_OPT=1&Set FLG_FMT=1
+        ) Else If /I "!ARG_PRM!" EQU "W11"         (Set FLG_W11=1
         ) Else                                     (GoTo HELP
         )
     )
@@ -119,11 +123,17 @@ Rem --- 環境変数設定 ----------------------------------------------------------
     Set CMD_WK2=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.DiskPart2.txt
     Set CMD_EXC=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!.Exclude.txt
     Set CMD_IMG=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!
+    Set WRK_IMG=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!\img
+    Set WRK_MNT=!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!\mnt
 
 Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_WK1!" (Del /F "!CMD_WK1!" || GoTo DONE)
     If Exist "!CMD_WK2!" (Del /F "!CMD_WK2!" || GoTo DONE)
     If Exist "!CMD_EXC!" (Del /F "!CMD_EXC!" || GoTo DONE)
+
+Rem --- 作業フォルダーの作成 --------------------------------------------------
+    If Not Exist "!WRK_IMG!"  (MkDir "!WRK_IMG!")
+    If Not Exist "!WRK_MNT!"  (MkDir "!WRK_MNT!")
 
 :MAKE
 Rem *** USBメモリーを作成する *************************************************
@@ -159,15 +169,62 @@ Rem *** USBメモリーを作成する *************************************************
         DiskPart /S "!CMD_WK2!" || GoTo DONE
     )
 
+    If !FLG_W11! EQU 0 (
+        Set TXT_SRC="DVD"
+        GoTo TRANSFER
+    )
+    Set TXT_SRC="HDD"
+
+Rem ===========================================================================
+:EDIT
+    Echo.
+    Echo --- ファイル転送 [DVD → HDD] -------------------------------------------------
+    Robocopy /J /MIR /A-:RHS /NDL /NFL /NC /NJH /NJS /NFL "!DVD_SRC!\\" "!WRK_IMG!"
+
+Rem ---------------------------------------------------------------------------
+Rem Dism /Get-WimInfo /WimFile:"!WRK_IMG!\sources\boot.wim"
+Rem Dism /Get-WimInfo /WimFile:"!WRK_IMG!\sources\install.wim"
+
+Rem --- Microsoft Windows PE --------------------------------------------------
+Rem Dism /Quiet /Mount-WIM /WimFile:"!WRK_IMG!\sources\boot.wim" /Index:1 /MountDir:"!WRK_MNT!"
+Rem REG LOAD HKEY_LOCAL_MACHINE\MNT_SYSTEM "!WRK_MNT!\Windows\System32\config\SYSTEM"
+Rem REG ADD HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\MoSetup /v AllowUpgradesWithUnsupportedTPMOrCPU /t REG_DWORD /d 1 /f
+Rem REG QUERY HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\MoSetup
+Rem REG ADD HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\LabConfig /v BypassTPMCheck /t REG_DWORD /d 1 /f
+Rem REG ADD HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\LabConfig /v BypassSecureBootCheck /t REG_DWORD /d 1 /f
+Rem REG ADD HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\LabConfig /v BypassRAMCheck /t REG_DWORD /d 1 /f
+Rem REG QUERY HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\LabConfig
+Rem REG UNLOAD HKEY_LOCAL_MACHINE\MNT_SYSTEM
+Rem Dism /Quiet /Unmount-Image /MountDir:"!WRK_MNT!" /Commit
+
+Rem --- Microsoft Windows Setup -----------------------------------------------
+    Dism /Quiet /Mount-WIM /WimFile:"!WRK_IMG!\sources\boot.wim" /Index:2 /MountDir:"!WRK_MNT!"
+    REG LOAD HKEY_LOCAL_MACHINE\MNT_SYSTEM "!WRK_MNT!\Windows\System32\config\SYSTEM"
+Rem REG ADD HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\MoSetup /v AllowUpgradesWithUnsupportedTPMOrCPU /t REG_DWORD /d 1 /f
+Rem REG QUERY HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\MoSetup
+    REG ADD HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\LabConfig /v BypassTPMCheck /t REG_DWORD /d 1 /f
+    REG ADD HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\LabConfig /v BypassSecureBootCheck /t REG_DWORD /d 1 /f
+    REG ADD HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\LabConfig /v BypassRAMCheck /t REG_DWORD /d 1 /f
+Rem REG QUERY HKEY_LOCAL_MACHINE\MNT_SYSTEM\Setup\LabConfig
+    REG UNLOAD HKEY_LOCAL_MACHINE\MNT_SYSTEM
+    Dism /Quiet /Unmount-Image /MountDir:"!WRK_MNT!" /Commit
+
+Rem ---------------------------------------------------------------------------
+Rem Dism /Get-WimInfo /WimFile:"!WRK_IMG!\sources\boot.wim"
+Rem Dism /Get-WimInfo /WimFile:"!WRK_IMG!\sources\install.wim"
+
+    Set DVD_SRC=!WRK_IMG!
+
+Rem ===========================================================================
 :TRANSFER
     Echo.
     If /I "!FMT_USB!" EQU "NTFS" (
-        Echo --- ファイル転送 [DVD → USB] NTFS --------------------------------------------
+        Echo --- ファイル転送 [!TXT_SRC! → USB] NTFS --------------------------------------------
         If Exist "!DVD_SRC!\sources\install.swm" (Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin" /XF install.wim
         ) Else                                   (Robocopy /J /MIR /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!USB_DST!" /XD "System Volume Information" "$Recycle.Bin"
         )
     ) Else If /I "!FMT_USB!" EQU "exFAT" (
-        Echo --- ファイル転送 [DVD → USB] exFAT -------------------------------------------
+        Echo --- ファイル転送 [!TXT_SRC! → USB] exFAT -------------------------------------------
         Echo>>"!CMD_EXC!" System Volume Information
         Echo>>"!CMD_EXC!" $Recycle.Bin
         If Exist "!DVD_SRC!\sources\install.swm" (Echo>>"!CMD_EXC!" install.wim)
@@ -177,12 +234,12 @@ Rem *** USBメモリーを作成する *************************************************
         Set WIM_SIZ=!WIM_SIZ:~0,-6!
         Set /A WIM_SIZ=!WIM_SIZ!+1
         If !WIM_SIZ! LSS 4095 (
-            Echo --- ファイル転送 [DVD → USB] FAT32 -------------------------------------------
+            Echo --- ファイル転送 [!TXT_SRC! → USB] FAT32 -------------------------------------------
             Echo>>"!CMD_EXC!" System Volume Information
             Echo>>"!CMD_EXC!" $Recycle.Bin
             Xcopy /J /E /H /R /Y "!DVD_SRC!\*.*" "!USB_DST!\\" /EXCLUDE:!CMD_EXC!
         ) Else (
-            Echo --- ファイル転送 [DVD → HDD] FAT32 -------------------------------------------
+            Echo --- ファイル転送 [!TXT_SRC! → HDD] FAT32 -------------------------------------------
             Robocopy /J /S /A-:RHS /NDL /NC /NJH /NJS "!DVD_SRC!" "!CMD_IMG!" install.wim
             Echo --- ファイル分割 --------------------------------------------------------------
             Dism /Split-Image /ImageFile:"!CMD_IMG!\sources\install.wim" /SWMFile:"!CMD_IMG!\sources\install.swm" /FileSize:4095 || GoTo DONE
@@ -195,6 +252,14 @@ Rem *** USBメモリーを作成する *************************************************
         )
     )
 
+    If Exist "!WRK_DIR!\autounattend.xml" (
+        Copy "!WRK_DIR!\autounattend.xml" "!USB_DST!\\"
+    )
+
+Rem ===========================================================================
+Rem For /F "Usebackq Tokens=5 Delims= " %%I In (`Vol "!DVD_SRC:~0,2!" ^| FindStr  /C:"ボリューム ラベル"`) Do (Set DVD_VOL=%%~I)
+Rem Oscdimg -m -o -u1 -h -l!DVD_VOL! -bootdata:2#p0,e,b"!WIM_IMG!\boot\etfsboot.com"#pEF,e,b"!WIM_IMG!\efi\microsoft\boot\efisys.bin" "!WIM_IMG!" "!WRK_DIR!\Win11_Japanese_x64_custom.iso"
+
 Rem CD /D "!DRV_DVD!\boot"
     BootSect /NT60 !DRV_USB:~0,2! || GoTo DONE
 
@@ -203,6 +268,7 @@ Rem --- 作業ファイルの削除 ----------------------------------------------------
     If Exist "!CMD_WK2!" (Del /F "!CMD_WK2!" || GoTo DONE)
     If Exist "!CMD_EXC!" (Del /F "!CMD_EXC!" || GoTo DONE)
     If Exist "!CMD_IMG!" (RmDir /S /Q "!CMD_IMG!" || GoTo DONE)
+    If Exist "!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!" (RmDir /S /Q "!WRK_DIR!\!WRK_NAM!.!NOW_DAY!!NOW_TIM!" || GoTo DONE)
 
 Rem *** 作業終了 **************************************************************
 :DONE
