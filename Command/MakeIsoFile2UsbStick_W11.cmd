@@ -238,7 +238,7 @@ Rem ===========================================================================
     )
 
 Rem ===========================================================================
-Rem Oscdimg -m -o -u1 -h -l!DVD_VOL! -bootdata:2#p0,e,b"!WIM_IMG!\boot\etfsboot.com"#pEF,e,b"!WIM_IMG!\efi\microsoft\boot\efisys.bin" "!WIM_IMG!" "!WRK_DIR!\Win11_Japanese_x64_custom.iso"
+Rem !WRK_BIN!\Oscdimg\!PROCESSOR_ARCHITECTURE!\Oscdimg -m -o -u1 -h -l!DVD_VOL! -bootdata:2#p0,e,b"!WRK_IMG!\boot\etfsboot.com"#pEF,e,b"!WRK_IMG!\efi\microsoft\boot\efisys.bin" "!WRK_IMG!" "!WRK_DIR!\Win11_Japanese_x64_custom.iso"
 
 Rem CD /D "!DRV_DVD!\boot"
     BootSect /NT60 !DRV_USB:~0,2! || GoTo DONE
