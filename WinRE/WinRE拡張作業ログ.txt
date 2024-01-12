@@ -1,0 +1,97 @@
+Microsoft Windows [Version 10.0.19045.2006]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Administrator>reagentc /info
+Windows 回復環境 (Windows RE) およびシステム リセット構成
+情報:
+
+    Windows RE の状態:         Enabled
+    Windows RE の場所:         \\?\GLOBALROOT\device\harddisk0\partition4\Recovery\WindowsRE
+    ブート構成データ (BCD) ID: 65e9de11-b109-11ee-ab5b-a579343d6969
+    回復イメージの場所:
+    回復イメージ インデックス: 0
+    カスタム イメージの場所:
+    カスタム イメージ インデックス: 0
+
+REAGENTC.EXE: 操作は成功しました。
+
+
+C:\Users\Administrator>reagentc /disable
+REAGENTC.EXE: 操作は成功しました。
+
+
+C:\Users\Administrator>diskpart
+
+Microsoft DiskPart バージョン 10.0.19041.964
+
+Copyright (C) Microsoft Corporation.
+コンピューター: WINDOWS-GLFRSGJ
+
+DISKPART> list  disk
+
+  ディスク      状態           サイズ   空き   ダイナ GPT
+  ###                                          ミック
+  ------------  -------------  -------  -------  ---  ---
+  ディスク 0    オンライン            64 GB  1024 KB        *
+
+DISKPART> select disk 0
+
+ディスク 0 が選択されました。
+
+DISKPART> list partition
+
+  Partition ###  Type                Size     Offset
+  -------------  ------------------  -------  -------
+  Partition 1    システム               100 MB  1024 KB
+  Partition 2    予約                  16 MB   101 MB
+  Partition 3    プライマリ               63 GB   117 MB
+  Partition 4    回復                 572 MB    63 GB
+
+DISKPART> select partition 3
+
+パーティション 3 が選択されました。
+
+DISKPART> shrink desired=250 minimum=250
+
+ボリュームは、次の方法で正常に縮小されました:  250 MB
+
+DISKPART> select partition 4
+
+パーティション 4 が選択されました。
+
+DISKPART> delete partition override
+
+DiskPart は選択されたパーティションを正常に削除しました。
+
+DISKPART> create partition primary id=de94bba4-06d1-4d40-a16a-bfd50179d6ac
+
+DiskPart は指定したパーティションの作成に成功しました。
+
+DISKPART> gpt attributes =0x8000000000000001
+
+選択された GPT パーティションに DiskPart で属性を割り当てました。
+
+DISKPART> format quick fs=ntfs label="Windows RE tools"
+
+  100% 完了しました
+
+DiskPart は、ボリュームのフォーマットを完了しました。
+
+DISKPART> list vol
+
+  Volume ###  Ltr Label        Fs    Type        Size     Status     Info
+  ----------  --- -----------  ----  ----------  -------  ---------  --------
+  Volume 0     D   CCCOMA_X64F  UDF    DVD-ROM     5725 MB  正常
+  Volume 1     C                NTFS   Partition     63 GB  正常         ブート
+  Volume 2                      FAT32  Partition    100 MB  正常         システム
+* Volume 4         Windows RE   NTFS   Partition    823 MB  正常         非表示
+
+DISKPART> exit
+
+DiskPart を終了しています...
+
+C:\Users\Administrator>reagentc /enable
+REAGENTC.EXE: 操作は成功しました。
+
+
+C:\Users\Administrator>
